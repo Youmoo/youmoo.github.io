@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style id="basic-theme">/*默认样式，最佳实践*/
+
+/*全局属性*/
+#nice {
+  font-size: 16px;
+  color: black;
+  padding: 0 10px;
+  line-height: 1.6;
+  word-spacing: 0px;
+  letter-spacing: 0px;
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: left;
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  margin-top: -10px; /*解决开头空隙过大问题*/
+}
+
+/*段落*/
+#nice p {
+  font-size: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+}
+
+/*标题*/
+#nice h1,
+#nice h2,
+#nice h3,
+#nice h4,
+#nice h5,
+#nice h6 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding: 0px;
+  font-weight: bold;
+  color: black;
+}
+#nice h1 {
+  font-size: 24px;
+}
+#nice h2 {
+  font-size: 22px;
+}
+#nice h3 {
+  font-size: 20px;
+}
+#nice h4 {
+  font-size: 18px;
+}
+#nice h5 {
+  font-size: 16px;
+}
+#nice h6 {
+  font-size: 16px;
+}
+
+#nice h1 .prefix,
+#nice h2 .prefix,
+#nice h3 .prefix,
+#nice h4 .prefix,
+#nice h5 .prefix,
+#nice h6 .prefix {
+  display: none;
+}
+
+#nice h1 .suffix
+#nice h2 .suffix,
+#nice h3 .suffix,
+#nice h4 .suffix,
+#nice h5 .suffix,
+#nice h6 .suffix {
+  display: none;
+}
+
+/*列表*/
+#nice ul,
+#nice ol {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 25px;
+  color: black;
+}
+#nice ul {
+  list-style-type: disc;
+}
+#nice ul ul {
+  list-style-type: square;
+}
+
+#nice ol {
+  list-style-type: decimal;
+}
+
+#nice li section {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  line-height: 26px;
+  text-align: left;
+  color: rgb(1,1,1); /* 只要是纯黑色微信编辑器就会把color这个属性吞掉。。。*/
+  font-weight: 500;
+}
+
+/*引用*/
+#nice blockquote {
+  display: block;
+  font-size: 0.9em;
+  overflow: auto;
+  overflow-scrolling: touch;
+  border-left: 3px solid rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.05);
+  color: #6a737d;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+#nice blockquote p {
+  margin: 0px;
+  color: black;
+  line-height: 26px;
+}
+
+#nice .table-of-contents a {
+  border: none;
+  color: black;
+  font-weight: normal;
+}
+
+/*链接*/
+#nice a {
+  text-decoration: none;
+  color: #1e6bb8;
+  word-wrap: break-word;
+  font-weight: bold;
+  border-bottom: 1px solid #1e6bb8;
+}
+
+/*加粗*/
+#nice strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*斜体*/
+#nice em {
+  font-style: italic;
+  color: black;
+}
+
+/*加粗斜体*/
+#nice em strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*删除线*/
+#nice del {
+  font-style: italic;
+  color: black;
+}
+
+/*分隔线*/
+#nice hr {
+  height: 1px;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-top: 1px solid black;
+}
+
+/*代码块*/
+#nice pre {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+#nice pre code {
+  display: -webkit-box;
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  border-radius: 0px;
+  font-size: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+#nice pre code span {
+  line-height: 26px;
+}
+
+/*行内代码*/
+#nice p code,
+#nice li code {
+  font-size: 14px;
+  word-wrap: break-word;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+  color: #1e6bb8;
+  background-color: rgba(27,31,35,.05);
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  word-break: break-all;
+}
+
+/*图片*/
+#nice img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/*图片*/
+#nice figure {
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/*图片描述文字*/
+#nice figcaption {
+  margin-top: 5px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+/*表格*/
+#nice table {
+  display: table;
+  text-align: left;
+}
+#nice tbody {
+  border: 0;
+}
+
+#nice table tr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  background-color: white;
+}
+
+#nice table tr:nth-child(2n) {
+  background-color: #F8F8F8;
+}
+
+#nice table tr th,
+#nice table tr td {
+  font-size: 16px;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  text-align: left;
+}
+
+#nice table tr th {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+/* 微信代码块 */
+#nice .code-snippet__fix {
+  word-wrap: break-word !important;
+  font-size: 14px;
+  margin: 10px 0;
+  display: block;
+  color: #333;
+  position: relative;
+  background-color: rgba(0,0,0,0.03);
+  border: 1px solid #f0f0f0;
+  border-radius: 2px;
+  display: flex;
+  line-height: 20px;
+}
+#nice .code-snippet__fix pre {
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+#nice .code-snippet__fix .code-snippet__line-index {
+  counter-reset: line;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 1em;
+  list-style-type: none;
+  padding: 16px;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li {
+  list-style-type: none;
+  text-align: right;
+  line-height: 26px;
+  color: black;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li::before {
+  min-width: 1.5em;
+  text-align: right;
+  left: -2.5em;
+  counter-increment: line;
+  content: counter(line);
+  display: inline;
+  color: rgba(0,0,0,0.3);
+}
+#nice .code-snippet__fix pre {
+  overflow-x: auto;
+  padding: 16px;
+  padding-left: 0;
+  white-space: normal;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+#nice .code-snippet__fix code {
+  text-align: left;
+  font-size: 14px;
+  display: block;
+  white-space: pre;
+  display: flex;
+  position: relative;
+  font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace;
+  padding: 0px;
+}
+
+#nice .footnote-word {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-ref {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-item {
+  display: flex;
+}
+
+#nice .footnote-num {
+  display: inline;
+  width: 10%; /*神奇，50px就不可以*/
+  background: none;
+  font-size: 80%;
+  opacity: 0.6;
+  line-height: 26px;
+  font-family: ptima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+#nice .footnote-item p {
+  display: inline;
+  font-size: 14px;
+  width: 90%;
+  padding: 0px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+  word-break:break-all;
+  width: calc(100%-50)
+}
+
+#nice sub, sup {
+  line-height: 0;
+}
+
+#nice .footnotes-sep:before {
+  content: "参考资料";
+  display: block;
+}
+
+/* 解决公式问题 */
+#nice .block-equation {
+  display:block;
+  text-align: center;
+  overflow: auto;
+  display: block;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .block-equation svg {
+  max-width: 300% !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .inline-equation {
+}
+
+#nice .inline-equation svg {
+}
+
+#nice .imageflow-layer1 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  white-space: normal;
+  border: 0px none;
+  padding: 0px;
+  overflow: hidden;
+}
+
+#nice .imageflow-layer2 {
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+#nice .imageflow-layer3 {
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: middle;
+  width: 100%;
+}
+
+#nice .imageflow-img {
+  display: inline-block;
+}
+
+#nice .imageflow-caption {
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #888;
+}
+
+#nice .nice-suffix-juejin-container {
+  margin-top: 20px !important;
+}
+
+#nice figure a {
+  border: none;
+}
+</style>
+<style id="code-theme">/*
+
+Atom One Light by Daniel Gamage
+Original One Light Syntax theme from https://github.com/atom/one-light-syntax
+
+base:    #fafafa
+mono-1:  #383a42
+mono-2:  #686b77
+mono-3:  #a0a1a7
+hue-1:   #0184bb
+hue-2:   #4078f2
+hue-3:   #a626a4
+hue-4:   #50a14f
+hue-5:   #e45649
+hue-5-2: #c91243
+hue-6:   #986801
+hue-6-2: #c18401
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 16px;
+  color: #383a42;
+  background: #fafafa;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #a0a1a7;
+  font-style: italic;
+}
+
+.hljs-doctag,
+.hljs-keyword,
+.hljs-formula {
+  color: #a626a4;
+}
+
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst {
+  color: #e45649;
+}
+
+.hljs-literal {
+  color: #0184bb;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta-string {
+  color: #50a14f;
+}
+
+.hljs-built_in,
+.hljs-class .hljs-title {
+  color: #c18401;
+}
+
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-number {
+  color: #986801;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title {
+  color: #4078f2;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-link {
+  text-decoration: underline;
+}</style>
+<script data-ad-client="ca-pub-6205625102284861" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+<body>
+<section id="nice" style="max-width: 677px; margin: 5px auto;"><h1><span class="prefix"></span><span class="content">Advanced SSH Usage</span><span class="suffix"></span></h1><img src="/1984.png">
+<p>本文介绍一些我工作中经常用的ssh技巧。</p>
+<h2><span class="prefix"></span><span class="content">什么是ssh</span><span class="suffix"></span></h2>
+<blockquote>
+<p>摘自维基百科：<strong>Secure Shell (SSH)</strong> is a cryptographic network protocol for operating network services securely over an unsecured network. Typical applications include remote command-line login and remote command execution, but any network service can be secured with SSH.(https://en.wikipedia.org/wiki/Secure_Shell)</p>
+</blockquote>
+<p>即，<strong>Secure Shell(简称SSH)</strong> 是一种加密的网络协议，用于在不安全地网络环境下操作网络服务。典型的应用包括远程登录、远程命令执行。除此外，任何其它的网络服务都可以由SSH来加强安全防护。</p>
+<h2><span class="prefix"></span><span class="content">登录远程服务器</span><span class="suffix"></span></h2>
+<p>假设你在阿里云上有一台<strong>服务器A</strong>，其公网ip是 <strong>66.66.66.66</strong>，内网ip是 <strong>172.16.181.10</strong>,用户名是<strong>app</strong>。</p>
+<p>要在自己电脑上登录这台服务器，可以在终端执行 <code>ssh app@66。66.66.66</code>。</p>
+<p>假设你还有另一台<strong>服务器B</strong>，其没有公网ip，内网ip是 <strong>172.16.181.11</strong>，和<strong>服务器A</strong>的内网是互通的，用户名也是<strong>app</strong>。</p>
+<p>因为<strong>服务器B</strong>是没有公网ip的，所以我们无法在自己的电脑上直接登录。而<strong>服务器A</strong>和<strong>B</strong>内网互通，所以我们可以以先登录<strong>A</strong>，再通过<strong>A</strong>登录<strong>B</strong>的方式达到目的。</p>
+<p>实际上，<code>ssh</code>命令有一个<code>-J</code>参数，用来指定一个(或多个逗号隔开的)中转服务器(又叫跳板机)，达到跳转登录的目的:</p>
+<pre class="custom"><code class="hljs">ssh&nbsp;-J&nbsp;app@66.66.66.66&nbsp;app@172.16.181.11<br></code></pre>
+<p>在自己的电脑上运行以上命令，可以直接连到<strong>服务器B</strong>的控制界面。</p>
+<p>服务器的ip地址不容易记住，<strong>ssh</strong>支持给服务器设置别名，通过别名来操作服务器。编辑自己电脑上的<code>~/.ssh/config</code>文件, 加入如下内容:</p>
+<pre class="custom"><code class="hljs"># 服务器A
+Host server_a 
+HostName 66.66.66.66
+User app
+
+# 服务器B
+Host server_b
+HostName 172.16.181.11
+User app
+# 通过该跳板机登录
+ProxyJump server_a
+</code></pre>
+<p>保存，然后在本机终端上执行 <code>ssh server_a</code> 可以登录<strong>服务器A</strong>；执行 <code>ssh server_b</code> 可以登录<strong>服务器B</strong>。</p>
+<p>关于<strong>ssh</strong>的<code>config</code>文件，还有很多参数可调，建议读者从网上自行学习。</p>
+<h2><span class="prefix"></span><span class="content">远程命令执行</span><span class="suffix"></span></h2>
+<p>接着上文，假设我们想在自己的电脑上查看 <strong>服务器A</strong> 的 ``/tmp` 目录下有哪些文件，我们只需要在终端执行:</p>
+<pre class="custom"><code class="hljs">ssh&nbsp;server_a&nbsp;ls&nbsp;/tmp<br></code></pre>
+<p>假设命令有多行，还可以利用shell的 <em>heredoc</em> 特性:</p>
+<pre class="custom"><code class="hljs">ssh&nbsp;server_a&nbsp;&lt;&lt;EOF<br><span class="hljs-built_in">cd</span>&nbsp;workspace<br>ls<br>EOF<br></code></pre>
+<p>再给一个现实的例子：<strong>服务器A</strong>上有一个 <em>spring boot</em> 写的web应用，我们想在<em>自己的电脑</em>上写一个脚本，其功能是允许我们在服务器上对项目进行编译、重启。</p>
+<p>脚本可以这样写：</p>
+<pre class="custom"><code class="hljs">ssh&nbsp;server_a&nbsp;&lt;&lt;EOF<br><br><span class="hljs-comment">#&nbsp;进入到项目源码目录</span><br><span class="hljs-built_in">cd</span>&nbsp;/path/to/project_source_dir<br><br><span class="hljs-comment">#&nbsp;拉取最新的代码</span><br>git&nbsp;pull<br><br><span class="hljs-comment">#&nbsp;重新编译打包</span><br>mvn&nbsp;clean&nbsp;package<br><br><span class="hljs-comment">#&nbsp;将jar包拷贝到部署目录</span><br>cp&nbsp;target/your_web.jar&nbsp;/path/to/your_deploy_dir<br><br><span class="hljs-comment">#&nbsp;进入部署目录</span><br><span class="hljs-built_in">cd</span>&nbsp;/path/to/your_deploy_dir<br><br><span class="hljs-comment">#&nbsp;杀死之前的项目进程</span><br>jps&nbsp;-ml|grep&nbsp;your_web&nbsp;|awk&nbsp;<span class="hljs-string">'{print&nbsp;\$1}'</span>|xargs&nbsp;<span class="hljs-built_in">kill</span>&nbsp;-9<br><br><span class="hljs-comment">#&nbsp;重新启动项目</span><br>nohup&nbsp;java&nbsp;-jar&nbsp;your_web.jar&nbsp;&amp;<br><br>EOF<br></code></pre>
+<h2><span class="prefix"></span><span class="content">端口转发</span><span class="suffix"></span></h2>
+<p>文章的开头我们提到任何其它的网络服务都可以由<strong>SSH</strong>来加强安全防护，而端口转发便是其防护方式。</p>
+<p>端口转发有3类使用场景:</p>
+<ol>
+<li><section><p>将访问受限的远程服务，通过中转服务器暴露出来，方便自己访问(比如远程服务器上的MySQL只监听了内网地址，外网无法访问时)；</p>
+</section></li><li><section><p>将自己电脑上的服务通过一台中转服务器暴露出来，方便外部人员访问(比如在杭州的小明，其电脑上部了一个web服务，需要给远在北京的小强访问)；</p>
+</section></li><li><section><p>基于用户的需要，动态地将请求信息从中转服务器转发给不同的远程服务(比如给电脑配置全局代理)。</p>
+</section></li></ol>
+<p>我们再介绍一下，中转服务器，也叫跳板机(jump host), 是一台可以通过自己电脑访问的远程服务器，该远程服务器可以访问一些受限的资源(通常这些资源自己的电脑无法直接访问)。而ssh端口转发的用途，就是让中转服务器作为中介，为用户的电脑和访问受限的资源开立一个通道，使之互通。</p>
+<h3><span class="prefix"></span><span class="content">本地端口转发</span><span class="suffix"></span></h3>
+<p>应用场景：将访问受限的远程服务，通过中转服务器暴露出来，方便自己访问(<code>用户 -&gt; 跳板机 -&gt; 受限资源</code>)</p>
+<p>命令格式：</p>
+<pre class="custom"><code class="hljs">ssh&nbsp;-L&nbsp;[local_addr:]local_port:remote_addr:remote_port&nbsp;-N&nbsp;jump_server<br></code></pre>
+<p>解释：通过 <code>jump_server</code>, 将 <code>remote_addr:remote_port</code> 对应的服务暴露出来，允许用户在自己电脑上通过 <code>local_addr:local_port</code> 的形式访问。</p>
+<p>示例：服务器B上有一个<code>mysql</code>实例，因为没有公网ip，我的电脑无法访问它。利用本地端口转发，可以通过服务器A在我的电脑和服务器B之间建立一个安全的访问通道：</p>
+<pre class="custom"><code class="hljs">ssh -L 127.0.0.1:3307:172.16.181.11:3306 -N server_a
+</code></pre>
+<p>其中 <code>-L</code>表明是本地端口转发，<code>-N</code>用来禁止远程命令执行，<code>server_a</code>是我们为服务器A配置的别名，<code>172.16.181.11</code>是服务器B的ip地址，<code>3306</code>是MySQL的监听端口，<code>3307</code>是我自己电脑的监听端口。</p>
+<p>运行完上述命令后，打开一个新的终端窗口，输入 <code>mysql --host 127.0.0.1 --port 3307</code> 并回车，你会发现可以像访问本地数据库一样来访问之前受限制的远程数据库。</p>
+<h3><span class="prefix"></span><span class="content">远程端口转发</span><span class="suffix"></span></h3>
+<p>注意: 要实现远程端口转发，需要在 <code>/etc/ssh/sshd_config</code> 中配置 <code>GatewayPorts yes</code> 并重启 <strong>ssh server</strong>。</p>
+<p><span style="color:#fe615a">应用场景：将自己电脑上的服务通过一台中转服务器暴露出来，方便外部人员访问。</span></p>
+<p>命令格式：</p>
+<pre class="custom"><code class="hljs">ssh&nbsp;-R&nbsp;[remote_addr:]remote_port:host_addr:host_port&nbsp;-N&nbsp;jump_server<br></code></pre>
+<p>解释：将 <code>host_addr:host_port</code> 对应的服务，通过jump_server暴露出来，允许用户使用 <code>remote_addr:remote_port</code> 的形式来访问。</p>
+<p>示例：我的电脑上有一个端口为<code>8080</code>的web服务，在外地出差的小明现在要访问它，已知小明可以访问服务器A。利用远程端口转发，将小明的电脑、服务器A和我的电脑打通：</p>
+<pre class="custom"><code class="hljs">ssh&nbsp;-R&nbsp;66.66.66.66:8090:127.0.0.1:8080&nbsp;-N&nbsp;server_a<br></code></pre>
+<p>其中<code>-R</code>表示远程端口转发，整个命令的效果是，访问<code>66.66.66.66:8090</code>，请求会被转发到我的电脑上，即，和访问我电脑上的<code>127.0.0.1:8080</code>效果一样。</p>
+<h3><span class="prefix"></span><span class="content">动态socks代理</span><span class="suffix"></span></h3>
+<p>和之前在http代理中介绍的类似，动态socks代理也是根据用户请求，动态地将请求转发到不同的目标服务器。因为连接是加密的，所以socks代理比http代理更安全。</p>
+<p>命令格式：</p>
+<pre class="custom"><code class="hljs">ssh&nbsp;-D&nbsp;1337&nbsp;-q&nbsp;-C&nbsp;-N&nbsp;-f&nbsp;server_a<br></code></pre>
+<p>解释：把对本机<code>1337</code>端口的请求，通过跳板机<code>server_a</code>转发给相应的<code>目标服务器</code>。</p>
+<p>其中:</p>
+<ol>
+<li><section><p><code>-D</code>: 后跟 <code>port</code> 或 <code>ip:port</code>。建立一个 socket 来监听此端口，当有请求发向此端口时，请求将被转发到远程机器上；</p>
+</section></li><li><section><p><code>-q</code>: quiet mode，即安静模式，隐藏 warning 和 debug 信息；</p>
+</section></li><li><section><p><code>-C</code>: 启用压缩；</p>
+</section></li><li><section><p><code>-N</code>: 禁止执行远程命令，端口转发时有用；</p>
+</section></li><li><section><p><code>-f</code>: 让 <code>ssh</code> 在后台运行。</p>
+</section></li></ol>
+<p>执行上述命令后，在自己电脑终端上运行 <code>curl -x socks://localhost:1337 httpbin.org/ip</code> 会发现输出的ip地址是 <code>66.66.66.66</code>。这是因为httpbin.org所在的目标服务器看到的是代理服务器<code>server_a</code>的地址。</p>
+<h4><span class="prefix"></span><span class="content">Bonus(额外赠送)</span><span class="suffix"></span></h4>
+<p>可以为电脑配置一个全局的动态代理，这样电脑的所有请求都会经过代理服务器发出去，可以达到隐藏自身ip的目的。而如果你的代理服务器也能访问国外网站，你的电脑就能顺便番个强了(你懂的)。</p>
+<p>Mac电脑的socks代理，配置截图如下：</p>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/3b1fc7e5-6a0f-4473-8f06-0886accf7bbb.png" alt=""></figure>
+<p>如果你会写pac文件，动态代理结合pac, 可以实现更加灵活的代理配置。参见: <em>https://gist.github.com/dusenberrymw/850151bda3253453e5244d6a33c7cd2d</em></p>
+<h2><span class="prefix"></span><span class="content">总结</span><span class="suffix"></span></h2>
+<p>ssh允许我们以更加安全的方式登录服务器、执行远程命令或进行端口转发。尤其是端口转发，能帮我们穿过网络的限制，借助跳板机，实现2个被隔离环境的安全互通。</p>
+<p>最后，提1个问题供读者思考：</p>
+<p>目前为止，我们讨论的范围都是 自己的电脑+跳板机+受限服务器。那么，能否通过端口转发，在自己的电脑执行ssh命令，将局域网内其他同事电脑上的web服务暴露出去？动手试试吧。</p>
+</section>
+</body>
+</html>
