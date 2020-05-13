@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style id="basic-theme">/*默认样式，最佳实践*/
+
+/*全局属性*/
+#nice {
+  font-size: 16px;
+  color: black;
+  padding: 0 10px;
+  line-height: 1.6;
+  word-spacing: 0px;
+  letter-spacing: 0px;
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: left;
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  margin-top: -10px; /*解决开头空隙过大问题*/
+}
+
+/*段落*/
+#nice p {
+  font-size: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+}
+
+/*标题*/
+#nice h1,
+#nice h2,
+#nice h3,
+#nice h4,
+#nice h5,
+#nice h6 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding: 0px;
+  font-weight: bold;
+  color: black;
+}
+#nice h1 {
+  font-size: 24px;
+}
+#nice h2 {
+  font-size: 22px;
+}
+#nice h3 {
+  font-size: 20px;
+}
+#nice h4 {
+  font-size: 18px;
+}
+#nice h5 {
+  font-size: 16px;
+}
+#nice h6 {
+  font-size: 16px;
+}
+
+#nice h1 .prefix,
+#nice h2 .prefix,
+#nice h3 .prefix,
+#nice h4 .prefix,
+#nice h5 .prefix,
+#nice h6 .prefix {
+  display: none;
+}
+
+#nice h1 .suffix
+#nice h2 .suffix,
+#nice h3 .suffix,
+#nice h4 .suffix,
+#nice h5 .suffix,
+#nice h6 .suffix {
+  display: none;
+}
+
+/*列表*/
+#nice ul,
+#nice ol {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 25px;
+  color: black;
+}
+#nice ul {
+  list-style-type: disc;
+}
+#nice ul ul {
+  list-style-type: square;
+}
+
+#nice ol {
+  list-style-type: decimal;
+}
+
+#nice li section {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  line-height: 26px;
+  text-align: left;
+  color: rgb(1,1,1); /* 只要是纯黑色微信编辑器就会把color这个属性吞掉。。。*/
+  font-weight: 500;
+}
+
+/*引用*/
+#nice blockquote {
+  display: block;
+  font-size: 0.9em;
+  overflow: auto;
+  overflow-scrolling: touch;
+  border-left: 3px solid rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.05);
+  color: #6a737d;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+#nice blockquote p {
+  margin: 0px;
+  color: black;
+  line-height: 26px;
+}
+
+#nice .table-of-contents a {
+  border: none;
+  color: black;
+  font-weight: normal;
+}
+
+/*链接*/
+#nice a {
+  text-decoration: none;
+  color: #1e6bb8;
+  word-wrap: break-word;
+  font-weight: bold;
+  border-bottom: 1px solid #1e6bb8;
+}
+
+/*加粗*/
+#nice strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*斜体*/
+#nice em {
+  font-style: italic;
+  color: black;
+}
+
+/*加粗斜体*/
+#nice em strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*删除线*/
+#nice del {
+  font-style: italic;
+  color: black;
+}
+
+/*分隔线*/
+#nice hr {
+  height: 1px;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-top: 1px solid black;
+}
+
+/*代码块*/
+#nice pre {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+#nice pre code {
+  display: -webkit-box;
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  border-radius: 0px;
+  font-size: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+#nice pre code span {
+  line-height: 26px;
+}
+
+/*行内代码*/
+#nice p code,
+#nice li code {
+  font-size: 14px;
+  word-wrap: break-word;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+  color: #1e6bb8;
+  background-color: rgba(27,31,35,.05);
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  word-break: break-all;
+}
+
+/*图片*/
+#nice img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/*图片*/
+#nice figure {
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/*图片描述文字*/
+#nice figcaption {
+  margin-top: 5px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+/*表格*/
+#nice table {
+  display: table;
+  text-align: left;
+}
+#nice tbody {
+  border: 0;
+}
+
+#nice table tr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  background-color: white;
+}
+
+#nice table tr:nth-child(2n) {
+  background-color: #F8F8F8;
+}
+
+#nice table tr th,
+#nice table tr td {
+  font-size: 16px;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  text-align: left;
+}
+
+#nice table tr th {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+/* 微信代码块 */
+#nice .code-snippet__fix {
+  word-wrap: break-word !important;
+  font-size: 14px;
+  margin: 10px 0;
+  display: block;
+  color: #333;
+  position: relative;
+  background-color: rgba(0,0,0,0.03);
+  border: 1px solid #f0f0f0;
+  border-radius: 2px;
+  display: flex;
+  line-height: 20px;
+}
+#nice .code-snippet__fix pre {
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+#nice .code-snippet__fix .code-snippet__line-index {
+  counter-reset: line;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 1em;
+  list-style-type: none;
+  padding: 16px;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li {
+  list-style-type: none;
+  text-align: right;
+  line-height: 26px;
+  color: black;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li::before {
+  min-width: 1.5em;
+  text-align: right;
+  left: -2.5em;
+  counter-increment: line;
+  content: counter(line);
+  display: inline;
+  color: rgba(0,0,0,0.3);
+}
+#nice .code-snippet__fix pre {
+  overflow-x: auto;
+  padding: 16px;
+  padding-left: 0;
+  white-space: normal;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+#nice .code-snippet__fix code {
+  text-align: left;
+  font-size: 14px;
+  display: block;
+  white-space: pre;
+  display: flex;
+  position: relative;
+  font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace;
+  padding: 0px;
+}
+
+#nice .footnote-word {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-ref {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-item {
+  display: flex;
+}
+
+#nice .footnote-num {
+  display: inline;
+  width: 10%; /*神奇，50px就不可以*/
+  background: none;
+  font-size: 80%;
+  opacity: 0.6;
+  line-height: 26px;
+  font-family: ptima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+#nice .footnote-item p {
+  display: inline;
+  font-size: 14px;
+  width: 90%;
+  padding: 0px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+  word-break:break-all;
+  width: calc(100%-50)
+}
+
+#nice sub, sup {
+  line-height: 0;
+}
+
+#nice .footnotes-sep:before {
+  content: "参考资料";
+  display: block;
+}
+
+/* 解决公式问题 */
+#nice .block-equation {
+  display:block;
+  text-align: center;
+  overflow: auto;
+  display: block;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .block-equation svg {
+  max-width: 300% !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .inline-equation {
+}
+
+#nice .inline-equation svg {
+}
+
+#nice .imageflow-layer1 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  white-space: normal;
+  border: 0px none;
+  padding: 0px;
+  overflow: hidden;
+}
+
+#nice .imageflow-layer2 {
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+#nice .imageflow-layer3 {
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: middle;
+  width: 100%;
+}
+
+#nice .imageflow-img {
+  display: inline-block;
+}
+
+#nice .imageflow-caption {
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #888;
+}
+
+#nice .nice-suffix-juejin-container {
+  margin-top: 20px !important;
+}
+
+#nice figure a {
+  border: none;
+}
+</style>
+<style id="code-theme">/*
+
+Atom One Light by Daniel Gamage
+Original One Light Syntax theme from https://github.com/atom/one-light-syntax
+
+base:    #fafafa
+mono-1:  #383a42
+mono-2:  #686b77
+mono-3:  #a0a1a7
+hue-1:   #0184bb
+hue-2:   #4078f2
+hue-3:   #a626a4
+hue-4:   #50a14f
+hue-5:   #e45649
+hue-5-2: #c91243
+hue-6:   #986801
+hue-6-2: #c18401
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 16px;
+  color: #383a42;
+  background: #fafafa;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #a0a1a7;
+  font-style: italic;
+}
+
+.hljs-doctag,
+.hljs-keyword,
+.hljs-formula {
+  color: #a626a4;
+}
+
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst {
+  color: #e45649;
+}
+
+.hljs-literal {
+  color: #0184bb;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta-string {
+  color: #50a14f;
+}
+
+.hljs-built_in,
+.hljs-class .hljs-title {
+  color: #c18401;
+}
+
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-number {
+  color: #986801;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title {
+  color: #4078f2;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-link {
+  text-decoration: underline;
+}</style>
+<script data-ad-client="ca-pub-6205625102284861" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+<body>
+<section id="nice" style="margin: 5px auto; max-width: 677px;"><h1><span class="prefix"></span><span class="content">An introduction to virtual memory</span><span class="suffix"></span></h1><img src="/1984.png">
+<p>...and the crucial role it plays in modern operating systems.</p>
+<p>文章译自<a href="https://www.internalpointers.com/post/introduction-virtual-memory">An introduction to virtual memory</a></p>
+<pre class="custom"><code class="hljs"><span class="hljs-keyword">var</span>&nbsp;a=<span class="hljs-string">'1'</span>;<br><span class="hljs-built_in">console</span>.log(a);<br></code></pre>
+<h1><span class="prefix"></span><span class="content">虚拟内存介绍及其在现代操作系统中的重要作用</span><span class="suffix"></span></h1>
+<blockquote>
+<p>Computers are complex machines designed to perform a simple task: to run programs — browsers, text editors, web servers, video games, ... — that operate on data — photos, music, text files, databases and so on.</p>
+</blockquote>
+<p>计算机是一种复杂的机器，被设计出来执行一项简单的任务：运行程序——浏览器、文本编辑器、web服务器、视频游戏...——它们的特征是都要操作数据：照片、音乐、文本文件、数据库等。</p>
+<blockquote>
+<p>When not in use, such programs and data live peacefully in the <strong>hard drive</strong>, the device responsible for keeping information alive even if your computer is turned off. Running an application means to ask the <strong>processor (a.k.a. Central Processing Unit or CPU)</strong> to read and execute the machine instructions that make up the computer program, along with any additional data processing.</p>
+</blockquote>
+<p>当不使用时，这些程序和数据会安然地呆在硬盘中，硬盘的责任是确保信息不会丢失，即使你的电脑关闭了。运行应用程序意味着要求 <strong>处理器（又名中央处理单元或CPU）</strong> 读取和执行构成计算机程序的机器指令，以及任何额外的数据处理。</p>
+<blockquote>
+<p>Hard drives store huge amount of information, yet they are terribly slow. Way slower than the processor: a CPU that reads instructions from a hard drive directly would become a serious bottleneck for the whole system. For this reason, the program and its data are first copied to the <strong>main memory (a.k.a. Random Access Memory or RAM)</strong>, another storage hardware component smaller than a hard drive but much faster, so that the processor can read instructions from there without speed penalties.</p>
+</blockquote>
+<p>硬盘存储了大量的信息，但它们的速度却慢得可怕。比处理器慢得多：直接从硬盘上读取指令的CPU会成为整个系统的严重瓶颈。为此，程序及其数据首先被复制到 <strong>主存储器（又名随机存取存储器或RAM）</strong>，这是另一个比硬盘小但速度快得多的存储硬件，这样处理器就可以从那里读取指令，而不会影响速度。</p>
+<blockquote>
+<p>The main memory can be seen as a long list of <em>cells</em>, each one containing some binary data and marked with a number called the <strong>memory address</strong>. Memory addresses span from 0 to N, based on the amount of main memory available in the system. The range of addresses used by a program is called the <strong>address space</strong>.</p>
+</blockquote>
+<p>主存储器可以看成是一个长长的 <em>单元格列表</em>，每个单元格都包含一些二进制数据，并标有一个称为 <strong>内存地址</strong> 的数字。内存地址的范围从 0 到 N，是根据系统中可用的主存储器的容量而定的。一个程序使用的地址范围称为 <strong>地址空间</strong>。</p>
+<p><img src="https://imgkr.cn-bj.ufileos.com/34ca252d-0747-4822-b351-555aedaaef19.png" alt="">
+(1. Two programs loaded in memory. Each cell is a memory address. Space between program A and program B might be used by other programs or data. 内存加载的两个程序。每个单元格是一个内存地址。程序A和程序B之间的空间可能被其他程序或数据使用)</p>
+<h2><span class="prefix"></span><span class="content">Usage of the main memory in early computers</span><span class="suffix"></span></h2>
+<h2><span class="prefix"></span><span class="content">早期计算机对主存储器的使用</span><span class="suffix"></span></h2>
+<blockquote>
+<p>In the beginning of the computer history (and also nowadays in embedded systems), programs had access to the <em>entire</em> main memory and its management was left to the programmer. Writing software for those machines was challenging: part of the developer's job was to devise a good way to manage RAM accesses and make sure that the whole program would not overflow the available memory.</p>
+</blockquote>
+<p>在计算机历史的初期（现在的嵌入式系统也是如此），程序可以访问<em>整个</em>主内存，且内存的管理交由程序员负责。为这些机器编写软件很有挑战性：开发人员的部分工作是设计出一种好的方法来管理RAM访问，并确保整个程序不会出现内存溢出。</p>
+<blockquote>
+<p>Things got trickier with the advent of multitasking, when multiple programs could run on the same computer. Programmers had to face new critical issues:</p>
+</blockquote>
+<p>随着多任务处理的出现，事情变得更加棘手，多个程序可以在同一台计算机上同时运行了。程序员们不得不面对新的关键问题：</p>
+<blockquote>
+<ol>
+<li><section>memory layout — programs located in RAM after the first one would have their address space offset by a certain amount, no longer in the initial range 0 to N. An additional pain point to take care of during development;</section></li><li><section>memory fragmentation —— as things are moved back and forth to memory, the available space becomes fragmented into smaller and smaller chunks. This would make it harder to find available space to load new programs and data in memory;</section></li><li><section>security —— what if program A accidentally overwrites program B's memory? Or, even worse: what if it deliberately reads sensitive data from another program, such as passwords or credit card information?</section></li></ol>
+</blockquote>
+<ol>
+<li><section>内存布局 —— 在第一个程序之后加载时RAM中的程序，其地址空间会有一定的偏移，不再是初始范围 0 到 N，在开发过程中多了一个需要注意的痛点。</section></li><li><section>内存碎片化 —— 当东西来回在内存移动时，可用空间会被分割成越来越小的碎片。这将导致为新的程序和数据找到可用空间更加困难。</section></li><li><section>安全性 —— 如果程序A不小心覆盖了程序B的内存怎么办？或者更糟糕的：如果它故意从另一个程序中读取敏感数据，比如密码或信用卡信息等敏感数据怎么办？</section></li></ol>
+<blockquote>
+<p>So it was pretty obvious to hardware architects in the early 1960s that a form of automatic memory management could significantly simplify programming and fix the more critical memory protection problem. Eventually they came up with what is known today as <strong>virtual memory</strong>.</p>
+</blockquote>
+<p>因此，在20世纪60年代初，硬件架构师们很明显地发现，自动内存管理可以大大简化编程，并解决更关键的内存保护问题。最终，他们设计出了今天所说的<strong>虚拟内存</strong>。</p>
+<h2><span class="prefix"></span><span class="content">Virtual memory in a nutshell</span><span class="suffix"></span></h2>
+<h2><span class="prefix"></span><span class="content">虚拟内存简述</span><span class="suffix"></span></h2>
+<blockquote>
+<p>In virtual memory, a program does not have direct access to physical RAM. Instead, it interacts with an <em>illusory</em> address space called <strong>virtual address space</strong>. The operating system works together with the processor to provide such virtual address space and convert it, sooner or later, into the physical one.</p>
+</blockquote>
+<p>在虚拟内存中，程序不能直接访问物理RAM。相反，它与一个称为<strong>虚拟地址空间</strong>的地址空间进行交互。操作系统与处理器一起工作，提供这种虚拟地址空间，并在需要时将其转换为物理地址空间。</p>
+<blockquote>
+<p>Every memory access is performed through a virtual address that does not refer to the actual physical location in memory. A program always reads or write the virtual address, and it's completely unaware of what is going on in the underlying hardware.</p>
+</blockquote>
+<p>每一次内存访问都是通过一个虚拟地址进行的，而这个虚拟地址并不指向内存中的实际物理位置。程序总是在读取或写入虚拟地址，它完全不知道底层硬件中发生了什么。</p>
+<p><img src="https://imgkr.cn-bj.ufileos.com/5d48f801-3e8c-4815-90a4-d0a2486a2f50.png" alt="">
+(2. Two processes with their own virtual address spaces. Notice how the physical memory is not contiguous for process. 两个进程都有自己的虚拟地址空间。注意物理内存对进程来说并不一定是连续的)</p>
+<h3><span class="prefix"></span><span class="content">Benefits of the virtual memory</span><span class="suffix"></span></h3>
+<h3><span class="prefix"></span><span class="content">虚拟内存的好处</span><span class="suffix"></span></h3>
+<blockquote>
+<p>In the picture above you can see an example of virtual to physical translation in action, which reveals two main benefits of the virtual memory:</p>
+</blockquote>
+<p>在上面的图片中，你可以看到一个从虚拟地址转换为物理地址的实际例子，从中可以看出虚拟内存的两大好处：</p>
+<blockquote>
+<ol>
+<li><section>each program has a virtual address space that starts from 0 — this simplifies a lot the programmer's life: no need to manually keep track of memory offsets anymore;</section></li><li><section>virtual memory is always contiguous, even if the underlying physical counterpart isn't — the operating system does the hard job of gathering the available pieces together into a single, uniform virtual memory chunk.</section></li></ol>
+</blockquote>
+<ol>
+<li><section>每个程序都有一个从0开始的虚拟地址空间 —— 这简化了程序员的工作：无需再手动记录内存偏移量；</section></li><li><section>虚拟内存总是毗连的，即使底层的物理内存不是，操作系统也会把可用的碎片聚集到一个统一的虚拟内存块中。</section></li></ol>
+<blockquote>
+<p>The virtual memory mechanism also solves the problem of a limited RAM: every process is given the impression that it is working with an undefined amount of memory, often larger than the physical one. Moreover, the virtual memory guarantees security: program A can't read or write virtual memory assigned to program B without triggering an operating system error. We will see how all of this magic is possible in the following paragraphs.</p>
+</blockquote>
+<p>虚拟内存机制还解决了有限RAM的问题：每一个进程都以为自己在未定义数量的内存内工作，前者往往比物理内存更大。此外，虚拟内存还保证了安全性：程序A无法读取或写入分配给程序B的虚拟内存，此类违规行为将触发操作系统错误。我们将在下面的段落中看到所有这些神奇的东西是如何实现的。</p>
+<h2><span class="prefix"></span><span class="content">Pages and frames: where it all begins</span><span class="suffix"></span></h2>
+<h2><span class="prefix"></span><span class="content">Pages(页) 和 frames(桢)：一切的起点</span><span class="suffix"></span></h2>
+<blockquote>
+<p>The virtual memory mechanism needs a place to store the mapping between virtual and physical addresses. That is, given a virtual address X, the system must be able to find the corresponding physical address Y. However, you can't save such information as a 1:1 relationship: it would require a database as big as the whole RAM!</p>
+</blockquote>
+<p>虚拟内存机制需要一个地方来存储虚拟地址和物理地址之间的映射关系。也就是说，给定一个虚拟地址X，系统必须能够找到相应的物理地址Y。然而，你不能把这样的信息以1:1的关系保存下来：不然就需要一个和整个RAM一样大的数据库了！</p>
+<blockquote>
+<p>Modern virtual memory implementations overcome this problem (and many others) by interpreting the virtual and the physical memory as a long list of small, fixed-size chunks. The chunks of the virtual memory are called pages and the chunks of the physical one are called frames. The <strong>Memory Management Unit (MMU)</strong> is a hardware component in the CPU that stores the mapping information between pages and frames inside a special data structure called page table. A page table is like a database table where each row contains a page index and the frame index it corresponds to. Every running program has a page table in the MMU, as you can see in the picture below.</p>
+</blockquote>
+<p>现代虚拟内存的实现克服了这个问题（以及许多其他问题），它将虚拟内存和物理内存解释为一长串固定大小的小块。虚拟内存的块被称为<strong>pages</strong>(页)，物理内存的块被称为<strong>frames</strong>(桢)。<strong>内存管理单元（MMU）</strong> 是CPU中的一个硬件组件，它将 pages 和 frames 之间的映射信息存储在一个叫做 <strong>page table</strong> 的特殊数据结构中。page table就像一个数据库表，每一行都包含一个page索引和对应的frame索引。每个运行中的程序在MMU中都有一个 page table，如下图所示。</p>
+<p><img src="https://imgkr.cn-bj.ufileos.com/d64831b9-2875-4c4b-858b-ab94d247d5df.png" alt="">
+(3. The MMU mapping in action. Each cell is a process page or a physical memory frame. Some pages may not have a corresponding frame mapped: we will see why in the next paragraphs. MMU映射。每个单元格都是一个进程页或物理内存帧。有些页面可能没有相应的帧映射：我们将在下一段中看到原因。)</p>
+<h3><span class="prefix"></span><span class="content">Converting pages to frames</span><span class="suffix"></span></h3>
+<h3><span class="prefix"></span><span class="content">将 pages 转换为 frames</span><span class="suffix"></span></h3>
+<blockquote>
+<p>A virtual address is made up of two things:</p>
+</blockquote>
+<p>一个虚拟地址由两个东西组成:</p>
+<blockquote>
+<ol>
+<li><section>a page index, that tells the page the virtual address belongs to;</section></li><li><section>a frame offset, that tells the position of the physical address inside the frame;</section></li></ol>
+</blockquote>
+<ol>
+<li><section>一个page索引，告诉虚拟地址属于哪个page。</section></li><li><section>一个frame偏移量，告诉物理地址在frame中的位置。</section></li></ol>
+<blockquote>
+<p>This information is enough for the MMU to perform the virtual to physical conversion. When a program reads or write a virtual address, it wakes up the MMU which in turn grabs the page index (1) and searches for the corresponding frame in the program's page table. Once the frame is found, the MMU makes use of the frame offset (2) to find the exact physical memory address and pass it back to the program. At this point the conversion is done: the program has a physical address in RAM to read or write through the virtual one.</p>
+</blockquote>
+<p>这些信息足以让MMU进行虚拟地址到物理地址的转换。当程序读取或写入一个虚拟地址时，它会唤醒MMU，MMU反过来抓取page索引(1)，并在程序的page table中搜索相应的frame。一旦找到该frame，MMU利用frame的偏移量(2)找到准确的物理内存地址，并将其传回给程序。至此，转换工作完成：程序在RAM中拥有了一个通过虚拟地址进行读写的物理地址。</p>
+<h2><span class="prefix"></span><span class="content">Under the hood of virtual memory</span><span class="suffix"></span></h2>
+<h2><span class="prefix"></span><span class="content">虚拟内存的背后</span><span class="suffix"></span></h2>
+<blockquote>
+<p>While programs are provided with a continguous, clean and tidy virtual address space, both the operating system and the hardware are allowed to do crazy things in the background with data residing in the physical memory.</p>
+</blockquote>
+<p>虽然程序被提供了一个持续的、干净整洁的虚拟地址空间，但操作系统和硬件仍然有能力在后台用驻留在物理内存中的数据做疯狂的事情。</p>
+<blockquote>
+<p>For example, the operating system often delays loading parts of a program from the hard drive until the program attempts to use it. Some of the code will only be run during initialization or when a special condition occurs. A program's page table may be filled with entries that point to non-existing or not yet allocated frames. This case is depicted by the image 3. above, where the last two pages map to nowhere.</p>
+</blockquote>
+<p>例如，操作系统经常会延迟从硬盘中加载程序的部分内容，直到程序尝试使用时才继续载入。有些代码只有在初始化期间或发生特殊条件时才会运行。程序的page table中的条目可能会指向不存在或尚未分配的frame。这种情况在上面图3中已有所示，最后两个page的映射为空。</p>
+<blockquote>
+<p>Tricks like this one are completely transparent to the application, which keeps reading and writing its own virtual address space unaware of the background noise. However, sooner or later the program may want to access one of the virtual addresses that don't map to the RAM: what to do?</p>
+</blockquote>
+<p>像这样的技巧对程序来说是完全透明的，程序会在不知道背景噪音的情况下不停地读写自己的虚拟地址空间。然而，程序迟早会访问到其中一个没有映射到物理RAM的虚拟地址，那时要怎么办？</p>
+<h3><span class="prefix"></span><span class="content">Page faults (缺页错误)</span><span class="suffix"></span></h3>
+<blockquote>
+<p>A <strong>page fault</strong> (also known as <strong>page miss</strong>) occurs when a program accesses a virtual address on a page not currently mapped to a physical frame. More specifically, a page fault takes place when the page exists in the program's page table but points to a non-existent or not yet available frame in the physical memory.</p>
+</blockquote>
+<p>当程序访问没有映射到物理frame上的虚拟地址时，就发生了 <strong>page fault</strong>（也称为 <strong>page miss</strong>）。更具体地说，当一个page在程序的page table中存在，但却指向了物理存储器中不存在或尚不可用的frame时，就会发生 page fault。</p>
+<blockquote>
+<p>The MMU detects the page fault and redirects the message to the operating system, which will do its best to find a frame in the physical memory for the mapping. Most of the time this is a straightforward operation, unless the system is running out of RAM.</p>
+</blockquote>
+<p>MMU检测到page fault，并将消息重定向到操作系统，操作系统将尽最大努力在物理内存中找到映射的frame。大多数情况下，这是一个直接的操作，除非系统的RAM用完了。</p>
+<h3><span class="prefix"></span><span class="content">Paging, or when the physical memory is not enough</span><span class="suffix"></span></h3>
+<h3><span class="prefix"></span><span class="content">Paging(分页), 或当物理内存不够用时</span><span class="suffix"></span></h3>
+<blockquote>
+<p><strong>Paging</strong> is another memory management trick: the operating system moves <em>some pages</em> to the hard drive, to make room for other programs or data when there is no more physical memory available. Sometimes it is also called <strong>swapping</strong>, although not 100% correct. Swapping is about moving the entire process to disk. Some operating systems do this too, when needed.</p>
+</blockquote>
+<p><strong>Paging</strong> 是另一种内存管理技巧：当没有更多的物理内存可用时，操作系统会将一些pages移动到硬盘上，为其他程序或数据腾出空间。有时它也被称为<strong>swapping</strong>，虽然不是100%正确。Swapping(交换)是指将整个进程移动到磁盘上。有些操作系统在需要的时候也会这样做。</p>
+<blockquote>
+<p>Paging gives programs the illusion of an unlimited amount of available RAM. The operating system optimistically allows for a virtual memory address space larger than the physical one, knowing that data can be moved in and out the hard drive in case of need. Some systems (e.g. Windows) make use of a special file called paging file for this purpose. Others (e.g. Linux) have a dedicated hard drive partition called <strong>swap area</strong> (for historical reasons though, modern Linux performs paging instead of swapping).</p>
+</blockquote>
+<p>分页给程序带来了一种假象，以为可用RAM是无限量的。操作系统乐观地允许虚拟内存地址空间大于物理地址空间，因为它知道数据可以在需要的时候向硬盘中移入移出。有些系统（如Windows）为此目的使用了一个叫做 <strong>paging file</strong>(分页文件) 的特殊文件。其他系统（如Linux）有一个专门的硬盘分区，称为 <strong>swap area</strong>(swap区)（由于历史原因，现代Linux执行的是paging，而不是swapping）。</p>
+<blockquote>
+<p>Unfortunately the hard drive is way slower than the main memory. So when a page fault occurs and the page was temporarily moved to the hard drive, the operating system has to read data from the sluggish medium and move it back to memory, causing a lag. All in all, less paging means a system that runs more efficiently.</p>
+</blockquote>
+<p>不幸的是，硬盘的速度比主内存要慢得多。所以当出现page fault，临时将page移动到硬盘上时，操作系统必须从低速介质中读取数据，然后将数据移回内存，造成滞后。总而言之，越少的paging意味着系统的运行效率越高。</p>
+<h3><span class="prefix"></span><span class="content">Thrashing(磨蹭?)</span><span class="suffix"></span></h3>
+<blockquote>
+<p><strong>Thrashing</strong> occurs when the system spends more time in paging than running applications, triggered by a constant stream of page faults. This is an extreme corner case that happens if you are running too many programs that fill up the entire RAM and/or the paging area on the hard drive is unoptimized. The operating system tries to keep up with the large amount of page fault requests, constantly moving data between the hard drive and the physical memory, grinding the system to a halt. Thrashing can be avoided by increasing the amount of RAM, reducing the number of programs being run or again by adjusting the size of the swap file.</p>
+</blockquote>
+<p>当系统在paging中花费的时间多于运行应用程序本身时，就出现了 <strong>Thrashing</strong> 现象。如果你运行的程序太多，占用了整个内存，或者硬盘上的分页区域没有经过优化时，就会出现这种极端的情况。操作系统会努力跟上大量的page faults请求，不断地在硬盘和物理内存之间移动数据，使系统陷入停顿。可以通过增加RAM、减少正在运行的程序数量或调整swap file的大小，来避免thrashing现象。</p>
+<h2><span class="prefix"></span><span class="content">Memory protection</span><span class="suffix"></span></h2>
+<h2><span class="prefix"></span><span class="content">内存保护</span><span class="suffix"></span></h2>
+<blockquote>
+<p>Virtual memory also provides security across running applications: your browser can't peep into your text editor's virtual memory and vice versa without triggering an error. The main purpose of memory protection is to prevent a process from accessing memory that doesn't belong to it.</p>
+</blockquote>
+<p>虚拟内存还提供了运行中的应用程序之间的安全性：你的浏览器不能偷窥到你的文本编辑器的虚拟内存，反之亦然。内存保护的主要目的是防止进程访问不属于它的内存。</p>
+<blockquote>
+<p>The memory protection mechanism is usually provided by the MMU and the page tables it manages, while other architectures may use different hardware strategies. When a program tries to access a portion of virtual memory it doesn't own, an <strong>invalid page fault</strong> is triggered. The MMU and the operating system catch the signal and raise a failure condition called <strong>segmentation fault</strong> (on Unix) or <strong>access violation</strong> (on Windows). The operating system usually kills the program in response.</p>
+</blockquote>
+<p>内存保护机制通常由MMU和它所管理的page tables提供，而其他架构可能使用不同的硬件策略。当程序试图访问不属于自己的虚拟内存时，就会触发 <strong>invalid page fault</strong>(无效页故障)。MMU和操作系统会捕捉到这个信号，并发出一个称为<strong>segmentation fault</strong>(分段故障,在Unix上）或<strong>access violation</strong>(访问违规,在Windows上）的故障条件。作为响应，操作系统通常会杀死该程序。</p>
+<blockquote>
+<p>Segmentation faults and access violations are also often raised by mistake. Programming languages that perform manual memory management give you the ability to set aside portions of memory to be used to store program data: the operating system will provide you with a nice chunk of free memory (a.k.a. a <strong>buffer</strong>) to read and write according to your program's needs. However, nothing prevents you to read or write outside the buffer boundaries, accessing memory that doesn't belong to your program or simply doesn't exist. The operating system would detect the illegal access and raise the usual violation signal.</p>
+</blockquote>
+<p>Segmentation faults 和 access violations 也常常因疏忽而产生。执行手动内存管理的编程语言允许你预留一部分内存用于存储程序数据：操作系统会给你提供一块不错的空闲内存（又名<strong>buffer</strong>(缓冲区)），让你根据程序的需要进行读写。但是，没有任何东西可以阻止你在缓冲区边界之外进行读写，访问不属于你的或根本不存在的内存。操作系统会检测到非法访问，并发出通常的违规信号。</p>
+<h2><span class="prefix"></span><span class="content">Read more (阅读更多)</span><span class="suffix"></span></h2>
+<blockquote>
+<p>Virtual memory paves the road for many other interesting topics. For example, <a href="https://en.wikipedia.org/wiki/Memory-mapped_file"><strong>memory-mapped files</strong></a> are a powerful abstraction over the traditional way of reading and writing files. Instead of manually copying data into memory in order to operate on it, memory mapping allows a program to access a file directly from the hard drive as if it was already fully loaded in RAM. The virtual memory mechanism will take care of moving data from the hard drive to RAM as usual, when necessary. Memory-mapped files simplify the programmer's work and usually speed up file access operations. More information <a href="https://stackoverflow.com/questions/192527/what-are-the-advantages-of-memory-mapped-files">here</a>.</p>
+</blockquote>
+<p>虚拟内存为许多其他有趣的话题铺平了道路。例如，与传统的读写文件的方式相比，<strong>memory-mapped files</strong>(内存映射文件)是一种强大的抽象。内存映射不需要手动复制数据到内存中进行操作，而是允许程序直接从硬盘中访问文件，就像访问在RAM中已经完全加载好的文件一样。必要时，虚拟内存机制会像往常一样将数据从硬盘中移动到RAM中。内存映射文件简化了程序员的工作，通常会加快文件访问操作的速度。更多信息请看<a href="https://stackoverflow.com/questions/192527/what-are-the-advantages-of-memory-mapped-files">这里</a>。</p>
+<blockquote>
+<p>Virtual memory also makes more difficult to reason about memory consumption. Suppose one of your programs is taking up 300 megabytes of memory: is it virtual or physical? Is part of that space paged to disk? And if it is, will the paging operations be fast enough? Also, tuning the paging file/swap area is an important step if you want to keep your system in a good shape. Operating systems provide many tools to measure and adjust memory: more information <a href="https://superuser.com/questions/437918/how-do-i-find-whats-eating-up-all-of-my-systems-memory-not-superfetch">here</a> and here.</p>
+</blockquote>
+<p>虚拟内存也使得对内存消耗的推理(计算)更加困难。假设你的一个程序占用了300兆字节的内存：它是虚拟内存还是物理内存？其中的一部分空间有分页到磁盘上吗？如果是，分页操作是否足够快？另外，如果你想让系统保持良好的状态，调整分页文件/交换区是一个重要的步骤。操作系统提供了许多测量和调整内存的工具：更多信息请看<a href="https://superuser.com/questions/437918/how-do-i-find-whats-eating-up-all-of-my-systems-memory-not-superfetch">这里</a>和<a href="https://www.linux.com/training-tutorials/5-commands-checking-memory-usage-linux/">这里</a>。</p>
+<h2><span class="prefix"></span><span class="content">参考</span><span class="suffix"></span></h2>
+<p>Computer Hope — <a href="https://www.computerhope.com/jargon/m/memory.htm">Memory</a><br>
+Peter J. Denning — <a href="http://160592857366.free.fr/joe/ebooks/ShareData/Before%20Memory%20was%20Virtual%20By%20Peter%20J.%20Denning%20from%20George%20Mason%20University.pdf">Before memory was virtual</a><br>
+Android Authority — <a href="https://www.youtube.com/watch?v=2quKyPnUShQ">What is virtual memory?</a><br>
+Kernel.org — <a href="https://www.kernel.org/doc/html/latest/admin-guide/mm">Memory Management</a><br>
+Operating Systems: Three Easy Pieces — <a href="http://pages.cs.wisc.edu/~remzi/OSTEP/vm-paging.pdf">Chapter 18: Paging</a><br>
+Philippe's Oppermann — <a href="https://os.phil-opp.com/paging-introduction">Introduction to Paging</a><br>
+Computer Science from the Bottom Up — <a href="https://www.bottomupcs.com/chapter05.xhtml">Chapter 6. Virtual Memory</a><br>
+Dr. John T. Bell — <a href="https://www.cs.uic.edu/~jbell/CourseNotes/OperatingSystems/9_VirtualMemory.html">Operating systems, Virtual Memory</a><br>
+StackOverflow — <a href="https://stackoverflow.com/questions/24358105/do-modern-oss-use-paging-and-segmentation/">Do modern OS's use paging and segmentation?</a><br>
+StackOverflow — <a href="https://stackoverflow.com/questions/19031902/what-is-thrashing-why-does-it-occur">What is thrashing? Why does it occur?</a><br>
+Wikipedia — <a href="https://en.wikipedia.org/wiki/Memory_address">Memory address</a><br>
+Wikipedia — <a href="https://en.wikipedia.org/wiki/Paging">Paging</a><br>
+Wikipedia — <a href="https://en.wikipedia.org/wiki/Address_space">Address space</a><br>
+Wikipedia — <a href="https://en.wikipedia.org/wiki/Virtual_memory">Virtual memory</a><br>
+Wikipedia — <a href="https://en.wikipedia.org/wiki/Virtual_address_space">Virtual address space</a><br>
+Wikipedia — <a href="https://en.wikipedia.org/wiki/Thrashing_%28computer_science%29">Thrashing</a><br>
+Wikipedia — <a href="https://en.wikipedia.org/wiki/Segmentation_fault">Segmentation fault</a><br>
+ITPro Today — <a href="https://www.itprotoday.com/cloud-computing/paging-peformance">Paging Performance</a><br>
+Aleph One — <a href="http://phrack.org/issues/49/14.html">Smashing The Stack For Fun And Profit</a></p>
+</section>
+</body>
+</html>
