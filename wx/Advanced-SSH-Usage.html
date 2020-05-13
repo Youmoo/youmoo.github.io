@@ -540,7 +540,7 @@ hue-6-2: #c18401
 <p>即，<strong>Secure Shell(简称SSH)</strong> 是一种加密的网络协议，用于在不安全地网络环境下操作网络服务。典型的应用包括远程登录、远程命令执行。除此外，任何其它的网络服务都可以由SSH来加强安全防护。</p>
 <h2><span class="prefix"></span><span class="content">登录远程服务器</span><span class="suffix"></span></h2>
 <p>假设你在阿里云上有一台<strong>服务器A</strong>，其公网ip是 <strong>66.66.66.66</strong>，内网ip是 <strong>172.16.181.10</strong>,用户名是<strong>app</strong>。</p>
-<p>要在自己电脑上登录这台服务器，可以在终端执行 <code>ssh app@66。66.66.66</code>。</p>
+<p>要在自己电脑上登录这台服务器，可以在终端执行 <code>ssh app@66.66.66.66</code>。</p>
 <p>假设你还有另一台<strong>服务器B</strong>，其没有公网ip，内网ip是 <strong>172.16.181.11</strong>，和<strong>服务器A</strong>的内网是互通的，用户名也是<strong>app</strong>。</p>
 <p>因为<strong>服务器B</strong>是没有公网ip的，所以我们无法在自己的电脑上直接登录。而<strong>服务器A</strong>和<strong>B</strong>内网互通，所以我们可以以先登录<strong>A</strong>，再通过<strong>A</strong>登录<strong>B</strong>的方式达到目的。</p>
 <p>实际上，<code>ssh</code>命令有一个<code>-J</code>参数，用来指定一个(或多个逗号隔开的)中转服务器(又叫跳板机)，达到跳转登录的目的:</p>
