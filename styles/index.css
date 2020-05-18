@@ -1,0 +1,127 @@
+body {
+    margin: auto;
+    padding: 0 30px;
+    width: 700px;
+    font-size: 19.0px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    line-height: 1.5em;
+    -webkit-text-size-adjust: 100%;
+
+    text-align: left;
+    background-color: white; #f3f3f3; #f0f0e9;
+}
+
+.icon, i {
+        font-family: 'Friendly-Icons-Font';
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+
+        /* Better Font Rendering =========== */
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+}
+@font-face {
+ font-family: 'Friendly-Icons-Font';
+ src: url('/fonts/Friendly-Icons-Font.woff') format('woff');
+ font-weight: normal;
+ font-style: normal;
+}
+
+code {
+}
+
+pre {
+    border-left: 2.5px solid black;
+    margin-left: 0;
+    //font-family: 'Fira Code'
+}
+blockquote {
+    border: 2.5px solid black;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+}
+pre {
+    padding-left: 1.20em;
+    //padding-left: 0.0em;
+}
+
+pre em {
+    color: #000;
+    font-weight: 100;
+}
+
+::-moz-selection { color: white; background: #323232; }
+::selection      { color: white; background: #323232; }
+
+a { color: #045591; text-decoration: none; }
+//a:active  { color: yellow; text-decoration: none; }
+//a:link    { color: blue; text-decoration: none; }
+a:visited { color: #921b51; border-bottom: 1px solid #921b51}
+//a:focus   { color: red; text-decoration: none; }
+a:hover   { border-bottom: 0 ;   border-bottom: 1px solid black }
+
+a[href^="http"]:after
+{
+content: '⤴'; '⇗';
+}
+
+#home {
+    //text-align: center;
+    line-height: 1.0;
+    //-webkit-animation: rotateWord 360s linear infinite 0s;
+}
+#home:hover {
+    //-webkit-animation: rotateWord 0.5s linear 1 0s;
+}
+@-webkit-keyframes rotateWord {
+    0% {}
+    100% { -webkit-transform: rotate(360deg);}
+}
+#home a {
+    font-size: 48px; 72px;
+    border: 0;
+}
+
+ol, ul {
+}
+
+h1, h2, h3, h4 {
+    font-weight: 100;
+    line-height: 1em;
+}
+
+h1 {
+    text-align: center;
+}
+
+h2, h3 {
+    font-style: italic;
+}
+
+h2 { margin-top: 2em }
+/*
+#home {
+  padding: 10px;
+  border: 1px solid black;
+      border-radius: 50px;
+}
+#home:hover {
+  -webkit-animation-duration: 3s;
+  -webkit-animation-name: slidein;
+}
+
+@-webkit-keyframes slidein {
+  from {
+  }
+
+  to {
+    border-radius: 0px;
+  }
+}
+*/
