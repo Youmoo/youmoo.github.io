@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style id="basic-theme">/*默认样式，最佳实践*/
+
+/*全局属性*/
+#nice {
+  font-size: 16px;
+  color: black;
+  padding: 0 10px;
+  line-height: 1.6;
+  word-spacing: 0px;
+  letter-spacing: 0px;
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: left;
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  margin-top: -10px; /*解决开头空隙过大问题*/
+}
+
+/*段落*/
+#nice p {
+  font-size: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+}
+
+/*标题*/
+#nice h1,
+#nice h2,
+#nice h3,
+#nice h4,
+#nice h5,
+#nice h6 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding: 0px;
+  font-weight: bold;
+  color: black;
+}
+#nice h1 {
+  font-size: 24px;
+}
+#nice h2 {
+  font-size: 22px;
+}
+#nice h3 {
+  font-size: 20px;
+}
+#nice h4 {
+  font-size: 18px;
+}
+#nice h5 {
+  font-size: 16px;
+}
+#nice h6 {
+  font-size: 16px;
+}
+
+#nice h1 .prefix,
+#nice h2 .prefix,
+#nice h3 .prefix,
+#nice h4 .prefix,
+#nice h5 .prefix,
+#nice h6 .prefix {
+  display: none;
+}
+
+#nice h1 .suffix
+#nice h2 .suffix,
+#nice h3 .suffix,
+#nice h4 .suffix,
+#nice h5 .suffix,
+#nice h6 .suffix {
+  display: none;
+}
+
+/*列表*/
+#nice ul,
+#nice ol {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 25px;
+  color: black;
+}
+#nice ul {
+  list-style-type: disc;
+}
+#nice ul ul {
+  list-style-type: square;
+}
+
+#nice ol {
+  list-style-type: decimal;
+}
+
+#nice li section {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  line-height: 26px;
+  text-align: left;
+  color: rgb(1,1,1); /* 只要是纯黑色微信编辑器就会把color这个属性吞掉。。。*/
+  font-weight: 500;
+}
+
+/*引用*/
+#nice blockquote {
+  display: block;
+  font-size: 0.9em;
+  overflow: auto;
+  overflow-scrolling: touch;
+  border-left: 3px solid rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.05);
+  color: #6a737d;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+#nice blockquote p {
+  margin: 0px;
+  color: black;
+  line-height: 26px;
+}
+
+#nice .table-of-contents a {
+  border: none;
+  color: black;
+  font-weight: normal;
+}
+
+/*链接*/
+#nice a {
+  text-decoration: none;
+  color: #1e6bb8;
+  word-wrap: break-word;
+  font-weight: bold;
+  border-bottom: 1px solid #1e6bb8;
+}
+
+/*加粗*/
+#nice strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*斜体*/
+#nice em {
+  font-style: italic;
+  color: black;
+}
+
+/*加粗斜体*/
+#nice em strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*删除线*/
+#nice del {
+  font-style: italic;
+  color: black;
+}
+
+/*分隔线*/
+#nice hr {
+  height: 1px;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-top: 1px solid black;
+}
+
+/*代码块*/
+#nice pre {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+#nice pre code {
+  display: -webkit-box;
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  border-radius: 0px;
+  font-size: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+#nice pre code span {
+  line-height: 26px;
+}
+
+/*行内代码*/
+#nice p code,
+#nice li code {
+  font-size: 14px;
+  word-wrap: break-word;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+  color: #1e6bb8;
+  background-color: rgba(27,31,35,.05);
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  word-break: break-all;
+}
+
+/*图片*/
+#nice img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/*图片*/
+#nice figure {
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/*图片描述文字*/
+#nice figcaption {
+  margin-top: 5px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+/*表格*/
+#nice table {
+  display: table;
+  text-align: left;
+}
+#nice tbody {
+  border: 0;
+}
+
+#nice table tr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  background-color: white;
+}
+
+#nice table tr:nth-child(2n) {
+  background-color: #F8F8F8;
+}
+
+#nice table tr th,
+#nice table tr td {
+  font-size: 16px;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  text-align: left;
+}
+
+#nice table tr th {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+/* 微信代码块 */
+#nice .code-snippet__fix {
+  word-wrap: break-word !important;
+  font-size: 14px;
+  margin: 10px 0;
+  display: block;
+  color: #333;
+  position: relative;
+  background-color: rgba(0,0,0,0.03);
+  border: 1px solid #f0f0f0;
+  border-radius: 2px;
+  display: flex;
+  line-height: 20px;
+}
+#nice .code-snippet__fix pre {
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+#nice .code-snippet__fix .code-snippet__line-index {
+  counter-reset: line;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 1em;
+  list-style-type: none;
+  padding: 16px;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li {
+  list-style-type: none;
+  text-align: right;
+  line-height: 26px;
+  color: black;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li::before {
+  min-width: 1.5em;
+  text-align: right;
+  left: -2.5em;
+  counter-increment: line;
+  content: counter(line);
+  display: inline;
+  color: rgba(0,0,0,0.3);
+}
+#nice .code-snippet__fix pre {
+  overflow-x: auto;
+  padding: 16px;
+  padding-left: 0;
+  white-space: normal;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+#nice .code-snippet__fix code {
+  text-align: left;
+  font-size: 14px;
+  display: block;
+  white-space: pre;
+  display: flex;
+  position: relative;
+  font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace;
+  padding: 0px;
+}
+
+#nice .footnote-word {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-ref {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-item {
+  display: flex;
+}
+
+#nice .footnote-num {
+  display: inline;
+  width: 10%; /*神奇，50px就不可以*/
+  background: none;
+  font-size: 80%;
+  opacity: 0.6;
+  line-height: 26px;
+  font-family: ptima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+#nice .footnote-item p {
+  display: inline;
+  font-size: 14px;
+  width: 90%;
+  padding: 0px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+  word-break:break-all;
+  width: calc(100%-50)
+}
+
+#nice sub, sup {
+  line-height: 0;
+}
+
+#nice .footnotes-sep:before {
+  content: "参考资料";
+  display: block;
+}
+
+/* 解决公式问题 */
+#nice .block-equation {
+  display:block;
+  text-align: center;
+  overflow: auto;
+  display: block;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .block-equation svg {
+  max-width: 300% !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .inline-equation {
+}
+
+#nice .inline-equation svg {
+}
+
+#nice .imageflow-layer1 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  white-space: normal;
+  border: 0px none;
+  padding: 0px;
+  overflow: hidden;
+}
+
+#nice .imageflow-layer2 {
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+#nice .imageflow-layer3 {
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: middle;
+  width: 100%;
+}
+
+#nice .imageflow-img {
+  display: inline-block;
+}
+
+#nice .imageflow-caption {
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #888;
+}
+
+#nice .nice-suffix-juejin-container {
+  margin-top: 20px !important;
+}
+
+#nice figure a {
+  border: none;
+}
+</style>
+<style id="code-theme">/*
+
+Atom One Light by Daniel Gamage
+Original One Light Syntax theme from https://github.com/atom/one-light-syntax
+
+base:    #fafafa
+mono-1:  #383a42
+mono-2:  #686b77
+mono-3:  #a0a1a7
+hue-1:   #0184bb
+hue-2:   #4078f2
+hue-3:   #a626a4
+hue-4:   #50a14f
+hue-5:   #e45649
+hue-5-2: #c91243
+hue-6:   #986801
+hue-6-2: #c18401
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 16px;
+  color: #383a42;
+  background: #fafafa;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #a0a1a7;
+  font-style: italic;
+}
+
+.hljs-doctag,
+.hljs-keyword,
+.hljs-formula {
+  color: #a626a4;
+}
+
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst {
+  color: #e45649;
+}
+
+.hljs-literal {
+  color: #0184bb;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta-string {
+  color: #50a14f;
+}
+
+.hljs-built_in,
+.hljs-class .hljs-title {
+  color: #c18401;
+}
+
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-number {
+  color: #986801;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title {
+  color: #4078f2;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-link {
+  text-decoration: underline;
+}</style>
+<script data-ad-client="ca-pub-6205625102284861" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-63732284-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-63732284-5');
+</script>
+
+</head>
+
+<body style="margin-bottom: 20px;">
+  <header style="
+  height: 2em;
+  border-bottom: 1px solid rgba(0,0,0,.22);
+  padding-right: 2em;
+  text-align: right;
+">
+    <div style="max-width: 677px; margin: 5px auto;">一个叫木头，一个叫马尾</div>
+  </header>
+<section id="nice" style="max-width: 677px; margin: 5px auto;"><h1><span class="prefix"></span><span class="content">JavaScript数组拷贝的20种方法</span><span class="suffix"></span></h1><img src="/1984.png">
+<p>汇总自我的公众号上的三篇关于数组拷贝的文章：</p>
+<ul>
+<li><section><a href="https://mp.weixin.qq.com/s/UryuqQGF4dBAATk2kPBH3Q">JavaScript数组拷贝的100?种方法</a></section></li><li><section><a href="https://mp.weixin.qq.com/s/-juleBMnc-4geP8dAFxrNA">JavaScript数组拷贝的100?种方法(续)</a></section></li><li><section><a href="https://mp.weixin.qq.com/s/e7pRyjYjbfGLY6-A5TemZA">JavaScript数组拷贝的100?种方法(再续)</a></section></li></ul>
+<br>    
+<hr>
+<br>
+<p>我们这里不谈&nbsp;<em>深拷贝</em>&nbsp;和&nbsp;<em>浅拷贝</em>&nbsp;，就拿一个具体的例子来说，有一个数组 <code>a</code>，我们想得到一个和它一样的数组 <code>b</code>：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-comment">//&nbsp;数组&nbsp;a</span><br><span class="hljs-keyword">const</span>&nbsp;a&nbsp;=&nbsp;[<span class="hljs-number">1</span>,&nbsp;<span class="hljs-number">2</span>,&nbsp;<span class="hljs-number">3</span>];<br><br><span class="hljs-comment">//&nbsp;经过某种操作得到数组&nbsp;b，b的内容&nbsp;和&nbsp;a&nbsp;一样</span><br><span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;?;<br></code></pre>
+<p>评测的标准：</p>
+<ol>
+<li><section><code>a</code>的内容 和 <code>b</code>的内容 一样</section></li><li><section>a !== b</section></li></ol>
+<p>本文使用 <code>jest</code> 进行测试。</p>
+<hr>
+<h3><span class="prefix"></span><span class="content">1. slice</span><span class="suffix"></span></h3>
+<p><code>slice</code>方法不传参时，返回一个和原数组内容一样的新数组。</p>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'slice'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;a.slice();<br><br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<h3><span class="prefix"></span><span class="content">2.&nbsp;spread</span><span class="suffix"></span></h3>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'spread'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;[...a];<br>&nbsp;&nbsp;<br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<h3><span class="prefix"></span><span class="content">3. concat</span><span class="suffix"></span></h3>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'concat'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;a.concat();<br><br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<h3><span class="prefix"></span><span class="content">4.&nbsp;map</span><span class="suffix"></span></h3>
+<p>注意 <code>map</code> 的入参，我们需要一个返回自身入参的函数。</p>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'map'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;a.map(<span class="hljs-function"><span class="hljs-params">v</span>&nbsp;=&gt;</span>&nbsp;v);<br><br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<h3><span class="prefix"></span><span class="content">5. Array.from</span><span class="suffix"></span></h3>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'Array.from'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;<span class="hljs-built_in">Array</span>.from(a);<br><br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<h3><span class="prefix"></span><span class="content">6. Object.assign</span><span class="suffix"></span></h3>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'assign'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;<span class="hljs-built_in">Object</span>.assign([],&nbsp;a);<br><br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<h3><span class="prefix"></span><span class="content">7. 传统的for循环(while或递归也行)</span><span class="suffix"></span></h3>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'for'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;[];<br>&nbsp;&nbsp;<span class="hljs-keyword">for</span>&nbsp;(<span class="hljs-keyword">const</span>&nbsp;e&nbsp;of&nbsp;a)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;b.push(e);<br>&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<h3><span class="prefix"></span><span class="content">8.&nbsp;filter</span><span class="suffix"></span></h3>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'filter'</span>,&nbsp;()&nbsp;=&gt;&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;a.filter(<span class="hljs-function"><span class="hljs-params">_</span>&nbsp;=&gt;</span>&nbsp;<span class="hljs-literal">true</span>);<br><br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<h3><span class="prefix"></span><span class="content">9. reduce</span><span class="suffix"></span></h3>
+<p>凡是 filter 和 map 能做的，reduce 也一定可以。</p>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'reduce'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;a.reduce(<span class="hljs-function">(<span class="hljs-params">p,&nbsp;v</span>)&nbsp;=&gt;</span>&nbsp;(p.push(v),&nbsp;p),&nbsp;[]);<br>&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;或者</span><br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;bb&nbsp;=&nbsp;a.reduce(<span class="hljs-function">(<span class="hljs-params">p,&nbsp;v</span>)&nbsp;=&gt;</span>&nbsp;p.concat(v),&nbsp;[]);<br>&nbsp;&nbsp;<br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<p>以上可说是基础的部分，下面的基本上就很少会用到了。</p>
+<h3><span class="prefix"></span><span class="content">10.&nbsp;JSON.parse</span><span class="suffix"></span></h3>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'json'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;<span class="hljs-built_in">JSON</span>.parse(<span class="hljs-built_in">JSON</span>.stringify(a));<br>&nbsp;&nbsp;<br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<h3><span class="prefix"></span><span class="content">11.&nbsp;Object.values</span><span class="suffix"></span></h3>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'Object.values'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;<span class="hljs-built_in">Object</span>.values(a);<br><br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<h3><span class="prefix"></span><span class="content">12.&nbsp;Object.entries</span><span class="suffix"></span></h3>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'Object.entries'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;<span class="hljs-built_in">Object</span>.entries(a).map(<span class="hljs-function"><span class="hljs-params">v</span>&nbsp;=&gt;</span>&nbsp;v[<span class="hljs-number">1</span>]);<br><br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<h3><span class="prefix"></span><span class="content">13. Array.values</span><span class="suffix"></span></h3>
+<p>注意，它和 <code>Object.values</code> 不同，它返回的是一个 <code>iterator</code> 对象。</p>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'Array.values'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;[...a.values()];<br><br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<h3><span class="prefix"></span><span class="content">14. Array.keys</span><span class="suffix"></span></h3>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'Array.keys'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;[...a.keys()].map(<span class="hljs-function"><span class="hljs-params">k</span>&nbsp;=&gt;</span>&nbsp;a[k]);<br><br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<h3><span class="prefix"></span><span class="content">15. Object.keys</span><span class="suffix"></span></h3>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'Object.keys'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;<span class="hljs-built_in">Object</span>.keys(a).map(<span class="hljs-function"><span class="hljs-params">k</span>&nbsp;=&gt;</span>&nbsp;a[k]);<br><br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<h3><span class="prefix"></span><span class="content">16. unshift</span><span class="suffix"></span></h3>
+<p><code>unshift</code> 把入参追加到数组的头部，并返回数组新的长度。<br>
+注意它和 <code>push</code> 的区别，<code>push</code> 是把入参追加到数组的尾部。</p>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'unshift'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;[];<br>&nbsp;&nbsp;b.unshift(...a);<br><br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<h3><span class="prefix"></span><span class="content">17.&nbsp;Arrray 构造器</span><span class="suffix"></span></h3>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'Array()'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;<span class="hljs-keyword">new</span>&nbsp;<span class="hljs-built_in">Array</span>(...a);<br><br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<p>当数组<code>a</code>的长度是1时，该方法是有陷阱的：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-keyword">new</span>&nbsp;<span class="hljs-built_in">Array</span>(...[<span class="hljs-string">'x'</span>]);&nbsp;<span class="hljs-comment">//&nbsp;["x"]，符合要求</span><br><span class="hljs-keyword">new</span>&nbsp;<span class="hljs-built_in">Array</span>(...[<span class="hljs-number">2</span>]);&nbsp;&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;[empty&nbsp;×&nbsp;2]，而不是&nbsp;[2]</span><br><span class="hljs-keyword">new</span>&nbsp;<span class="hljs-built_in">Array</span>(...[<span class="hljs-number">1</span>]);&nbsp;&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;[empty]，而不是&nbsp;[1]</span><br><span class="hljs-keyword">new</span>&nbsp;<span class="hljs-built_in">Array</span>(...[<span class="hljs-number">2.0</span>]);&nbsp;<span class="hljs-comment">//&nbsp;[empty&nbsp;×&nbsp;2]，而不是&nbsp;[2.0]</span><br><span class="hljs-keyword">new</span>&nbsp;<span class="hljs-built_in">Array</span>(...[<span class="hljs-number">2.1</span>]);&nbsp;<span class="hljs-comment">//&nbsp;Uncaught&nbsp;RangeError:&nbsp;Invalid&nbsp;array&nbsp;length</span><br><br></code></pre>
+<p>原因是，当 <code>Array</code> 作为构造器使用时，且入参只有一个时，它会判断 入参是否是数值，如果是，会进一步判断是否是正整数值，如果是，则创建一个长度为该值的数组，否则报<code>RangeError</code>；如果入参不是数值，则创建一个包含入参的新数组。</p>
+<h3><span class="prefix"></span><span class="content">18.&nbsp;Array.of</span><span class="suffix"></span></h3>
+<p>该方法更像是 <code>Array</code>构造器 的安全版本，无论入参有几个，都能如期返回我们想要的数组。</p>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'Array.of'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;<span class="hljs-built_in">Array</span>.of(...a);<br><br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<p><code>Array.of</code> 有更多的用途。
+该方法不依赖 <code>this</code>，因此可以独立使用：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-keyword">const</span>&nbsp;<span class="hljs-keyword">of</span>&nbsp;=&nbsp;<span class="hljs-built_in">Array</span>.of;<br><span class="hljs-keyword">const</span>&nbsp;a&nbsp;=&nbsp;<span class="hljs-keyword">of</span>(<span class="hljs-number">1</span>,&nbsp;<span class="hljs-number">2</span>,&nbsp;<span class="hljs-number">3</span>);&nbsp;<span class="hljs-comment">//&nbsp;[1,&nbsp;2,&nbsp;3]</span><br></code></pre>
+<p>可以提供一个 <code>bind</code> 版本，预填充一些数据：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-keyword">const</span>&nbsp;rows&nbsp;=&nbsp;[<br>&nbsp;&nbsp;[<span class="hljs-number">1</span>,&nbsp;<span class="hljs-number">2</span>,&nbsp;<span class="hljs-number">3</span>],<br>&nbsp;&nbsp;[<span class="hljs-number">4</span>,&nbsp;<span class="hljs-number">5</span>,&nbsp;<span class="hljs-number">6</span>]<br>];<br><br><span class="hljs-keyword">const</span>&nbsp;boundOf&nbsp;=&nbsp;<span class="hljs-built_in">Array</span>.of.bind(<span class="hljs-literal">null</span>,&nbsp;<span class="hljs-number">6</span>,&nbsp;<span class="hljs-number">6</span>,&nbsp;<span class="hljs-number">6</span>);<br><span class="hljs-comment">//&nbsp;[[6,&nbsp;6,&nbsp;6,&nbsp;1,&nbsp;2,&nbsp;3],[6,&nbsp;6,&nbsp;6,&nbsp;4,&nbsp;5,&nbsp;6]]</span><br><span class="hljs-keyword">const</span>&nbsp;rowsNew&nbsp;=&nbsp;rows.map(<span class="hljs-function"><span class="hljs-params">v</span>&nbsp;=&gt;</span>&nbsp;boundOf(...v));<br></code></pre>
+<p>甚至可以提供一个自定义的的 <code>constructor</code>&nbsp;供&nbsp;<code>Array.of</code>&nbsp;实例化返回值：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-function"><span class="hljs-keyword">function</span>&nbsp;<span class="hljs-title">Test</span>(<span class="hljs-params"></span>)&nbsp;</span>{<br>}<br><br>Test.prototype.last&nbsp;=&nbsp;<span class="hljs-function"><span class="hljs-keyword">function</span>&nbsp;(<span class="hljs-params"></span>)&nbsp;</span>{<br>&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-keyword">this</span>[<span class="hljs-keyword">this</span>.length&nbsp;-&nbsp;<span class="hljs-number">1</span>]<br>};<br><br><span class="hljs-keyword">const</span>&nbsp;what&nbsp;=&nbsp;<span class="hljs-built_in">Array</span>.of.call(Test,&nbsp;<span class="hljs-string">'a'</span>,&nbsp;<span class="hljs-string">'b'</span>,&nbsp;<span class="hljs-string">"the&nbsp;last"</span>);<br><br><span class="hljs-built_in">console</span>.log(what);<br><span class="hljs-built_in">console</span>.log(what.last());<br></code></pre>
+<p>运行上述代码，Chrome打印如下信息：</p>
+<pre class="custom"><code class="hljs">Test&nbsp;{<span class="hljs-number">0</span>:&nbsp;<span class="hljs-string">"a"</span>,&nbsp;<span class="hljs-number">1</span>:&nbsp;<span class="hljs-string">"b"</span>,&nbsp;<span class="hljs-number">2</span>:&nbsp;<span class="hljs-string">"the&nbsp;last"</span>,&nbsp;<span class="hljs-keyword">length</span>:&nbsp;<span class="hljs-number">3</span>}<br><span class="hljs-string">"the&nbsp;last"</span><br></code></pre>
+<p>有了以上理解，我们甚至可以方便实现一个 <code>Array</code> 子类，请读者行尝试。</p>
+<p><a href="https://stackoverflow.com/questions/39952602/array-of-vs-when-to-use-array-of-over">子类参考</a></p>
+<h3><span class="prefix"></span><span class="content">19. Array.flat</span><span class="suffix"></span></h3>
+<p>一般的认识是，该方法用于将一个含有多维元素的数组展开为1维。但可以变个法子玩，将入参 <code>depth</code> 设置为 0，不进行 <em>「降维」</em> 操作：</p>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'Array.flat'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;a.flat(<span class="hljs-number">0</span>);<br><br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<h3><span class="prefix"></span><span class="content">20. Array.flatMap</span><span class="suffix"></span></h3>
+<p>结合之前的介绍，<code>Array.map</code> 和 <code>Array.flat</code> 都可以进行数组拷贝操作，那 <code>Array.flatMap</code> 可以吗？</p>
+<p>当然了：</p>
+<pre class="custom"><code class="hljs">test(<span class="hljs-string">'Array.flatMap'</span>,&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;b&nbsp;=&nbsp;a.flatMap(<span class="hljs-function"><span class="hljs-params">v</span>&nbsp;=&gt;</span>&nbsp;[v]);<br><br>&nbsp;&nbsp;expect(a).toEqual(b);<br>&nbsp;&nbsp;expect(a).not.toBe(b);<br>});<br></code></pre>
+<p>注意入参 <code>v =&gt;&nbsp;[v]</code> 的使用，如果你使用的是 <code>v =&gt; v</code>，那 <code>[1, [2, 3]]</code> 将转换为 <code>[1, 2, 3]</code> ，很明显就不符合拷贝的要求了。</p>
+<hr>
+<p>到目前为止介绍了 20 种数组拷贝方法，并没有明确说明它们之间的区别，这里简单提一下供读者思考。</p>
+<p>JS中有一种 <code>Array</code> 叫 <strong>sparse array</strong>，其特征是某些位置缺失索引，这些位置又叫 <code>holes</code> 或 <code>empty slots</code>，在 Chrome console 下会显示为 <em>empty</em>：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-keyword">var</span>&nbsp;a&nbsp;=&nbsp;[];<br>a.length&nbsp;=&nbsp;<span class="hljs-number">3</span>;<br><br><span class="hljs-keyword">var</span>&nbsp;b&nbsp;=&nbsp;[<span class="hljs-number">0</span>,&nbsp;,&nbsp;<span class="hljs-number">2</span>];<br><span class="hljs-built_in">console</span>.log(a);&nbsp;<span class="hljs-comment">//&nbsp;[empty&nbsp;×&nbsp;3]</span><br><span class="hljs-built_in">console</span>.log(b);&nbsp;<span class="hljs-comment">//&nbsp;[0,&nbsp;empty,&nbsp;2]</span><br></code></pre>
+<p>可以使用 <code>Object.keys</code> 去查看以上数组的 keys：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">Object</span>.keys(a));&nbsp;<span class="hljs-comment">//&nbsp;[]</span><br><span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">Object</span>.keys(b));&nbsp;<span class="hljs-comment">//&nbsp;["0",&nbsp;"2"]</span><br></code></pre>
+<p>能清晰的看到，虽然 <code>a</code> 的长度为 3，但 <code>keys</code> 是空；同理&nbsp;<code>b</code>&nbsp;的长度也为&nbsp;3，但 <code>keys</code> 只有 0 和 2，1 没了。</p>
+<p>对于 <em>sparse array</em>，JS&nbsp;中不同的 <code>Array</code> 方法处理方式是不同的，以&nbsp;<code>Array.from</code> 和 <code>Array.flat</code> 为例：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-keyword">var</span>&nbsp;a&nbsp;=&nbsp;[];<br>a.length&nbsp;=&nbsp;<span class="hljs-number">3</span>;<br><span class="hljs-built_in">console</span>.log(a);&nbsp;<span class="hljs-comment">//&nbsp;[empty&nbsp;×&nbsp;3]</span><br><span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">Array</span>.from(a));&nbsp;<span class="hljs-comment">//&nbsp;[undefined,&nbsp;undefined,&nbsp;undefined]</span><br><span class="hljs-built_in">console</span>.log(a.flat(<span class="hljs-number">0</span>));&nbsp;<span class="hljs-comment">//&nbsp;[]</span><br></code></pre>
+<p>因此，在选择哪一种数组拷贝方法时，需要考虑要处理的数组是否是 <em>sparse array</em> 以及你要怎样处理 <em>empty slots</em>，以免掉入陷阱。</p>
+</section>
+</body>
+</html>
