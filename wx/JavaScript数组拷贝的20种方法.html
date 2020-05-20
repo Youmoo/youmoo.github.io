@@ -640,5 +640,25 @@ hue-6-2: #c18401
 <pre class="custom"><code class="hljs"><span class="hljs-keyword">var</span>&nbsp;a&nbsp;=&nbsp;[];<br>a.length&nbsp;=&nbsp;<span class="hljs-number">3</span>;<br><span class="hljs-built_in">console</span>.log(a);&nbsp;<span class="hljs-comment">//&nbsp;[empty&nbsp;×&nbsp;3]</span><br><span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">Array</span>.from(a));&nbsp;<span class="hljs-comment">//&nbsp;[undefined,&nbsp;undefined,&nbsp;undefined]</span><br><span class="hljs-built_in">console</span>.log(a.flat(<span class="hljs-number">0</span>));&nbsp;<span class="hljs-comment">//&nbsp;[]</span><br></code></pre>
 <p>因此，在选择哪一种数组拷贝方法时，需要考虑要处理的数组是否是 <em>sparse array</em> 以及你要怎样处理 <em>empty slots</em>，以免掉入陷阱。</p>
 </section>
+<div id="disqus_thread" style="max-width: 677px; margin: 20px auto;"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = location.href.replace('.html','');  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = location.pathname.replace('.html',''); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://beloved-family.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </body>
 </html>
