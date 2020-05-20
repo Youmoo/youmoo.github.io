@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport"
+    content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<style id="basic-theme">/*默认样式，最佳实践*/
+
+/*全局属性*/
+#nice {
+  font-size: 16px;
+  color: black;
+  padding: 0 10px;
+  line-height: 1.6;
+  word-spacing: 0px;
+  letter-spacing: 0px;
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: left;
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  margin-top: -10px; /*解决开头空隙过大问题*/
+}
+
+/*段落*/
+#nice p {
+  font-size: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+}
+
+/*标题*/
+#nice h1,
+#nice h2,
+#nice h3,
+#nice h4,
+#nice h5,
+#nice h6 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding: 0px;
+  font-weight: bold;
+  color: black;
+}
+#nice h1 {
+  font-size: 24px;
+}
+#nice h2 {
+  font-size: 22px;
+}
+#nice h3 {
+  font-size: 20px;
+}
+#nice h4 {
+  font-size: 18px;
+}
+#nice h5 {
+  font-size: 16px;
+}
+#nice h6 {
+  font-size: 16px;
+}
+
+#nice h1 .prefix,
+#nice h2 .prefix,
+#nice h3 .prefix,
+#nice h4 .prefix,
+#nice h5 .prefix,
+#nice h6 .prefix {
+  display: none;
+}
+
+#nice h1 .suffix
+#nice h2 .suffix,
+#nice h3 .suffix,
+#nice h4 .suffix,
+#nice h5 .suffix,
+#nice h6 .suffix {
+  display: none;
+}
+
+/*列表*/
+#nice ul,
+#nice ol {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 25px;
+  color: black;
+}
+#nice ul {
+  list-style-type: disc;
+}
+#nice ul ul {
+  list-style-type: square;
+}
+
+#nice ol {
+  list-style-type: decimal;
+}
+
+#nice li section {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  line-height: 26px;
+  text-align: left;
+  color: rgb(1,1,1); /* 只要是纯黑色微信编辑器就会把color这个属性吞掉。。。*/
+  font-weight: 500;
+}
+
+/*引用*/
+#nice blockquote {
+  display: block;
+  font-size: 0.9em;
+  overflow: auto;
+  overflow-scrolling: touch;
+  border-left: 3px solid rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.05);
+  color: #6a737d;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+#nice blockquote p {
+  margin: 0px;
+  color: black;
+  line-height: 26px;
+}
+
+#nice .table-of-contents a {
+  border: none;
+  color: black;
+  font-weight: normal;
+}
+
+/*链接*/
+#nice a {
+  text-decoration: none;
+  color: #1e6bb8;
+  word-wrap: break-word;
+  font-weight: bold;
+  border-bottom: 1px solid #1e6bb8;
+}
+
+/*加粗*/
+#nice strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*斜体*/
+#nice em {
+  font-style: italic;
+  color: black;
+}
+
+/*加粗斜体*/
+#nice em strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*删除线*/
+#nice del {
+  font-style: italic;
+  color: black;
+}
+
+/*分隔线*/
+#nice hr {
+  height: 1px;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-top: 1px solid black;
+}
+
+/*代码块*/
+#nice pre {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+#nice pre code {
+  display: -webkit-box;
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  border-radius: 0px;
+  font-size: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+#nice pre code span {
+  line-height: 26px;
+}
+
+/*行内代码*/
+#nice p code,
+#nice li code {
+  font-size: 14px;
+  word-wrap: break-word;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+  color: #1e6bb8;
+  background-color: rgba(27,31,35,.05);
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  word-break: break-all;
+}
+
+/*图片*/
+#nice img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/*图片*/
+#nice figure {
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/*图片描述文字*/
+#nice figcaption {
+  margin-top: 5px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+/*表格*/
+#nice table {
+  display: table;
+  text-align: left;
+}
+#nice tbody {
+  border: 0;
+}
+
+#nice table tr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  background-color: white;
+}
+
+#nice table tr:nth-child(2n) {
+  background-color: #F8F8F8;
+}
+
+#nice table tr th,
+#nice table tr td {
+  font-size: 16px;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  text-align: left;
+}
+
+#nice table tr th {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+/* 微信代码块 */
+#nice .code-snippet__fix {
+  word-wrap: break-word !important;
+  font-size: 14px;
+  margin: 10px 0;
+  display: block;
+  color: #333;
+  position: relative;
+  background-color: rgba(0,0,0,0.03);
+  border: 1px solid #f0f0f0;
+  border-radius: 2px;
+  display: flex;
+  line-height: 20px;
+}
+#nice .code-snippet__fix pre {
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+#nice .code-snippet__fix .code-snippet__line-index {
+  counter-reset: line;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 1em;
+  list-style-type: none;
+  padding: 16px;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li {
+  list-style-type: none;
+  text-align: right;
+  line-height: 26px;
+  color: black;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li::before {
+  min-width: 1.5em;
+  text-align: right;
+  left: -2.5em;
+  counter-increment: line;
+  content: counter(line);
+  display: inline;
+  color: rgba(0,0,0,0.3);
+}
+#nice .code-snippet__fix pre {
+  overflow-x: auto;
+  padding: 16px;
+  padding-left: 0;
+  white-space: normal;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+#nice .code-snippet__fix code {
+  text-align: left;
+  font-size: 14px;
+  display: block;
+  white-space: pre;
+  display: flex;
+  position: relative;
+  font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace;
+  padding: 0px;
+}
+
+#nice .footnote-word {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-ref {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-item {
+  display: flex;
+}
+
+#nice .footnote-num {
+  display: inline;
+  width: 10%; /*神奇，50px就不可以*/
+  background: none;
+  font-size: 80%;
+  opacity: 0.6;
+  line-height: 26px;
+  font-family: ptima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+#nice .footnote-item p {
+  display: inline;
+  font-size: 14px;
+  width: 90%;
+  padding: 0px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+  word-break:break-all;
+  width: calc(100%-50)
+}
+
+#nice sub, sup {
+  line-height: 0;
+}
+
+#nice .footnotes-sep:before {
+  content: "参考资料";
+  display: block;
+}
+
+/* 解决公式问题 */
+#nice .block-equation {
+  display:block;
+  text-align: center;
+  overflow: auto;
+  display: block;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .block-equation svg {
+  max-width: 300% !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .inline-equation {
+}
+
+#nice .inline-equation svg {
+}
+
+#nice .imageflow-layer1 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  white-space: normal;
+  border: 0px none;
+  padding: 0px;
+  overflow: hidden;
+}
+
+#nice .imageflow-layer2 {
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+#nice .imageflow-layer3 {
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: middle;
+  width: 100%;
+}
+
+#nice .imageflow-img {
+  display: inline-block;
+}
+
+#nice .imageflow-caption {
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #888;
+}
+
+#nice .nice-suffix-juejin-container {
+  margin-top: 20px !important;
+}
+
+#nice figure a {
+  border: none;
+}
+</style>
+<style id="code-theme">/*
+
+Atom One Light by Daniel Gamage
+Original One Light Syntax theme from https://github.com/atom/one-light-syntax
+
+base:    #fafafa
+mono-1:  #383a42
+mono-2:  #686b77
+mono-3:  #a0a1a7
+hue-1:   #0184bb
+hue-2:   #4078f2
+hue-3:   #a626a4
+hue-4:   #50a14f
+hue-5:   #e45649
+hue-5-2: #c91243
+hue-6:   #986801
+hue-6-2: #c18401
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 16px;
+  color: #383a42;
+  background: #fafafa;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #a0a1a7;
+  font-style: italic;
+}
+
+.hljs-doctag,
+.hljs-keyword,
+.hljs-formula {
+  color: #a626a4;
+}
+
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst {
+  color: #e45649;
+}
+
+.hljs-literal {
+  color: #0184bb;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta-string {
+  color: #50a14f;
+}
+
+.hljs-built_in,
+.hljs-class .hljs-title {
+  color: #c18401;
+}
+
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-number {
+  color: #986801;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title {
+  color: #4078f2;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-link {
+  text-decoration: underline;
+}</style>
+<style id="markdown-theme">#nice {
+  line-height: 1.6;
+  letter-spacing: .034em;
+  color: rgb(63, 63, 63);
+  font-size: 16px;
+  word-break:all;
+}
+#nice p {
+  padding-top: 1em;
+  color: rgb(74,74,74);
+  line-height: 1.75em;
+}
+/* 一级标题 */
+#nice h1 {
+  text-align:center;
+  background-image: 	url(http://img.xiaogangzai.cn/title_h1.png); 
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: 75px;
+  line-height:95px;
+  margin-top: 38px;
+  margin-bottom: 10px;
+}
+/* 一级标题内容 */
+#nice h1 .content {
+  font-size: 20px;
+  color: #48b378;;
+  border-bottom:2px solid #2e7950;
+}
+/* 一级标题修饰 请参考有实例的主题 */
+#nice h1:after {
+}
+ 
+/* 二级标题 */
+#nice h2 {
+  display:block;
+  text-align:center;
+  background-image: 	url(http://img.xiaogangzai.cn/title.png); 
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: initial;
+  background-origin: initial;
+  background-clip: initial;
+  background-size: 50px;
+  margin-top: 1em;
+  margin-bottom: 10px;
+}
+/*二级标题伪元素*/
+#nice h2:before {
+}
+/* 二级标题内容 */
+#nice h2 .content {
+  text-align:center;
+  display: inline-block;
+  height: 38px;
+  line-height: 42px;
+  color: #48b378;
+  background-position: left center;
+  background-repeat: no-repeat;
+  background-attachment: initial;
+  background-origin: initial;
+  background-clip: initial;
+  background-size: 63px;
+  margin-top: 38px;
+  font-size:18px;
+  margin-bottom: 10px;
+}
+/* 三级标题 */
+#nice h3:before {
+  content: "";
+  background-image:url(http://img.xiaogangzai.cn/title_h2.png);
+  background-size:100% 100%;
+  background-repeat:no-repeat;
+  display: inline-block;
+  width: 16px;
+  height: 15px;
+  line-height:15px;
+  margin-bottom:-1px;
+}
+#nice h3 {
+  margin-top:1.2em;
+}
+#nice h4 {
+  margin-top: 30px;
+}
+/* 三级标题内容 */
+#nice h3 .content {
+  font-size:17px;
+  font-weight:bold;
+  display:inline-block;
+  margin-left:8px;
+  color:#48b378;
+}
+/* 三级标题修饰 请参考有实例的主题 */
+#nice h3:after {
+}
+/* 列表内容 */
+#nice li {
+}
+/* 引用
+ * 左边缘颜色 border-left-color:black;
+ * 背景色 background:gray;
+ */
+#nice blockquote {
+  padding: 15px 20px;
+  line-height: 27px;
+  background-color:#FBF9FD;
+  border-left:3px solid #35b378;
+  display:block;
+}
+/* 引用文字 */
+#nice blockquote p {
+  padding: 0px;
+  font-size:15px;
+  color:rgb(89,89,89);
+}
+/* 链接 */
+#nice a {
+  color: #48b378;
+  text-decoration:none;
+  border-bottom: 1px solid #48b378;
+}
+/* 加粗 */
+#nice strong {
+  line-height: 1.75em;
+  color: rgb(74,74,74);
+}
+/* 斜体 */
+#nice em {
+}
+/* 加粗斜体 */
+#nice em strong {
+  color:rgb(248,57,41);
+  letter-spacing:0.3em;
+}
+/* 删除线 */
+#nice del {
+}
+ 
+/* 分割线 */
+#nice hr {
+  height:1px;
+  padding:0;
+  border:none;
+  text-align:center;
+  background-image:linear-gradient(to right,rgba(93, 186, 133,0),rgba(93, 186, 133,0.75),rgba(93, 186, 133,0));
+}
+/* 图片 */
+#nice img {
+    border-radius:4px;
+    margin-bottom:25px;
+}
+/* 图片描述文字 */
+#nice figcaption {
+  display:block;
+  font-size:12px;
+  font-family:PingFangSC-Light;
+}
+/* 行内代码 */
+#nice p code, #nice li code {
+	color: #28ca71;
+}
+/* 非微信代码块
+ * 代码块不换行 display:-webkit-box !important;
+ * 代码块换行 display:block;
+ */
+#nice pre code {
+}
+/* 表格内的单元格
+ * 字体大小 font-size: 16px;
+ * 边框 border: 1px solid #ccc;
+ * 内边距 padding: 5px 10px;
+ */
+#nice table tr th,
+#nice table tr td {
+  font-size: 14px;
+}
+#nice .footnotes{
+  padding-top: 8px;
+}
+/* 脚注文字 */
+#nice .footnote-word {
+  color: rgb(90, 185, 131);
+}
+/* 脚注上标 */
+#nice .footnote-ref {
+  color: rgb(90, 185, 131);
+}
+/* 脚注超链接样式 */
+#nice .footnote-item em {
+  color: rgb(90, 185, 131);
+  font-size:13px;
+  font-style:normal;
+  border-bottom-color:1px dashed rgb(90, 185, 131); 
+}
+/* "参考资料"四个字 
+ * 内容 content: "参考资料";
+ */
+#nice .footnotes-sep:before {
+  background-image: none;
+  background-size: none;
+  display: block;
+  width: auto;
+  height: auto;
+}
+/* 参考资料编号 */
+#nice .footnote-num {
+  color: rgb(90, 185, 131);
+}
+/* 参考资料文字 */
+#nice .footnote-item p {
+  color: rgb(90, 185, 131);
+  font-weight:bold;
+}
+/* 参考资料超链接 */
+#nice .footnote-item a {
+  color:rgb(93, 186, 133);
+}
+/* 参考资料解释 */
+#nice .footnote-item p em {
+  font-size:14px;
+  font-weight:normal;
+  border-bottom:1px dashed rgb(93, 186, 133);
+}
+/* 行间公式
+ * 最大宽度 max-width: 300% !important;
+ */
+#nice .block-equation svg {
+}
+/* 行内公式*/
+#nice .inline-equation svg {  
+}
+
+/* 滑动图片
+ */
+#nice .imageflow-img {
+  display: inline-block;
+  width:100%;
+  margin-bottom: 0;
+}</style>
+<script data-ad-client="ca-pub-6205625102284861" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-63732284-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-63732284-5');
+</script>
+
+</head>
+
+<body style="margin-bottom: 20px;">
+  <header style="
+  height: 2em;
+  border-bottom: 1px solid rgba(0,0,0,.22);
+  padding-right: 2em;
+  text-align: right;
+">
+    <div style="max-width: 677px; margin: 5px auto;">一个叫木头，一个叫马尾</div>
+  </header>
+<section id="nice" style="max-width: 677px; margin: 5px auto;"><h1><span class="prefix"></span><span class="content">秽言慧语</span><span class="suffix"></span></h1><img src="/1984.png">
+<p>看到好的句子我都会收藏下来，在我的公众号里回复<code>0</code>可以随机查看。</p>
+<p>下面是前期收藏的句子，分享给大家。</p>
+<hr>
+<br>
+<ol>
+<li><section></section></li></ol>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/d5eab585-0a56-47a6-86aa-0d45d601b735.png" alt="&quot;暗恋就是教室外下起了大雨，你没看我，我没看雨。&quot;"><figcaption>"暗恋就是教室外下起了大雨，你没看我，我没看雨。"</figcaption></figure>
+<ol start="2">
+<li><section></section></li></ol>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/df46318d-0849-467f-bead-304762fa1067.png" alt="Don't waste your time trying to change minds that closed a long time ago."><figcaption>Don't waste your time trying to change minds that closed a long time ago.</figcaption></figure>
+<ol start="3">
+<li><section><p>Things that affect every activity you do in your life:</p>
+<ul>
+<li><section>mindset</section></li><li><section>belief system</section></li><li><section>self-talk</section></li><li><section>ability to control your focus</section></li><li><section>handling your emotions</section></li></ul>
+<p>No matter which external battles you choose to fight in life, these internal tools will either help or hinder you.</p>
+<p><strong>@CrayPolymath</strong></p>
+</section></li><li><section><p>在职场，不要以为埋头苦干就可以升职，其实只会给你多一点点钱，让你干更艰苦的岗位。</p>
+<p><strong>@Zannmuling</strong></p>
+</section></li><li><section><p>Every struggle you had in your life shaped you into the person you are today. BE thankful for the hard times they can only make you stronger.</p>
+<p><strong>@TheKnowledge</strong></p>
+</section></li><li><section><p>An evolution of modern programming language is not about raw productivity anymore. It is about safety, abstraction, clarity, style, and getting pleasure from doing your programming job.</p>
+<p><strong>@relizarov</strong></p>
+</section></li><li><section><p>这世间，要帮可帮之人。有些人，注定是坠入深渊的，远离就好。人世间的情与事，绝大多数不是因为血缘，也不是因为某种岁月的境遇，而在于共同的价值观。我们爱别人，本质上是因为爱自己，爱那个跟我们志趣相同的人。我们追根到底爱的是，转眼瞬间的自己投射的影子，那个能照亮我们自己的人。</p>
+<p><strong>@0792z</strong></p>
+</section></li><li><section><p>那些在人间"正常"的走完所谓"完整"一生的大部分人，其实是因为得了斯德哥尔摩综合症等各种心理疾病，以及自利性扭曲等各种认知障碍。因为一个真正心理健康的人，是没有办法忍受人间和人生的。</p>
+<p><strong>@0792z</strong></p>
+</section></li><li><section><p>One day, someone will walk into your life and make you see why it never worked out with anyone else.</p>
+<p><strong>@TheKnowledge</strong></p>
+</section></li><li><section><p>A good relationship is with someone who knows all your insecurities and imperfections but still loves you for who you are.</p>
+<p><strong>@Fact</strong></p>
+</section></li><li><section><p>有一本很著名的书叫做《拖延心理学》，被视作战胜拖延症的圣经。
+好多人并不知道的是，两位作者，简·博克和莱诺拉·袁，因为她们的拖延，这本书出版的时间，比和出版社约定的时间整整晚了两年。</p>
+<p><strong>@haOFi</strong></p>
+</section></li><li><section><p>这个时代的人很累，白领加班加点，工人起早贪黑，老人出去干活，孩子周末补课，骗子电话不断，营销不分昼夜。原因是什么呢？</p>
+<p><strong>@0792z</strong></p>
+</section></li><li><section><p>Three questions to ask when you are deciding to do something new:</p>
+<ol>
+<li><section>What's the worst case scenario?</section></li><li><section>What's the best case scenario?</section></li><li><section>What's the opportunity cost?</section></li></ol>
+<p><strong>@CrayPolymath</strong></p>
+</section></li><li><section><p>The unhappiest people in this world are the people who care the most about what everyone else thinks.</p>
+<p><strong>@Fact</strong></p>
+</section></li><li><section><p>如果人们选择憎恨某件事，他们就不在乎现实。
+如果人们觉得自己倒霉，就不会记得自己多走运。</p>
+<p><strong>@0792z</strong></p>
+</section></li><li><section><p>在你被裁员之前，你永远不知道自己是不是刘强东的兄弟，这一定律被称为薛定谔的兄弟。</p>
+<p><strong>@Zannmuling</strong></p>
+</section></li><li><section><p>实在太荒谬了。个体应该努力 跟 996 完全两回事。前者是个体实现自我的选择；后者是制度性对个体的压榨。</p>
+<p><strong>@horsezhanbin</strong></p>
+</section></li><li><section></section></li></ol>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/833281a6-6f29-43e5-8b7d-b51da30d2e0f.png" alt=""></figure>
+<ol start="19">
+<li><section><p>喜欢这段话：</p>
+<p>如果想要成功和快乐，你必须去做符合自己天性的事，并且需要与擅长你的弱项的人一起共事。你不必强迫自己去做与你的天性不符的事情。</p>
+<p><strong>@0792z</strong></p>
+</section></li><li><section><p>Ever seen the fly that keeps trying to get out through the glass of a closed window,</p>
+<p>But can't see the open door next to it?</p>
+<p>The fly is hustling hard; it's putting everything in its power.</p>
+<p>Bug in the wrong direction.</p>
+<p>Don't lock yourself up in the room full of open doors.</p>
+<p><strong>@CrayPolymath</strong></p>
+</section></li></ol>
+<hr>
+<p>先整理这20条，后续还有不少...</p>
+</section>
+</body>
+</html>
