@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport"
+<meta name="viewport"
     content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
 <style id="basic-theme">/*默认样式，最佳实践*/
 
@@ -529,6 +529,330 @@ hue-6-2: #c18401
 .hljs-link {
   text-decoration: underline;
 }</style>
+<style id="markdown-theme">/* 全局属性
+* 页边距 padding:30px;
+* 全文字体 font-family:optima-Regular;
+* 英文换行 word-break:break-all;
+color:#595959;
+*/
+#nice {
+  line-height: 1.75;
+  color: #595959;
+  font-family: Optima-Regular, Optima, PingFangTC-Light, PingFangSC-light, PingFangTC-light;
+  letter-spacing: 2px;
+  background-image: linear-gradient(90deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%), linear-gradient(360deg, rgba(50, 0, 0, 0.05) 3%, rgba(0, 0, 0, 0) 3%);
+  background-size: 20px 20px;
+  background-position: center center;
+}
+
+/* 段落，下方未标注标签参数均同此处
+* 上边距 margin-top:5px;
+* 下边距 margin-bottom:5px;
+* 行高 line-height:26px;
+* 词间距 word-spacing:3px;
+* 字间距 letter-spacing:3px;
+* 对齐 text-align:left;
+* 颜色 color:#3e3e3e;
+* 字体大小 font-size:16px;
+* 首行缩进 text-indent:2em;
+*/
+#nice p {
+  color: #595959;
+  margin: 10px 0px;
+  letter-spacing: 2px;
+  font-size: 14px;
+  word-spacing: 2px;
+}
+
+/* 一级标题 */
+#nice h1 {
+  font-size: 25px;
+}
+
+/* 一级标题内容 */
+#nice h1 .content {
+  display: inline-block;
+  font-weight: bold;
+  color: #595959;
+}
+
+/* 一级标题修饰 请参考有实例的主题 */
+#nice h1:after {}
+
+/* 二级标题 */
+#nice h2 {
+  text-align: left;
+  margin: 20px 10px 0px 0px;
+}
+
+/* 二级标题内容 */
+#nice h2 .content {
+  font-size: 18px;
+  font-weight: bold;
+  display: inline-block;
+  padding-left: 10px;
+  border-left: 5px solid #DEC6FB;
+  color: #595959;
+
+}
+
+/* 二级标题修饰 请参考有实例的主题 */
+#nice h2:after {}
+
+/* 三级标题 */
+#nice h3 {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* 三级标题内容 */
+#nice h3 .content {
+  border-bottom: 2px solid #DEC6FB;
+  color: #595959;
+}
+
+/* 三级标题修饰 请参考有实例的主题 */
+#nice h3:after {}
+
+/* 无序列表整体样式
+* list-style-type: square|circle|disc;
+*/
+#nice ul {
+  font-size: 15px; /*神奇逻辑，必须比li section的字体大才会在二级中生效*/
+  color: #595959;
+  list-style-type: circle;
+}
+
+
+/* 有序列表整体样式
+* list-style-type: upper-roman|lower-greek|lower-alpha;
+*/
+#nice ol {
+  font-size: 15px;
+  color: #595959;
+}
+
+/* 列表内容，不要设置li
+*/
+#nice li section {
+  font-size: 14px;
+  font-weight: normal;
+  color: #595959;
+}
+
+/* 引用
+* 左边缘颜色 border-left-color:black;
+* 背景色 background:gray;
+*/
+#nice blockquote::before {
+  content: "❝";
+  /*   color: #d9b8fa;*/
+  color: #DEC6FB;
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+#nice blockquote {
+  text-size-adjust: 100%;
+  line-height: 1.55em;
+  font-weight: 400;
+  border-radius: 6px;
+  color: #595959;
+  font-style: normal;
+  text-align: left;
+  box-sizing: inherit;
+  border-left: none;
+  border: 1px solid #DEC6FB;
+  background: #F6EEFF;
+
+}
+
+#nice blockquote p {
+  color: #595959;
+}
+
+#nice blockquote::after {
+  content: "❞";
+  float: right;
+  /*   color: #d9b8fa; */
+  color: #DEC6FB;
+}
+
+/* 链接 
+* border-bottom: 1px solid #009688;
+*/
+#nice a {
+  color: #664D9D;
+  font-weight: normal;
+  border-bottom: 1px solid #664D9D;
+}
+
+#nice strong::before {
+  content: '「';
+}
+
+/* 加粗 */
+#nice strong {
+  color: #595959;
+  font-weight: bold;
+}
+
+#nice strong::after {
+  content: '」';
+}
+
+/* 斜体 */
+#nice em {
+  font-style: normal;
+  color: #595959;
+  background: #F6EEFF;
+}
+
+/* 加粗斜体 */
+#nice em strong {
+  color: #595959;
+}
+
+/* 删除线 */
+#nice del {
+  color: #595959;
+}
+
+/* 分隔线
+* 粗细、样式和颜色
+* border-top:1px solid #3e3e3e;
+*/
+#nice hr {
+  height: 1px;
+  padding: 0;
+  border: none;
+  border-top: 2px solid #d9b8fa;
+}
+
+/* 图片
+* 宽度 width:80%;
+* 居中 margin:0 auto;
+* 居左 margin:0 0;
+*/
+#nice img {
+  border-radius: 6px;
+  display: block;
+  margin: 20px auto;
+  object-fit: contain;
+}
+
+/* 图片描述文字 */
+#nice figcaption {
+  display: block;
+  font-size: 13px;
+  color: #595959;
+}
+
+/* 行内代码 */
+#nice p code,
+#nice li code {
+  color: #595959;
+}
+
+/* 非微信代码块
+* 代码块不换行 display:-webkit-box !important;
+* 代码块换行 display:block;
+*/
+#nice .code-snippet__fix {
+  background: #f7f7f7;
+  border-radius: 2px;
+}
+
+#nice pre code {
+  /* background: #f7f7f7; */
+}
+
+/*
+* 表格内的单元格
+* 字体大小 font-size: 16px;
+* 边框 border: 1px solid #ccc;
+* 内边距 padding: 5px 10px;
+*/
+#nice table tr th,
+#nice table tr td {
+  font-size: 14px;
+  color: #595959;
+}
+
+#nice .footnotes {
+  background: #F6EEFF;
+  padding: 20px 20px 20px 20px;
+  font-size: 14px;
+  border: 0.8px solid #DEC6FB;
+  border-radius: 6px;
+  border: 1px solid #DEC6FB;
+}
+
+/* 脚注文字 */
+#nice .footnote-word {
+  font-weight: normal;
+  color: #595959;
+}
+
+/* 脚注上标 */
+#nice .footnote-ref {
+  font-weight: normal;
+  color: #595959;
+}
+
+/*脚注链接样式*/
+#nice .footnote-item em {
+  background: #F6EEFF;
+  font-size: 14px;
+  color: #595959;
+  display: block;
+}
+
+/* "参考资料"四个字 
+* 内容 content: "参考资料";
+*/
+#nice .footnotes-sep:before {
+  content: 'Reference';
+  color: #595959;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #DEC6FB;
+  display: inline;
+  background: linear-gradient(white 60%, #F6EEFF 40%);
+  font-size: 20px;
+}
+
+/* 参考资料编号 */
+#nice .footnote-num {}
+
+/* 参考资料文字 */
+#nice .footnote-item p {
+  color: #595959;
+  font-weight: bold;
+}
+
+/* 参考资料解释 */
+#nice .footnote-item p em {
+  font-weight: normal;
+}
+
+/* 行间公式
+* 最大宽度 max-width: 300% !important;
+*/
+#nice .block-equation svg {}
+
+/* 行内公式
+*/
+#nice .inline-equation svg {}
+
+/* 滑动图片
+ */
+#nice .imageflow-img {
+  display: inline-block;
+  width:100%;
+  margin-bottom: 0;
+}</style>
 <script data-ad-client="ca-pub-6205625102284861" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-63732284-5"></script>
@@ -551,41 +875,11 @@ hue-6-2: #c18401
 ">
     <div style="max-width: 677px; margin: 5px auto;">一个叫木头，一个叫马尾</div>
   </header>
-<section id="nice" style="max-width: 677px; margin: 5px auto;"><h1><span class="prefix"></span><span class="content">夜陋人</span><span class="suffix"></span></h1><img src="/1984.png">
-<p>这是我08年日志里的一篇文章，当时是为了嘲讽自己既走不近他人又不接受自己​的一种状态，现在读读也挺有几分意思，所以分享出来​。文字​和原文稍有改动。</p>
-<p>他仅仅是被自己吓死的吗。</p>
-<hr>
-<br>
-<p>我们这儿接连死了两个人。</p>
-<p>两个在我们村游荡的外人。究竟怎么死的，至今没有查明。</p>
-<p>之后的一天晚上，我手里提着灯，在路上找着我丢失的钱包。边走边找，始终没有寻到，我于是停下来歇一歇。</p>
-<p>突然，我的背部像被什么击了一下。我举起灯扫视四周，并没有见着什么。</p>
-<p>直找到夜深了，还是没有结果，我便径直回家了。</p>
-<p>“要不明天一大早再出来找找？” 回去时我向自己嘀咕着。</p>
-<p>第二天，在第一声鸡鸣之后，我便起了床。</p>
-<p>开门后却发生了让人惊讶的事：钱包从门上槛落了下来！</p>
-<p>喜出望外的打开钱包，可是…</p>
-<p>我只看到一张纸，我的钱全没了。我揉了揉眼睛，看到纸上写着：</p>
-<p>“兄台，请你帮个忙。我是天底下最丑陋的人，谁看到我都会被吓死。我请求你想办法杀死我，钱我会原样还你。”</p>
-<p>“真是怪人”，我以为他是在说笑话。但直到发生了后来的事...</p>
-<hr>
-<br>
-我牵着一条狗朝他写明的地方去，快近时，猎狗从我手中挣脱并跑了过去，接着就听到了它的一声尖叫。我到时，看到狗子躺在地上没有动静，没有伤痕，也没了命。
-<p>世上果然有这样的人？丑到可以杀人？？？</p>
-<p>为了拿回我的钱，我只好做了违心的事——答应他的条件。</p>
-<p>“我说兄弟，钱你先别给我。”我提高嗓门对他喊，“晚上我们再见！”</p>
-<p>这天晚上，我拿着自己的武器，像个战战兢兢的武士踏上征程。</p>
-<p>待灯与镜子放置好后，我说：</p>
-<p>“老兄，我的钱在哪儿？”</p>
-<p>“你杀了我！” 不满且绝望的声音自不远处传来，使我蓦地一颤。</p>
-<p>“当然了老兄你拿着镜子把灯照向自己再面对镜子就行了。”，我回复他，吓地忘了断句。</p>
-<p>没一会，我看到灯闪，听见巨响，猜测他也倒下了。</p>
-<p>没有看他到底生得什么样子，我拿起钱就回去了。</p>
-<hr>
-<br>
-天亮后，村子里议论纷纷，说是又死了一个人，那么丑，临死还带着镜子。
-<p>“是的，这个黑夜里的丑陋人死了，他是被自己吓死的。”</p>
-<p>(2008.03.31)</p>
+<section id="nice" style="max-width: 677px; margin: 5px auto;"><h1><span class="prefix"></span><span class="content">蚊子说</span><span class="suffix"></span></h1>
+<p>冒着烟熏火燎</p>
+<p>哪怕最后丧命</p>
+<p>也要搏你几声鼓掌</p>
+<p><small>(2011-09-25)</small></p>
 </section>
 </body>
 </html>
