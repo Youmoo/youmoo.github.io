@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport"
+    content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+    <link rel="icon" type="image/png" href="/images/emoji-family.png">
+    <title>Node.js一行一行地读取文件</title>
+    <meta property="og:title" content="Node.js一行一行地读取文件" />
+    <meta property="og:type" content="article" />
+    <meta property=”og:image” content=”https://beloved.family/1984.png” />
+<style id="basic-theme">/*默认样式，最佳实践*/
+
+/*全局属性*/
+#nice {
+  font-size: 16px;
+  color: black;
+  padding: 0 10px;
+  line-height: 1.6;
+  word-spacing: 0px;
+  letter-spacing: 0px;
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: left;
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  margin-top: -10px; /*解决开头空隙过大问题*/
+}
+
+/*段落*/
+#nice p {
+  font-size: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+}
+
+/*标题*/
+#nice h1,
+#nice h2,
+#nice h3,
+#nice h4,
+#nice h5,
+#nice h6 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding: 0px;
+  font-weight: bold;
+  color: black;
+}
+#nice h1 {
+  font-size: 24px;
+}
+#nice h2 {
+  font-size: 22px;
+}
+#nice h3 {
+  font-size: 20px;
+}
+#nice h4 {
+  font-size: 18px;
+}
+#nice h5 {
+  font-size: 16px;
+}
+#nice h6 {
+  font-size: 16px;
+}
+
+#nice h1 .prefix,
+#nice h2 .prefix,
+#nice h3 .prefix,
+#nice h4 .prefix,
+#nice h5 .prefix,
+#nice h6 .prefix {
+  display: none;
+}
+
+#nice h1 .suffix
+#nice h2 .suffix,
+#nice h3 .suffix,
+#nice h4 .suffix,
+#nice h5 .suffix,
+#nice h6 .suffix {
+  display: none;
+}
+
+/*列表*/
+#nice ul,
+#nice ol {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 25px;
+  color: black;
+}
+#nice ul {
+  list-style-type: disc;
+}
+#nice ul ul {
+  list-style-type: square;
+}
+
+#nice ol {
+  list-style-type: decimal;
+}
+
+#nice li section {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  line-height: 26px;
+  text-align: left;
+  color: rgb(1,1,1); /* 只要是纯黑色微信编辑器就会把color这个属性吞掉。。。*/
+  font-weight: 500;
+}
+
+/*引用*/
+#nice blockquote {
+  display: block;
+  font-size: 0.9em;
+  overflow: auto;
+  overflow-scrolling: touch;
+  border-left: 3px solid rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.05);
+  color: #6a737d;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+#nice blockquote p {
+  margin: 0px;
+  color: black;
+  line-height: 26px;
+}
+
+#nice .table-of-contents a {
+  border: none;
+  color: black;
+  font-weight: normal;
+}
+
+/*链接*/
+#nice a {
+  text-decoration: none;
+  color: #1e6bb8;
+  word-wrap: break-word;
+  font-weight: bold;
+  border-bottom: 1px solid #1e6bb8;
+}
+
+/*加粗*/
+#nice strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*斜体*/
+#nice em {
+  font-style: italic;
+  color: black;
+}
+
+/*加粗斜体*/
+#nice em strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*删除线*/
+#nice del {
+  font-style: italic;
+  color: black;
+}
+
+/*分隔线*/
+#nice hr {
+  height: 1px;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-top: 1px solid black;
+}
+
+/*代码块*/
+#nice pre {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+#nice pre code {
+  display: -webkit-box;
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  border-radius: 0px;
+  font-size: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+#nice pre code span {
+  line-height: 26px;
+}
+
+/*行内代码*/
+#nice p code,
+#nice li code {
+  font-size: 14px;
+  word-wrap: break-word;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+  color: #1e6bb8;
+  background-color: rgba(27,31,35,.05);
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  word-break: break-all;
+}
+
+/*图片*/
+#nice img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/*图片*/
+#nice figure {
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/*图片描述文字*/
+#nice figcaption {
+  margin-top: 5px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+/*表格*/
+#nice table {
+  display: table;
+  text-align: left;
+}
+#nice tbody {
+  border: 0;
+}
+
+#nice table tr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  background-color: white;
+}
+
+#nice table tr:nth-child(2n) {
+  background-color: #F8F8F8;
+}
+
+#nice table tr th,
+#nice table tr td {
+  font-size: 16px;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  text-align: left;
+}
+
+#nice table tr th {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+/* 微信代码块 */
+#nice .code-snippet__fix {
+  word-wrap: break-word !important;
+  font-size: 14px;
+  margin: 10px 0;
+  display: block;
+  color: #333;
+  position: relative;
+  background-color: rgba(0,0,0,0.03);
+  border: 1px solid #f0f0f0;
+  border-radius: 2px;
+  display: flex;
+  line-height: 20px;
+}
+#nice .code-snippet__fix pre {
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+#nice .code-snippet__fix .code-snippet__line-index {
+  counter-reset: line;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 1em;
+  list-style-type: none;
+  padding: 16px;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li {
+  list-style-type: none;
+  text-align: right;
+  line-height: 26px;
+  color: black;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li::before {
+  min-width: 1.5em;
+  text-align: right;
+  left: -2.5em;
+  counter-increment: line;
+  content: counter(line);
+  display: inline;
+  color: rgba(0,0,0,0.3);
+}
+#nice .code-snippet__fix pre {
+  overflow-x: auto;
+  padding: 16px;
+  padding-left: 0;
+  white-space: normal;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+#nice .code-snippet__fix code {
+  text-align: left;
+  font-size: 14px;
+  display: block;
+  white-space: pre;
+  display: flex;
+  position: relative;
+  font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace;
+  padding: 0px;
+}
+
+#nice .footnote-word {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-ref {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-item {
+  display: flex;
+}
+
+#nice .footnote-num {
+  display: inline;
+  width: 10%; /*神奇，50px就不可以*/
+  background: none;
+  font-size: 80%;
+  opacity: 0.6;
+  line-height: 26px;
+  font-family: ptima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+#nice .footnote-item p {
+  display: inline;
+  font-size: 14px;
+  width: 90%;
+  padding: 0px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+  word-break:break-all;
+  width: calc(100%-50)
+}
+
+#nice sub, sup {
+  line-height: 0;
+}
+
+#nice .footnotes-sep:before {
+  content: "参考资料";
+  display: block;
+}
+
+/* 解决公式问题 */
+#nice .block-equation {
+  display:block;
+  text-align: center;
+  overflow: auto;
+  display: block;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .block-equation svg {
+  max-width: 300% !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .inline-equation {
+}
+
+#nice .inline-equation svg {
+}
+
+#nice .imageflow-layer1 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  white-space: normal;
+  border: 0px none;
+  padding: 0px;
+  overflow: hidden;
+}
+
+#nice .imageflow-layer2 {
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+#nice .imageflow-layer3 {
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: middle;
+  width: 100%;
+}
+
+#nice .imageflow-img {
+  display: inline-block;
+}
+
+#nice .imageflow-caption {
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #888;
+}
+
+#nice .nice-suffix-juejin-container {
+  margin-top: 20px !important;
+}
+
+#nice figure a {
+  border: none;
+}
+</style>
+<style id="code-theme">/*
+
+Atom One Light by Daniel Gamage
+Original One Light Syntax theme from https://github.com/atom/one-light-syntax
+
+base:    #fafafa
+mono-1:  #383a42
+mono-2:  #686b77
+mono-3:  #a0a1a7
+hue-1:   #0184bb
+hue-2:   #4078f2
+hue-3:   #a626a4
+hue-4:   #50a14f
+hue-5:   #e45649
+hue-5-2: #c91243
+hue-6:   #986801
+hue-6-2: #c18401
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 16px;
+  color: #383a42;
+  background: #fafafa;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #a0a1a7;
+  font-style: italic;
+}
+
+.hljs-doctag,
+.hljs-keyword,
+.hljs-formula {
+  color: #a626a4;
+}
+
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst {
+  color: #e45649;
+}
+
+.hljs-literal {
+  color: #0184bb;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta-string {
+  color: #50a14f;
+}
+
+.hljs-built_in,
+.hljs-class .hljs-title {
+  color: #c18401;
+}
+
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-number {
+  color: #986801;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title {
+  color: #4078f2;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-link {
+  text-decoration: underline;
+}</style>
+<style id="markdown-theme">#nice {
+  line-height: 1.6;
+  letter-spacing: .034em;
+  color: rgb(63, 63, 63);
+  font-size: 16px;
+  word-break:all;
+}
+#nice p {
+  padding-top: 1em;
+  color: rgb(74,74,74);
+  line-height: 1.75em;
+}
+/* 一级标题 */
+#nice h1 {
+  text-align:center;
+  background-image: 	url(http://img.xiaogangzai.cn/title_h1.png); 
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: 75px;
+  line-height:95px;
+  margin-top: 38px;
+  margin-bottom: 10px;
+}
+/* 一级标题内容 */
+#nice h1 .content {
+  font-size: 20px;
+  color: #48b378;;
+  border-bottom:2px solid #2e7950;
+}
+/* 一级标题修饰 请参考有实例的主题 */
+#nice h1:after {
+}
+ 
+/* 二级标题 */
+#nice h2 {
+  display:block;
+  text-align:center;
+  background-image: 	url(http://img.xiaogangzai.cn/title.png); 
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: initial;
+  background-origin: initial;
+  background-clip: initial;
+  background-size: 50px;
+  margin-top: 1em;
+  margin-bottom: 10px;
+}
+/*二级标题伪元素*/
+#nice h2:before {
+}
+/* 二级标题内容 */
+#nice h2 .content {
+  text-align:center;
+  display: inline-block;
+  height: 38px;
+  line-height: 42px;
+  color: #48b378;
+  background-position: left center;
+  background-repeat: no-repeat;
+  background-attachment: initial;
+  background-origin: initial;
+  background-clip: initial;
+  background-size: 63px;
+  margin-top: 38px;
+  font-size:18px;
+  margin-bottom: 10px;
+}
+/* 三级标题 */
+#nice h3:before {
+  content: "";
+  background-image:url(http://img.xiaogangzai.cn/title_h2.png);
+  background-size:100% 100%;
+  background-repeat:no-repeat;
+  display: inline-block;
+  width: 16px;
+  height: 15px;
+  line-height:15px;
+  margin-bottom:-1px;
+}
+#nice h3 {
+  margin-top:1.2em;
+}
+#nice h4 {
+  margin-top: 30px;
+}
+/* 三级标题内容 */
+#nice h3 .content {
+  font-size:17px;
+  font-weight:bold;
+  display:inline-block;
+  margin-left:8px;
+  color:#48b378;
+}
+/* 三级标题修饰 请参考有实例的主题 */
+#nice h3:after {
+}
+/* 列表内容 */
+#nice li {
+}
+/* 引用
+ * 左边缘颜色 border-left-color:black;
+ * 背景色 background:gray;
+ */
+#nice blockquote {
+  padding: 15px 20px;
+  line-height: 27px;
+  background-color:#FBF9FD;
+  border-left:3px solid #35b378;
+  display:block;
+}
+/* 引用文字 */
+#nice blockquote p {
+  padding: 0px;
+  font-size:15px;
+  color:rgb(89,89,89);
+}
+/* 链接 */
+#nice a {
+  color: #48b378;
+  text-decoration:none;
+  border-bottom: 1px solid #48b378;
+}
+/* 加粗 */
+#nice strong {
+  line-height: 1.75em;
+  color: rgb(74,74,74);
+}
+/* 斜体 */
+#nice em {
+}
+/* 加粗斜体 */
+#nice em strong {
+  color:rgb(248,57,41);
+  letter-spacing:0.3em;
+}
+/* 删除线 */
+#nice del {
+}
+ 
+/* 分割线 */
+#nice hr {
+  height:1px;
+  padding:0;
+  border:none;
+  text-align:center;
+  background-image:linear-gradient(to right,rgba(93, 186, 133,0),rgba(93, 186, 133,0.75),rgba(93, 186, 133,0));
+}
+/* 图片 */
+#nice img {
+    border-radius:4px;
+    margin-bottom:25px;
+}
+/* 图片描述文字 */
+#nice figcaption {
+  display:block;
+  font-size:12px;
+  font-family:PingFangSC-Light;
+}
+/* 行内代码 */
+#nice p code, #nice li code {
+	color: #28ca71;
+}
+/* 非微信代码块
+ * 代码块不换行 display:-webkit-box !important;
+ * 代码块换行 display:block;
+ */
+#nice pre code {
+}
+/* 表格内的单元格
+ * 字体大小 font-size: 16px;
+ * 边框 border: 1px solid #ccc;
+ * 内边距 padding: 5px 10px;
+ */
+#nice table tr th,
+#nice table tr td {
+  font-size: 14px;
+}
+#nice .footnotes{
+  padding-top: 8px;
+}
+/* 脚注文字 */
+#nice .footnote-word {
+  color: rgb(90, 185, 131);
+}
+/* 脚注上标 */
+#nice .footnote-ref {
+  color: rgb(90, 185, 131);
+}
+/* 脚注超链接样式 */
+#nice .footnote-item em {
+  color: rgb(90, 185, 131);
+  font-size:13px;
+  font-style:normal;
+  border-bottom-color:1px dashed rgb(90, 185, 131); 
+}
+/* "参考资料"四个字 
+ * 内容 content: "参考资料";
+ */
+#nice .footnotes-sep:before {
+  background-image: none;
+  background-size: none;
+  display: block;
+  width: auto;
+  height: auto;
+}
+/* 参考资料编号 */
+#nice .footnote-num {
+  color: rgb(90, 185, 131);
+}
+/* 参考资料文字 */
+#nice .footnote-item p {
+  color: rgb(90, 185, 131);
+  font-weight:bold;
+}
+/* 参考资料超链接 */
+#nice .footnote-item a {
+  color:rgb(93, 186, 133);
+}
+/* 参考资料解释 */
+#nice .footnote-item p em {
+  font-size:14px;
+  font-weight:normal;
+  border-bottom:1px dashed rgb(93, 186, 133);
+}
+/* 行间公式
+ * 最大宽度 max-width: 300% !important;
+ */
+#nice .block-equation svg {
+}
+/* 行内公式*/
+#nice .inline-equation svg {  
+}
+
+/* 滑动图片
+ */
+#nice .imageflow-img {
+  display: inline-block;
+  width:100%;
+  margin-bottom: 0;
+}</style>
+<script data-ad-client="ca-pub-6205625102284861" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-63732284-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-63732284-5');
+</script>
+
+</head>
+
+<body style="margin-bottom: 20px;">
+  <header style="
+  height: 2em;
+  border-bottom: 1px solid rgba(0,0,0,.22);
+  padding-right: 2em;
+  text-align: right;
+">
+    <div style="max-width: 677px; margin: 5px auto;">一个叫木头，一个叫马尾</div>
+  </header>
+<section id="nice" style="max-width: 677px; margin: 5px auto;"><h1><span class="prefix"></span><span class="content">Node.js一行一行地读取文件</span><span class="suffix"></span></h1><img src="/1984.png">
+<p>大部分时候我在处理文件内容时，都是一次性将其读取到内存中，然后进行处理：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-keyword">const</span>&nbsp;{&nbsp;readFile&nbsp;}&nbsp;=&nbsp;<span class="hljs-built_in">require</span>(<span class="hljs-string">"fs"</span>).promises;<br><br><span class="hljs-function">(<span class="hljs-params"><span class="hljs-keyword">async</span>&nbsp;(</span>)&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;读取文件全部内容</span><br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;data&nbsp;=&nbsp;<span class="hljs-keyword">await</span>&nbsp;readFile(__dirname&nbsp;+&nbsp;<span class="hljs-string">"/t.js"</span>,&nbsp;<span class="hljs-string">"utf-8"</span>);<br><br>&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;处理数据</span><br>&nbsp;&nbsp;<span class="hljs-built_in">console</span>.log(data);<br>})();<br></code></pre>
+<p>对于小文件来说这样做没什么关系。当文件比较大时，内存消耗会相应变大，而且在调试代码时，IDE也容易卡死(你可以尝试读取一个5M的文本文件，然后鼠标移到上面的<code>data</code>变量上，会发现IDE(<em>Visual Studio Code</em>)直接死掉了)。这既不利于程序在生产环境的高效运行，也阻碍了开发调试效率。</p>
+<p>怎么办？</p>
+<hr>
+<p>可以借助<code>stream</code>，将内容分块处理(一次处理一小块)。</p>
+<pre class="custom"><code class="hljs"><span class="hljs-keyword">const</span>&nbsp;{&nbsp;createReadStream&nbsp;}&nbsp;=&nbsp;<span class="hljs-built_in">require</span>(<span class="hljs-string">"fs"</span>);<br><br><span class="hljs-function">(<span class="hljs-params"><span class="hljs-keyword">async</span>&nbsp;(</span>)&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;创建一个流</span><br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;stream&nbsp;=&nbsp;createReadStream(__dirname&nbsp;+&nbsp;<span class="hljs-string">"/t.js"</span>,&nbsp;<span class="hljs-string">"utf-8"</span>);<br><br>&nbsp;&nbsp;<span class="hljs-keyword">for</span>&nbsp;<span class="hljs-keyword">await</span>&nbsp;(<span class="hljs-keyword">const</span>&nbsp;chunk&nbsp;<span class="hljs-keyword">of</span>&nbsp;stream)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;分块处理数据</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-built_in">console</span>.log(chunk);<br>&nbsp;&nbsp;}<br>})();<br></code></pre>
+<p>这样，一个大的文件会被分成多块，避免了一次读取所有内容的内存消耗。块的大写可以用参数<code>highWaterMark</code>来自定义：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-comment">//&nbsp;创建一个流</span><br><span class="hljs-keyword">const</span>&nbsp;stream&nbsp;=&nbsp;createReadStream(__dirname&nbsp;+&nbsp;<span class="hljs-string">"/t.js"</span>,&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-attr">encoding</span>:&nbsp;<span class="hljs-string">"utf8"</span>,<br>&nbsp;&nbsp;<span class="hljs-attr">highWaterMark</span>:&nbsp;<span class="hljs-number">8</span>,&nbsp;<span class="hljs-comment">//&nbsp;一次读取多少bytes</span><br>});<br></code></pre>
+<p>以上介绍基本能处理大部分需求了，但还有一个更典型的场景：<em><strong>如果我们需要一行一行的处理文本数据怎么办？</strong></em></p>
+<p>依靠面上的<code>stream</code>，我们每次得到的是一块数据，但并不能保证这一块数据刚好是某一行，它包含的可能是多行，或某一行的一部分。</p>
+<hr>
+<p>所幸的是，<strong>Node.js</strong>有个内置模块<code>readline</code>，可以用来解决上面的问题。</p>
+<pre class="custom"><code class="hljs"><span class="hljs-keyword">const</span>&nbsp;{&nbsp;createReadStream&nbsp;}&nbsp;=&nbsp;<span class="hljs-built_in">require</span>(<span class="hljs-string">"fs"</span>);<br><span class="hljs-keyword">const</span>&nbsp;readline&nbsp;=&nbsp;<span class="hljs-built_in">require</span>(<span class="hljs-string">"readline"</span>);<br><br><span class="hljs-function">(<span class="hljs-params"><span class="hljs-keyword">async</span>&nbsp;(</span>)&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;stream&nbsp;=&nbsp;createReadStream(__dirname&nbsp;+&nbsp;<span class="hljs-string">"/t.js"</span>,&nbsp;<span class="hljs-string">"utf-8"</span>);<br>&nbsp;&nbsp;<br>&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;创建一个&nbsp;readline&nbsp;接口</span><br>&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;注意&nbsp;crlfDelay&nbsp;参数，让它支持多种换行符(CR&nbsp;LF&nbsp;('\r\n'))</span><br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;rl&nbsp;=&nbsp;readline.createInterface({<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">input</span>:&nbsp;stream,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">crlfDelay</span>:&nbsp;<span class="hljs-literal">Infinity</span>,<br>&nbsp;&nbsp;});<br><br>&nbsp;&nbsp;<span class="hljs-keyword">for</span>&nbsp;<span class="hljs-keyword">await</span>&nbsp;(<span class="hljs-keyword">const</span>&nbsp;line&nbsp;<span class="hljs-keyword">of</span>&nbsp;rl)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;文件中的每一行都会依次被&nbsp;line&nbsp;变更接收</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-built_in">console</span>.log(<span class="hljs-string">`Line&nbsp;from&nbsp;file:&nbsp;<span class="hljs-subst">${line}</span>`</span>);<br>&nbsp;&nbsp;}<br>})();<br></code></pre>
+<p>另外，<code>for await</code>相对比较慢，如果你期望得到更好的性能，Node.js官方也提供了另一种改进的方式(<a href="https://nodejs.org/api/readline.html">这里</a>)：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-keyword">const</span>&nbsp;{&nbsp;once&nbsp;}&nbsp;=&nbsp;<span class="hljs-built_in">require</span>(<span class="hljs-string">"events"</span>);<br><span class="hljs-keyword">const</span>&nbsp;{&nbsp;createReadStream&nbsp;}&nbsp;=&nbsp;<span class="hljs-built_in">require</span>(<span class="hljs-string">"fs"</span>);<br><span class="hljs-keyword">const</span>&nbsp;{&nbsp;createInterface&nbsp;}&nbsp;=&nbsp;<span class="hljs-built_in">require</span>(<span class="hljs-string">"readline"</span>);<br><br>(<span class="hljs-keyword">async</span>&nbsp;<span class="hljs-function"><span class="hljs-keyword">function</span>&nbsp;<span class="hljs-title">processLineByLine</span>(<span class="hljs-params"></span>)&nbsp;</span>{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;rl&nbsp;=&nbsp;createInterface({<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">input</span>:&nbsp;createReadStream(<span class="hljs-string">"big-file.txt"</span>),<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">crlfDelay</span>:&nbsp;<span class="hljs-literal">Infinity</span>,<br>&nbsp;&nbsp;});<br><br>&nbsp;&nbsp;rl.on(<span class="hljs-string">"line"</span>,&nbsp;(line)&nbsp;=&gt;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;Process&nbsp;the&nbsp;line.</span><br>&nbsp;&nbsp;});<br><br>&nbsp;&nbsp;<span class="hljs-keyword">await</span>&nbsp;once(rl,&nbsp;<span class="hljs-string">"close"</span>);<br><br>&nbsp;&nbsp;<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"File&nbsp;processed."</span>);<br>})();<br></code></pre>
+<p>关于<code>events.once()</code>的用法，可以参见我的另一篇文章: <a href="https://mp.weixin.qq.com/s/6d9HM3DuvB7FTdIYYxKlLg">发现一个有趣的方法：events.once</a>。</p>
+</section>
+
+<div id="disqus_thread" style="max-width: 677px; margin: 20px auto;"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = location.href.replace('.html','');  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = location.pathname.replace('.html',''); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://beloved-family.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</body>
+</html>
