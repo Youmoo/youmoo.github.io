@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+    <ShortName>Beloved Family</ShortName>
+    <Description>Search Beloved Family</Description>
+    <InputEncoding>UTF-8</InputEncoding>
+    <Url type="text/html" template="https://www.google.com/search?wd=q=site%3Abeloved.family+{searchTerms}"/>
+</OpenSearchDescription>
