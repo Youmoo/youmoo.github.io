@@ -4,8 +4,13 @@
 <meta name="viewport"
     content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
     <link rel="icon" type="image/png" href="/images/emoji-family.png">
-    <title>本地编译并学习Spring源码</title>
-    <meta property="og:title" content="本地编译并学习Spring源码" />
+    <title>Jackson处理JSON序列化的一个小技巧</title>
+    <link rel="canonical" href="https://beloved.family/wx/Jackson处理JSON序列化的一个小技巧" />
+    <meta name="description" content="Jackson处理JSON序列化的一个小技巧"/>
+    
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta property="og:title" content="Jackson处理JSON序列化的一个小技巧" />
     <meta property="og:type" content="article" />
     <meta property="og:image" content="https://beloved.family/1984.png" />
 <style id="basic-theme">/*默认样式，最佳实践*/
@@ -534,175 +539,231 @@ hue-6-2: #c18401
 .hljs-link {
   text-decoration: underline;
 }</style>
-<style id="markdown-theme">#nice {
-  line-height: 1.6;
-  letter-spacing: .034em;
-  color: rgb(63, 63, 63);
-  font-size: 16px;
-  word-break:all;
+<style id="markdown-theme">/* 全局属性
+ * 页边距 padding:30px;
+ * 全文字体 font-family:ptima-Regular;
+ * 英文换行 word-break:break-all;
+ */
+#nice {
+  font-family:PingFangSC-Light;
 }
+
+/* 段落，下方未标注标签参数均同此处
+ * 上边距 margin-top:5px;
+ * 下边距 margin-bottom:5px;
+ * 行高 line-height:26px;
+ * 词间距 word-spacing:3px;
+ * 字间距 letter-spacing:3px;
+ * 对齐 text-align:left;
+ * 颜色 color:#3e3e3e;
+ * 字体大小 font-size:16px;
+ * 首行缩进 text-indent:2em;
+ */
 #nice p {
-  padding-top: 1em;
-  color: rgb(74,74,74);
-  line-height: 1.75em;
+  margin:10px 10px;
+  line-height:1.75;
+  letter-spacing:0.2em;
+  font-size:14px;
+  word-spacing:0.1em;
 }
+
 /* 一级标题 */
 #nice h1 {
-  text-align:center;
-  background-image: 	url(/images/title_h1.png); 
-  background-position: center top;
-  background-repeat: no-repeat;
-  background-size: 75px;
-  line-height:95px;
-  margin-top: 38px;
-  margin-bottom: 10px;
+  border-bottom:2px solid rgb(248,57,41);
+  font-size:1.3em;
 }
+
 /* 一级标题内容 */
 #nice h1 .content {
-  font-size: 20px;
-  color: #48b378;;
-  border-bottom:2px solid #2e7950;
+  display:inline-block;
+  font-weight:normal;
+  background:rgb(248,57,41);
+  color:#ffffff;
+  padding:3px 10px 1px;
+  border-top-right-radius:3px;
+  border-top-left-radius:3px;
+  margin-right:3px;
 }
+
 /* 一级标题修饰 请参考有实例的主题 */
 #nice h1:after {
 }
  
 /* 二级标题 */
 #nice h2 {
-  display:block;
-  text-align:center;
-  background-image: 	url(http://img.xiaogangzai.cn/title.png); 
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-attachment: initial;
-  background-origin: initial;
-  background-clip: initial;
-  background-size: 50px;
-  margin-top: 1em;
-  margin-bottom: 10px;
+  text-align:left;
+  margin:20px 10px 0px 0px;
 }
-/*二级标题伪元素*/
-#nice h2:before {
-}
+
 /* 二级标题内容 */
 #nice h2 .content {
-  text-align:center;
-  display: inline-block;
-  height: 38px;
-  line-height: 42px;
-  color: #48b378;
-  background-position: left center;
-  background-repeat: no-repeat;
-  background-attachment: initial;
-  background-origin: initial;
-  background-clip: initial;
-  background-size: 63px;
-  margin-top: 38px;
+  font-family:STHeitiSC-Light;
   font-size:18px;
-  margin-bottom: 10px;
+  font-weight:bolder;
+  display:inline-block;
+  padding-left:10px;
+  border-left:5px solid rgb(248,57,41);
 }
+
+/* 二级标题修饰 请参考有实例的主题 */
+#nice h2:after {
+}
+
 /* 三级标题 */
-#nice h3:before {
-  content: "";
-  background-image:url(http://img.xiaogangzai.cn/title_h2.png);
-  background-size:100% 100%;
-  background-repeat:no-repeat;
-  display: inline-block;
-  width: 16px;
-  height: 15px;
-  line-height:15px;
-  margin-bottom:-1px;
-}
 #nice h3 {
-  margin-top:1.2em;
 }
-#nice h4 {
-  margin-top: 30px;
-}
+
 /* 三级标题内容 */
 #nice h3 .content {
-  font-size:17px;
-  font-weight:bold;
-  display:inline-block;
-  margin-left:8px;
-  color:#48b378;
+  font-size:14px;
+  color:rgb(165,213,93);
 }
+
 /* 三级标题修饰 请参考有实例的主题 */
 #nice h3:after {
 }
-/* 列表内容 */
-#nice li {
+
+/* 无序列表整体样式
+ * list-style-type: square|circle|disc;
+ */
+#nice ul {
+  font-size: 14px;
 }
+
+/* 有序列表整体样式
+ * list-style-type: upper-roman|lower-greek|lower-alpha;
+ */
+#nice ol {
+  font-size: 14px;
+}
+
+/* 列表内容，不要设置li
+ */
+#nice li section {
+  font-size:13px;
+}
+
 /* 引用
  * 左边缘颜色 border-left-color:black;
  * 背景色 background:gray;
  */
 #nice blockquote {
-  padding: 15px 20px;
-  line-height: 27px;
-  background-color:#FBF9FD;
-  border-left:3px solid #35b378;
-  display:block;
+  font-style:normal;
+  border-left:none;
+  padding:10px;
+  position:relative;
+  line-height:1.8;
+  border-radius:0px 0px 10px 10px;
+  color:#FEEEED;
+  background:#000;
+  box-shadow:#84A1A8 0px 10px 15px;
 }
+#nice blockquote:before {
+  content:" ";
+  display:inline;
+  color:#FFF;
+  font-size:4em;
+  font-family:Arial,serif;
+  line-height:1em;
+  font-weight:700;
+}
+
 /* 引用文字 */
 #nice blockquote p {
-  padding: 0px;
-  font-size:15px;
-  color:rgb(89,89,89);
+  color:#FEEEED;
+  font-size:13px;
+  display:inline;
 }
-/* 链接 */
+#nice blockquote:after {
+  content:"”";
+  float:right;
+  display:inline;
+  color:#FFF;
+  font-size:3em;
+  line-height:1em;
+  font-weight:500;
+}
+
+/* 链接 
+ * border-bottom: 1px solid #009688;
+ */
 #nice a {
-  color: #48b378;
-  text-decoration:none;
-  border-bottom: 1px solid #48b378;
+  color:rgb(248,57,41);
+  border-bottom: 1px solid #ff3502;
+  font-family:STHeitiSC-Light;
 }
+
 /* 加粗 */
 #nice strong {
-  line-height: 1.75em;
-  color: rgb(74,74,74);
+  font-weight:border;
+  color:rgb(248,57,41);
 }
+
 /* 斜体 */
 #nice em {
+  color:rgb(248,57,41);
+  letter-spacing:0.3em;
 }
+
 /* 加粗斜体 */
 #nice em strong {
   color:rgb(248,57,41);
   letter-spacing:0.3em;
 }
+
 /* 删除线 */
 #nice del {
 }
  
-/* 分割线 */
+/* 分隔线
+ * 粗细、样式和颜色
+ * border-top:1px solid #3e3e3e;
+ */
 #nice hr {
   height:1px;
   padding:0;
   border:none;
+  border-top:medium solidid #333;
   text-align:center;
-  background-image:linear-gradient(to right,rgba(93, 186, 133,0),rgba(93, 186, 133,0.75),rgba(93, 186, 133,0));
+  background-image:linear-gradient(to right,rgba(248,57,41,0),rgba(248,57,41,0.75),rgba(248,57,41,0));
 }
-/* 图片 */
+
+/* 图片
+ * 宽度 width:80%;
+ * 居中 margin:0 auto;
+ * 居左 margin:0 0;
+ */
 #nice img {
-    border-radius:4px;
-    margin-bottom:25px;
+  border-radius:0px 0px 5px 5px;
+  display:block;
+  margin:20px auto;
+  width:85%;
+  height:100%;
+  object-fit:contain;
+  box-shadow:#84A1A8 0px 10px 15px;
 }
+
 /* 图片描述文字 */
 #nice figcaption {
   display:block;
   font-size:12px;
   font-family:PingFangSC-Light;
 }
+
 /* 行内代码 */
 #nice p code, #nice li code {
-	color: #28ca71;
+  color:rgb(271,93,108);
 }
+
 /* 非微信代码块
  * 代码块不换行 display:-webkit-box !important;
  * 代码块换行 display:block;
  */
 #nice pre code {
 }
-/* 表格内的单元格
+
+/*
+ * 表格内的单元格
  * 字体大小 font-size: 16px;
  * 边框 border: 1px solid #ccc;
  * 内边距 padding: 5px 10px;
@@ -711,59 +772,49 @@ hue-6-2: #c18401
 #nice table tr td {
   font-size: 14px;
 }
-#nice .footnotes{
-  padding-top: 8px;
-}
+
 /* 脚注文字 */
 #nice .footnote-word {
-  color: rgb(90, 185, 131);
+  color:rgb(248,57,41);
 }
+
 /* 脚注上标 */
 #nice .footnote-ref {
-  color: rgb(90, 185, 131);
+  color:rgb(248,57,41);
 }
-/* 脚注超链接样式 */
+
+/*脚注链接样式*/
 #nice .footnote-item em {
-  color: rgb(90, 185, 131);
-  font-size:13px;
-  font-style:normal;
-  border-bottom-color:1px dashed rgb(90, 185, 131); 
+  color:#6E1E51;
+  font-size:12px;
 }
+
 /* "参考资料"四个字 
  * 内容 content: "参考资料";
  */
 #nice .footnotes-sep:before {
-  background-image: none;
-  background-size: none;
-  display: block;
-  width: auto;
-  height: auto;
 }
+
 /* 参考资料编号 */
 #nice .footnote-num {
-  color: rgb(90, 185, 131);
 }
+
 /* 参考资料文字 */
-#nice .footnote-item p {
-  color: rgb(90, 185, 131);
-  font-weight:bold;
+#nice .footnote-item p { 
 }
-/* 参考资料超链接 */
-#nice .footnote-item a {
-  color:rgb(93, 186, 133);
-}
+
 /* 参考资料解释 */
 #nice .footnote-item p em {
-  font-size:14px;
-  font-weight:normal;
-  border-bottom:1px dashed rgb(93, 186, 133);
 }
+
 /* 行间公式
  * 最大宽度 max-width: 300% !important;
  */
 #nice .block-equation svg {
 }
-/* 行内公式*/
+
+/* 行内公式
+ */
 #nice .inline-equation svg {  
 }
 
@@ -796,30 +847,52 @@ hue-6-2: #c18401
 ">
     <div style="max-width: 677px; margin: 5px auto;">一个叫木头，一个叫马尾</div>
   </header>
-<section id="nice" style="max-width: 677px; margin: 5px auto;"><h1><span class="prefix"></span><span class="content">本地编译并学习Spring源码</span><span class="suffix"></span></h1><img src="/1984.png">
-<h2><span class="prefix"></span><span class="content">检出源码</span><span class="suffix"></span></h2>
-<p>由于github在国内有些时候访问速度极慢，如果你有代理，建议借助代理进行代码检出。</p>
-<pre class="custom"><code class="hljs"><span class="hljs-comment">#&nbsp;定义代理</span><br><span class="hljs-built_in">export</span>&nbsp;https_proxy=http://127.0.0.1:7890&nbsp;\<br>http_proxy=http://127.0.0.1:7890&nbsp;\<br>all_proxy=socks5://127.0.0.1:7891<br><br><span class="hljs-comment">#&nbsp;检出源码</span><br>git&nbsp;<span class="hljs-built_in">clone</span>&nbsp;https://github.com/spring-projects/spring-framework.git<br></code></pre>
-<p>下面是执行日志:</p>
-<figure><img src="https://imgkr.cn-bj.ufileos.com/e3ec5f1f-881c-440b-983e-04cb12cdd416.png" alt=""></figure>
-<h2><span class="prefix"></span><span class="content">编译</span><span class="suffix"></span></h2>
-<p><a href="https://github.com/spring-projects/spring-framework/wiki/Build-from-Source">参考: Build from Source</a></p>
-<pre class="custom"><code class="hljs"># 进入到源码目录
-cd spring-framework
+<section id="nice" style="max-width: 677px; margin: 5px auto;"><h1><span class="prefix"></span><span class="content">Jackson处理JSON序列化的一个小技巧</span><span class="suffix"></span></h1><img src="/1984.png">
 
-# 使用gradle编译
-./gradlew build
-</code></pre>
-<p>用了<code>14分钟12秒</code>:</p>
-<figure><img src="https://imgkr.cn-bj.ufileos.com/a88998a8-b8d0-43b6-8aa9-9907cef63147.png" alt=""></figure>
-<h2><span class="prefix"></span><span class="content">在IDE中打开</span><span class="suffix"></span></h2>
-<p>因为上面编译过，使用IDE打开后，虽然会触发编译，因未改过源码，gradle会使用增量编译，编译速度会大大提升：</p>
-<figure><img src="https://imgkr.cn-bj.ufileos.com/c6704289-e62d-4080-b0e4-76391ab9b502.png" alt=""></figure>
-<h2><span class="prefix"></span><span class="content">源码学习</span><span class="suffix"></span></h2>
-<p>我们可以debug某个测试类，跟踪调用链以快速学习源码。</p>
-<figure><img src="https://imgkr.cn-bj.ufileos.com/b47cb51e-5722-4e3b-83be-fa7573902d46.png" alt=""></figure>
+<p><span style="color:red">*本文针对的是Java语言及Jackson库，其它语言或库中应该也有类似的技巧。 </span></p>
+<p>出于一些原因，我们偶尔需要往数据库中插入序列化后的JSON数据：</p>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/e2db3246-f57d-428d-b7ab-45380c7359b8.png" alt=""></figure>
+<p>在把该类数据取出，返回给前端时，我发现大家通常的做法如下：</p>
+<ol>
+<li><section>要么当作字符串取出，让前端自己去解析。</section></li></ol>
+<p>后端返回给前端如下json数据：</p>
+<pre class="custom"><code class="hljs">{<br>&nbsp;&nbsp;<span class="hljs-attr">"ageNature"</span>:&nbsp;<span class="hljs-string">"[{\"ageId\":54,\"isChecked\":true}]"</span><br>}<br></code></pre>
+<p>前端拿到数据后手工解析(因为 <code>ageNature</code> 只是个字符串)：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-keyword">const</span>&nbsp;data&nbsp;=&nbsp;...;<br><span class="hljs-keyword">const</span>&nbsp;ageNature&nbsp;=&nbsp;<span class="hljs-built_in">JSON</span>.parse(data.ageNature);<br></code></pre>
+<ol start="2">
+<li><section>要么后端先进行反序列化操作，再返回给前端：</section></li></ol>
+<p>后端：</p>
+<pre class="custom"><code class="hljs">Bean&nbsp;bean&nbsp;=&nbsp;...;<br><span class="hljs-comment">//&nbsp;手工解析</span><br>bean.ageNature&nbsp;=&nbsp;JSON.parse(ageNature);<br><span class="hljs-keyword">return</span>&nbsp;bean;<br></code></pre>
+<p>前端收到的数据，因为<code>ageNature</code>已经是对象了，可以直接使用：</p>
+<pre class="custom"><code class="hljs">{<br>&nbsp;&nbsp;<span class="hljs-attr">"ageNature"</span>:&nbsp;[<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"ageId"</span>:&nbsp;<span class="hljs-number">54</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"isChecked"</span>:&nbsp;<span class="hljs-literal">true</span><br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;]<br>}<br></code></pre>
+<br>
 <hr>
-<p>至此，任务就完成了。</p>
+<p><strong>方式一</strong>增加了前端的工作量，返回的JSON文本需要他们手工解析。我们尽量要方便前端，给他们的数据让他们拿来即用。尤其是当业务涉及多端时(web/native)，可避免重复性的解析工作。</p>
+<p><strong>方式二</strong>，增加后端的工作量只是其一，关键是反序列化之后，数据返回给前端之前，其实还要经过一步序列化(将Java Bean序列化为JSON返回给前端)。这意味着先前的解析变得多余了。<em>我们知道，无论是序列化还是反序列化，通常都涉及到反射的调用，而这将损失掉部分性能</em>。</p>
+<p>所以终究的问题是，后端从db中取出JSON文本后，能否在不反序列化的条件下，在返回给前端时，前端看到的仍是JSON对象，而不是字符串。?</p>
+<p>答案是可以！</p>
+<p>多亏了<code>@JsonRawValue</code>注解。它可以以 <em>as is</em> 的形式将注解的字段原封不动地返回给前端。即，若字段值是<code>[1,2,3]</code>，则返回<code>[1,2,3]</code>，而不是返回<code>"[1,2,3]"</code>。<code>[1,2,3]</code>是JSON数组，而<code>"[1,2,3]"</code>仅仅是JSON字符串。</p>
+<h2><span class="prefix"></span><span class="content">实战演示</span><span class="suffix"></span></h2>
+<p>我们给出如下方法：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-meta">@GetMapping</span>(<span class="hljs-string">"raw_json"</span>)<br><span class="hljs-function">User&nbsp;<span class="hljs-title">raw</span><span class="hljs-params">()</span>&nbsp;</span>{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-keyword">new</span>&nbsp;User();<br>}<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-class"><span class="hljs-keyword">class</span>&nbsp;<span class="hljs-title">User</span>&nbsp;</span>{<br>&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;name&nbsp;=&nbsp;<span class="hljs-string">"Whatever"</span>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-meta">@JsonRawValue</span><br>&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;ageNature&nbsp;=&nbsp;<span class="hljs-string">"[{\"ageId\":54,\"isChecked\":true}]"</span>;<br>}<br></code></pre>
+<p>因为<code>ageNature</code>字段加了<code>@JsonRawValue</code>注解，所以访问该方法后，返回如下信息：</p>
+<pre class="custom"><code class="hljs">{<br>&nbsp;&nbsp;<span class="hljs-attr">"name"</span>:&nbsp;<span class="hljs-string">"Whatever"</span>,<br>&nbsp;&nbsp;<span class="hljs-attr">"ageNature"</span>:&nbsp;[<br>&nbsp;&nbsp;&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"ageId"</span>:&nbsp;<span class="hljs-number">54</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"isChecked"</span>:&nbsp;<span class="hljs-literal">true</span><br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;]<br>}<br></code></pre>
+<p>如果不加该注解，我们将得到：</p>
+<pre class="custom"><code class="hljs">{<br>&nbsp;&nbsp;<span class="hljs-attr">"name"</span>:&nbsp;<span class="hljs-string">"Whatever"</span>,<br>&nbsp;&nbsp;<span class="hljs-attr">"friendIds"</span>:&nbsp;<span class="hljs-string">"[{\"ageId\":54,\"isChecked\":true}]"</span><br>}<br></code></pre>
+<p>注意二者的区别。<br>
+<br></p>
+<hr>
+<h2><span class="prefix"></span><span class="content">与Swagger的整合</span><span class="suffix"></span></h2>
+<p>由于我们上例中<code>User.ageNature</code>被定义成了<code>String</code>类型，Swagger将做如下显示：</p>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/3999d43c-17b3-4556-9077-181f49d6a2b6.png" alt=""></figure>
+<p>显然这不是我们想要的，我们想显示出<code>ageNature</code>真实的结构信息。其实借助于<code>@ApiModelProperty</code>，我们是可以达到目的的：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-comment">//&nbsp;先定义一个封装ageNature的类</span><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span>&nbsp;<span class="hljs-class"><span class="hljs-keyword">class</span>&nbsp;<span class="hljs-title">AgeNature</span>&nbsp;</span>{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">int</span>&nbsp;ageId;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">boolean</span>&nbsp;isChecked;<br>}<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-class"><span class="hljs-keyword">class</span>&nbsp;<span class="hljs-title">User</span>&nbsp;</span>{<br>&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;name&nbsp;=&nbsp;<span class="hljs-string">"Whatever"</span>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;再利用&nbsp;dataType&nbsp;配置该类</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-meta">@ApiModelProperty</span>(dataType&nbsp;=&nbsp;<span class="hljs-string">"[Lyour.package.AgeNature;"</span>)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-meta">@JsonRawValue</span><br>&nbsp;&nbsp;&nbsp;&nbsp;String&nbsp;ageNature&nbsp;=&nbsp;<span class="hljs-string">"[{\"ageId\":54,\"isChecked\":true}]"</span>;<br>}<br></code></pre>
+<p>要注意的是，<code>dataType</code>数组是用<em>Reflection Notation</em>去标注的。后者详细的用法见<a href="https://stackoverflow.com/questions/5085889/l-array-notation-where-does-it-come-from">这里(点我)</a>。</p>
+<p>标注完成后，再次检查 swagger，我们得到了我们想要的：</p>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/133f4c6f-71f8-4f1c-9941-febe9f67a52f.png" alt=""></figure>
+<hr>
+<h2><span class="prefix"></span><span class="content">总结</span><span class="suffix"></span></h2>
+<p>JSON数据从存储、取出、到返回给客户端，这其中涉及的转换，有部分是可以避免的。本文介绍了<code>@JsonRawValue</code>这一利器，也许对大家有帮助。</p>
 </section>
 
 <div id="disqus_thread" style="max-width: 677px; margin: 20px auto;"></div>
@@ -842,6 +915,5 @@ s.setAttribute('data-timestamp', +new Date());
 })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-
 </body>
 </html>
