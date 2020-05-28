@@ -10,3 +10,4 @@ https://beloved.family/wx/Node.js一行一行地读取文件
 https://beloved.family/wx/在已停止的docker容器中执行命令
 https://beloved.family/wx/病人
 https://beloved.family/wx/Jackson处理JSON序列化的一个小技巧
+https://beloved.family/wx/因我孤独
