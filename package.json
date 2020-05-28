@@ -1,0 +1,21 @@
+{
+  "name": "youmoo.github.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "images":"node bin/backup-images.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Youmoo/youmoo.github.io.git"
+  },
+  "keywords": [],
+  "author": "youmoo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Youmoo/youmoo.github.io/issues"
+  },
+  "homepage": "https://github.com/Youmoo/youmoo.github.io#readme"
+}
