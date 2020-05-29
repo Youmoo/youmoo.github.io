@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport"
+    content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+    <link rel="icon" type="image/png" href="/images/emoji-family.png">
+    <title>【干货满满】一个不使用任何三方库、仅借助JS和浏览器来解析excel表格的方法</title>
+    <link rel="canonical" href="https://beloved.family/wx/一个不使用任何三方库仅借助JS和浏览器来解析excel表格的方法" />
+    <meta name="description" content="介绍如果利用浏览器(chrome)来解析excel表格"/>
+    
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta property="og:title" content="【干货满满】一个不使用任何三方库、仅借助JS和浏览器来解析excel表格的方法" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image" content="https://beloved.family/1984.png" />
+    <!-- theme: ️红绯HeyRain; code theme: ️atom-one-light -->
+<style id="basic-theme">/*默认样式，最佳实践*/
+
+/*全局属性*/
+#nice {
+  font-size: 16px;
+  color: black;
+  padding: 0 10px;
+  line-height: 1.6;
+  word-spacing: 0px;
+  letter-spacing: 0px;
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: left;
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  margin-top: -10px; /*解决开头空隙过大问题*/
+}
+
+/*段落*/
+#nice p {
+  font-size: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+}
+
+/*标题*/
+#nice h1,
+#nice h2,
+#nice h3,
+#nice h4,
+#nice h5,
+#nice h6 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding: 0px;
+  font-weight: bold;
+  color: black;
+}
+#nice h1 {
+  font-size: 24px;
+}
+#nice h2 {
+  font-size: 22px;
+}
+#nice h3 {
+  font-size: 20px;
+}
+#nice h4 {
+  font-size: 18px;
+}
+#nice h5 {
+  font-size: 16px;
+}
+#nice h6 {
+  font-size: 16px;
+}
+
+#nice h1 .prefix,
+#nice h2 .prefix,
+#nice h3 .prefix,
+#nice h4 .prefix,
+#nice h5 .prefix,
+#nice h6 .prefix {
+  display: none;
+}
+
+#nice h1 .suffix
+#nice h2 .suffix,
+#nice h3 .suffix,
+#nice h4 .suffix,
+#nice h5 .suffix,
+#nice h6 .suffix {
+  display: none;
+}
+
+/*列表*/
+#nice ul,
+#nice ol {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 25px;
+  color: black;
+}
+#nice ul {
+  list-style-type: disc;
+}
+#nice ul ul {
+  list-style-type: square;
+}
+
+#nice ol {
+  list-style-type: decimal;
+}
+
+#nice li section {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  line-height: 26px;
+  text-align: left;
+  color: rgb(1,1,1); /* 只要是纯黑色微信编辑器就会把color这个属性吞掉。。。*/
+  font-weight: 500;
+}
+
+/*引用*/
+#nice blockquote {
+  display: block;
+  font-size: 0.9em;
+  overflow: auto;
+  overflow-scrolling: touch;
+  border-left: 3px solid rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.05);
+  color: #6a737d;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+#nice blockquote p {
+  margin: 0px;
+  color: black;
+  line-height: 26px;
+}
+
+#nice .table-of-contents a {
+  border: none;
+  color: black;
+  font-weight: normal;
+}
+
+/*链接*/
+#nice a {
+  text-decoration: none;
+  color: #1e6bb8;
+  word-wrap: break-word;
+  font-weight: bold;
+  border-bottom: 1px solid #1e6bb8;
+}
+
+/*加粗*/
+#nice strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*斜体*/
+#nice em {
+  font-style: italic;
+  color: black;
+}
+
+/*加粗斜体*/
+#nice em strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*删除线*/
+#nice del {
+  font-style: italic;
+  color: black;
+}
+
+/*分隔线*/
+#nice hr {
+  height: 1px;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-top: 1px solid black;
+}
+
+/*代码块*/
+#nice pre {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+#nice pre code {
+  display: -webkit-box;
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  border-radius: 0px;
+  font-size: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+#nice pre code span {
+  line-height: 26px;
+}
+
+/*行内代码*/
+#nice p code,
+#nice li code {
+  font-size: 14px;
+  word-wrap: break-word;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+  color: #1e6bb8;
+  background-color: rgba(27,31,35,.05);
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  word-break: break-all;
+}
+
+/*图片*/
+#nice img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/*图片*/
+#nice figure {
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/*图片描述文字*/
+#nice figcaption {
+  margin-top: 5px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+/*表格*/
+#nice table {
+  display: table;
+  text-align: left;
+}
+#nice tbody {
+  border: 0;
+}
+
+#nice table tr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  background-color: white;
+}
+
+#nice table tr:nth-child(2n) {
+  background-color: #F8F8F8;
+}
+
+#nice table tr th,
+#nice table tr td {
+  font-size: 16px;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  text-align: left;
+}
+
+#nice table tr th {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+/* 微信代码块 */
+#nice .code-snippet__fix {
+  word-wrap: break-word !important;
+  font-size: 14px;
+  margin: 10px 0;
+  display: block;
+  color: #333;
+  position: relative;
+  background-color: rgba(0,0,0,0.03);
+  border: 1px solid #f0f0f0;
+  border-radius: 2px;
+  display: flex;
+  line-height: 20px;
+}
+#nice .code-snippet__fix pre {
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+#nice .code-snippet__fix .code-snippet__line-index {
+  counter-reset: line;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 1em;
+  list-style-type: none;
+  padding: 16px;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li {
+  list-style-type: none;
+  text-align: right;
+  line-height: 26px;
+  color: black;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li::before {
+  min-width: 1.5em;
+  text-align: right;
+  left: -2.5em;
+  counter-increment: line;
+  content: counter(line);
+  display: inline;
+  color: rgba(0,0,0,0.3);
+}
+#nice .code-snippet__fix pre {
+  overflow-x: auto;
+  padding: 16px;
+  padding-left: 0;
+  white-space: normal;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+#nice .code-snippet__fix code {
+  text-align: left;
+  font-size: 14px;
+  display: block;
+  white-space: pre;
+  display: flex;
+  position: relative;
+  font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace;
+  padding: 0px;
+}
+
+#nice .footnote-word {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-ref {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-item {
+  display: flex;
+}
+
+#nice .footnote-num {
+  display: inline;
+  width: 10%; /*神奇，50px就不可以*/
+  background: none;
+  font-size: 80%;
+  opacity: 0.6;
+  line-height: 26px;
+  font-family: ptima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+#nice .footnote-item p {
+  display: inline;
+  font-size: 14px;
+  width: 90%;
+  padding: 0px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+  word-break:break-all;
+  width: calc(100%-50)
+}
+
+#nice sub, sup {
+  line-height: 0;
+}
+
+#nice .footnotes-sep:before {
+  content: "参考资料";
+  display: block;
+}
+
+/* 解决公式问题 */
+#nice .block-equation {
+  display:block;
+  text-align: center;
+  overflow: auto;
+  display: block;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .block-equation svg {
+  max-width: 300% !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .inline-equation {
+}
+
+#nice .inline-equation svg {
+}
+
+#nice .imageflow-layer1 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  white-space: normal;
+  border: 0px none;
+  padding: 0px;
+  overflow: hidden;
+}
+
+#nice .imageflow-layer2 {
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+#nice .imageflow-layer3 {
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: middle;
+  width: 100%;
+}
+
+#nice .imageflow-img {
+  display: inline-block;
+}
+
+#nice .imageflow-caption {
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #888;
+}
+
+#nice .nice-suffix-juejin-container {
+  margin-top: 20px !important;
+}
+
+#nice figure a {
+  border: none;
+}
+</style>
+<style id="code-theme">/*
+
+Atom One Light by Daniel Gamage
+Original One Light Syntax theme from https://github.com/atom/one-light-syntax
+
+base:    #fafafa
+mono-1:  #383a42
+mono-2:  #686b77
+mono-3:  #a0a1a7
+hue-1:   #0184bb
+hue-2:   #4078f2
+hue-3:   #a626a4
+hue-4:   #50a14f
+hue-5:   #e45649
+hue-5-2: #c91243
+hue-6:   #986801
+hue-6-2: #c18401
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 16px;
+  color: #383a42;
+  background: #fafafa;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #a0a1a7;
+  font-style: italic;
+}
+
+.hljs-doctag,
+.hljs-keyword,
+.hljs-formula {
+  color: #a626a4;
+}
+
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst {
+  color: #e45649;
+}
+
+.hljs-literal {
+  color: #0184bb;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta-string {
+  color: #50a14f;
+}
+
+.hljs-built_in,
+.hljs-class .hljs-title {
+  color: #c18401;
+}
+
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-number {
+  color: #986801;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title {
+  color: #4078f2;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-link {
+  text-decoration: underline;
+}</style>
+<style id="markdown-theme">/* 全局属性
+ * 页边距 padding:30px;
+ * 全文字体 font-family:ptima-Regular;
+ * 英文换行 word-break:break-all;
+ */
+#nice {
+  font-family:PingFangSC-Light;
+}
+
+/* 段落，下方未标注标签参数均同此处
+ * 上边距 margin-top:5px;
+ * 下边距 margin-bottom:5px;
+ * 行高 line-height:26px;
+ * 词间距 word-spacing:3px;
+ * 字间距 letter-spacing:3px;
+ * 对齐 text-align:left;
+ * 颜色 color:#3e3e3e;
+ * 字体大小 font-size:16px;
+ * 首行缩进 text-indent:2em;
+ */
+#nice p {
+  margin:10px 10px;
+  line-height:1.75;
+  letter-spacing:0.2em;
+  font-size:14px;
+  word-spacing:0.1em;
+}
+
+/* 一级标题 */
+#nice h1 {
+  border-bottom:2px solid rgb(248,57,41);
+  font-size:1.3em;
+}
+
+/* 一级标题内容 */
+#nice h1 .content {
+  display:inline-block;
+  font-weight:normal;
+  background:rgb(248,57,41);
+  color:#ffffff;
+  padding:3px 10px 1px;
+  border-top-right-radius:3px;
+  border-top-left-radius:3px;
+  margin-right:3px;
+}
+
+/* 一级标题修饰 请参考有实例的主题 */
+#nice h1:after {
+}
+ 
+/* 二级标题 */
+#nice h2 {
+  text-align:left;
+  margin:20px 10px 0px 0px;
+}
+
+/* 二级标题内容 */
+#nice h2 .content {
+  font-family:STHeitiSC-Light;
+  font-size:18px;
+  font-weight:bolder;
+  display:inline-block;
+  padding-left:10px;
+  border-left:5px solid rgb(248,57,41);
+}
+
+/* 二级标题修饰 请参考有实例的主题 */
+#nice h2:after {
+}
+
+/* 三级标题 */
+#nice h3 {
+}
+
+/* 三级标题内容 */
+#nice h3 .content {
+  font-size:14px;
+  color:rgb(165,213,93);
+}
+
+/* 三级标题修饰 请参考有实例的主题 */
+#nice h3:after {
+}
+
+/* 无序列表整体样式
+ * list-style-type: square|circle|disc;
+ */
+#nice ul {
+  font-size: 14px;
+}
+
+/* 有序列表整体样式
+ * list-style-type: upper-roman|lower-greek|lower-alpha;
+ */
+#nice ol {
+  font-size: 14px;
+}
+
+/* 列表内容，不要设置li
+ */
+#nice li section {
+  font-size:13px;
+}
+
+/* 引用
+ * 左边缘颜色 border-left-color:black;
+ * 背景色 background:gray;
+ */
+#nice blockquote {
+  font-style:normal;
+  border-left:none;
+  padding:10px;
+  position:relative;
+  line-height:1.8;
+  border-radius:0px 0px 10px 10px;
+  color:#FEEEED;
+  background:#000;
+  box-shadow:#84A1A8 0px 10px 15px;
+}
+#nice blockquote:before {
+  content:" ";
+  display:inline;
+  color:#FFF;
+  font-size:4em;
+  font-family:Arial,serif;
+  line-height:1em;
+  font-weight:700;
+}
+
+/* 引用文字 */
+#nice blockquote p {
+  color:#FEEEED;
+  font-size:13px;
+  display:inline;
+}
+#nice blockquote:after {
+  content:"”";
+  float:right;
+  display:inline;
+  color:#FFF;
+  font-size:3em;
+  line-height:1em;
+  font-weight:500;
+}
+
+/* 链接 
+ * border-bottom: 1px solid #009688;
+ */
+#nice a {
+  color:rgb(248,57,41);
+  border-bottom: 1px solid #ff3502;
+  font-family:STHeitiSC-Light;
+}
+
+/* 加粗 */
+#nice strong {
+  font-weight:border;
+  color:rgb(248,57,41);
+}
+
+/* 斜体 */
+#nice em {
+  color:rgb(248,57,41);
+  letter-spacing:0.3em;
+}
+
+/* 加粗斜体 */
+#nice em strong {
+  color:rgb(248,57,41);
+  letter-spacing:0.3em;
+}
+
+/* 删除线 */
+#nice del {
+}
+ 
+/* 分隔线
+ * 粗细、样式和颜色
+ * border-top:1px solid #3e3e3e;
+ */
+#nice hr {
+  height:1px;
+  padding:0;
+  border:none;
+  border-top:medium solidid #333;
+  text-align:center;
+  background-image:linear-gradient(to right,rgba(248,57,41,0),rgba(248,57,41,0.75),rgba(248,57,41,0));
+}
+
+/* 图片
+ * 宽度 width:80%;
+ * 居中 margin:0 auto;
+ * 居左 margin:0 0;
+ */
+#nice img {
+  border-radius:0px 0px 5px 5px;
+  display:block;
+  margin:20px auto;
+  width:85%;
+  height:100%;
+  object-fit:contain;
+  box-shadow:#84A1A8 0px 10px 15px;
+}
+
+/* 图片描述文字 */
+#nice figcaption {
+  display:block;
+  font-size:12px;
+  font-family:PingFangSC-Light;
+}
+
+/* 行内代码 */
+#nice p code, #nice li code {
+  color:rgb(271,93,108);
+}
+
+/* 非微信代码块
+ * 代码块不换行 display:-webkit-box !important;
+ * 代码块换行 display:block;
+ */
+#nice pre code {
+}
+
+/*
+ * 表格内的单元格
+ * 字体大小 font-size: 16px;
+ * 边框 border: 1px solid #ccc;
+ * 内边距 padding: 5px 10px;
+ */
+#nice table tr th,
+#nice table tr td {
+  font-size: 14px;
+}
+
+/* 脚注文字 */
+#nice .footnote-word {
+  color:rgb(248,57,41);
+}
+
+/* 脚注上标 */
+#nice .footnote-ref {
+  color:rgb(248,57,41);
+}
+
+/*脚注链接样式*/
+#nice .footnote-item em {
+  color:#6E1E51;
+  font-size:12px;
+}
+
+/* "参考资料"四个字 
+ * 内容 content: "参考资料";
+ */
+#nice .footnotes-sep:before {
+}
+
+/* 参考资料编号 */
+#nice .footnote-num {
+}
+
+/* 参考资料文字 */
+#nice .footnote-item p { 
+}
+
+/* 参考资料解释 */
+#nice .footnote-item p em {
+}
+
+/* 行间公式
+ * 最大宽度 max-width: 300% !important;
+ */
+#nice .block-equation svg {
+}
+
+/* 行内公式
+ */
+#nice .inline-equation svg {  
+}
+
+/* 滑动图片
+ */
+#nice .imageflow-img {
+  display: inline-block;
+  width:100%;
+  margin-bottom: 0;
+}</style>
+<script data-ad-client="ca-pub-6205625102284861" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-63732284-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-63732284-5');
+</script>
+
+</head>
+
+<body style="margin-bottom: 20px;">
+  <header style="
+  height: 2em;
+  border-bottom: 1px solid rgba(0,0,0,.22);
+  padding-right: 2em;
+  text-align: right;
+">
+    <div style="max-width: 677px; margin: 5px auto;">一个叫木头，一个叫马尾</div>
+  </header>
+<section id="nice" style="max-width: 677px; margin: 5px auto;"><h1><span class="prefix"></span><span class="content">【干货满满】一个不使用任何三方库、仅借助JS和浏览器来解析excel表格的方法</span><span class="suffix"></span></h1><img src="/1984.png">
+
+<p>有些时候我们需要把excel中的表格数据转换为JSON数据(或其它格式)，然后供程序使用。这里提供一个简易的方案，基本上没用到什么依赖。</p>
+<hr>
+<p>方案包含了一些干货知识，这里一一列出。</p>
+<br>
+<h2><span class="prefix"></span><span class="content">【干货一】将Chrome浏览器变成文本编辑器</span><span class="suffix"></span></h2>
+<p>在浏览器地址栏中键入 <code>data:text/html, &lt;html contenteditable&gt;</code> 并回车。你发现了什么？</p>
+<p>不仅仅是一个空白的窗口，你还可以在里边打字。</p>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/6e2e8f21-40ed-4a00-834b-004e35998225.png" alt=""></figure>
+<br>
+<h2><span class="prefix"></span><span class="content">【干货二】复制excel中的表格，粘贴到上面打开的编辑窗口中。我们可以得到一个网页版的表格。</span><span class="suffix"></span></h2>
+<p>excel中的表格:</p>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/9383b27a-a9df-4983-80b2-4ae0b1492f97.png" alt=""></figure>
+<p>复制并粘贴到浏览器编辑窗口中的表格:</p>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/381c6817-a5b0-4409-9396-1a3bb6e2acb6.png" alt=""></figure>
+<br>
+<h2><span class="prefix"></span><span class="content">【干货三】粘贴到浏览器窗口中的表格，其实是一段完整的html文档。因此，我们可以使用熟悉的DOM接口来操纵它。</span><span class="suffix"></span></h2>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/a9d2072e-49f0-4b11-99c8-cc4b3e565baf.png" alt=""></figure>
+<br>
+<h2><span class="prefix"></span><span class="content">【干货四】Chrome支持我们在开发工具里用JS写程序。</span><span class="suffix"></span></h2>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/dfe8b47f-439c-4362-8901-069627a29a75.png" alt=""></figure>
+<hr>
+<p>有了以上知识支撑，我们只需要在开发工具下写一小段JS，解析表格DOM，将数据转换为JSON，目的就能达成。</p>
+<p>参考代码(可忽略，但如果你对DOM编程感兴趣，可以研究一下):</p>
+<pre class="custom"><code class="hljs"><span class="hljs-keyword">var</span>&nbsp;levels&nbsp;=&nbsp;[<span class="hljs-string">'thin'</span>,&nbsp;<span class="hljs-string">'normal'</span>,&nbsp;<span class="hljs-string">'fat'</span>,&nbsp;<span class="hljs-string">'overweight'</span>];<br><br>[...document.querySelectorAll(<span class="hljs-string">'tbody&gt;tr'</span>)].slice(<span class="hljs-number">5</span>).map(<span class="hljs-function"><span class="hljs-params">v</span>&nbsp;=&gt;</span>&nbsp;[...v.cells].map(text)).filter(<span class="hljs-function"><span class="hljs-params">v</span>&nbsp;=&gt;</span>&nbsp;v[<span class="hljs-number">0</span>]).map(<span class="hljs-function"><span class="hljs-params">v</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;[min,&nbsp;max,&nbsp;...rest]&nbsp;=&nbsp;v;<br>&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">height</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">min</span>:&nbsp;+min,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">max</span>:&nbsp;+max<br>&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">weights</span>:&nbsp;levelize(rest)<br>&nbsp;&nbsp;}<br>})<br><br><span class="hljs-function"><span class="hljs-keyword">function</span>&nbsp;<span class="hljs-title">text</span>(<span class="hljs-params">e</span>)&nbsp;</span>{<br><br>&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;e.textContent.trim();<br>}<br><br><span class="hljs-function"><span class="hljs-keyword">function</span>&nbsp;<span class="hljs-title">chunk</span>(<span class="hljs-params">arr,&nbsp;size</span>)&nbsp;</span>{<br>&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-built_in">Array</span>.from({<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">length</span>:&nbsp;<span class="hljs-built_in">Math</span>.ceil(arr.length&nbsp;/&nbsp;size)<br>&nbsp;&nbsp;},&nbsp;(_,&nbsp;i)&nbsp;=&gt;&nbsp;arr.slice(i&nbsp;*&nbsp;size,&nbsp;i&nbsp;*&nbsp;size&nbsp;+&nbsp;size));<br>}<br><br><span class="hljs-function"><span class="hljs-keyword">function</span>&nbsp;<span class="hljs-title">levelize</span>(<span class="hljs-params">arr</span>)&nbsp;</span>{<br><br>&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;chunk(arr,&nbsp;<span class="hljs-number">2</span>).reduce(<span class="hljs-function">(<span class="hljs-params">p,&nbsp;[min,&nbsp;max],&nbsp;i</span>)&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;p[levels[i]]&nbsp;=&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">min</span>:&nbsp;+min,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">max</span>:&nbsp;+max&nbsp;||&nbsp;<span class="hljs-number">10000</span><br>&nbsp;&nbsp;&nbsp;&nbsp;};<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;p;<br>&nbsp;&nbsp;},&nbsp;{})<br>}<br></code></pre>
+<p>运行上述代码后，终端显示如下信息:</p>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/bab7a02d-5acb-481b-a10f-40ee079759c8.png" alt=""></figure>
+<p>可以看到，终端出现一个长度为6的数组，刚好对应我们的6行数据；每个元素中含有身高以及体重范围。</p>
+<p>怎么把这个数组复制为JSON呢？？？</p>
+<h2><span class="prefix"></span><span class="content">【干货五】开发工具下脚本返回的最后一个变量，可以用&nbsp;$_ 代替；同时，开发工具提供了一个 copy() 函数，用于复制变量为JSON。</span><span class="suffix"></span></h2>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/f930ea11-75a6-42df-b566-f024fbc5f39d.png" alt=""></figure>
+<br>
+<hr>
+<p>最终，对于开头的excel表格，我们得到了如下想要的数据：</p>
+<pre class="custom"><code class="hljs">[<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"height"</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"min"</span>:&nbsp;<span class="hljs-number">76</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"max"</span>:&nbsp;<span class="hljs-number">76.9</span><br>&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"weights"</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"thin"</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"min"</span>:&nbsp;<span class="hljs-number">0</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"max"</span>:&nbsp;<span class="hljs-number">9.3</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"normal"</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"min"</span>:&nbsp;<span class="hljs-number">9.4</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"max"</span>:&nbsp;<span class="hljs-number">11.7</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"fat"</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"min"</span>:&nbsp;<span class="hljs-number">11.8</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"max"</span>:&nbsp;<span class="hljs-number">12.4</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"overweight"</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"min"</span>:&nbsp;<span class="hljs-number">12.5</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"max"</span>:&nbsp;<span class="hljs-number">10000</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"height"</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"min"</span>:&nbsp;<span class="hljs-number">77</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"max"</span>:&nbsp;<span class="hljs-number">77.9</span><br>&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"weights"</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"thin"</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"min"</span>:&nbsp;<span class="hljs-number">0</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"max"</span>:&nbsp;<span class="hljs-number">9.5</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"normal"</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"min"</span>:&nbsp;<span class="hljs-number">9.6</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"max"</span>:&nbsp;<span class="hljs-number">11.8</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"fat"</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"min"</span>:&nbsp;<span class="hljs-number">11.9</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"max"</span>:&nbsp;<span class="hljs-number">12.5</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"overweight"</span>:&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"min"</span>:&nbsp;<span class="hljs-number">12.6</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">"max"</span>:&nbsp;<span class="hljs-number">10000</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;},<br>&nbsp;&nbsp;...&nbsp;省略<br>]<br></code></pre>
+<br>
+<h2><span class="prefix"></span><span class="content">【最后一个干货】我们还可以在开发工具下使用快捷键 <code>cmd + p</code> ，来定位已有的js脚本并运行。</span><span class="suffix"></span></h2>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/43009284-fcb8-4af4-9a65-5e1dd37d14f7.png" alt=""></figure>
+<p>其实Chrome还有很多的技巧，自己耐心去挖掘吧！</p>
+<hr>
+<p>相关推荐：</p>
+<ul>
+<li><section><p><a href="http://mp.weixin.qq.com/s?__biz=MzI0NTYxMDg5NA==&amp;mid=2247484228&amp;idx=1&amp;sn=f9af92866ec6bff1eb07c5a28678eb9f&amp;chksm=e94aa3a5de3d2ab3233f25370db3e32e4da065de0d1fcf31f41a213c5c46fe349e60121c5a08&amp;scene=21#wechat_redirect">Chrome小技巧：在多设备间分享网页</a></p>
+</section></li><li><section><p><a href="http://mp.weixin.qq.com/s?__biz=MzI0NTYxMDg5NA==&amp;mid=2247484209&amp;idx=1&amp;sn=9d982a02f02e9eb2b67329a81e464c07&amp;chksm=e94aa3d0de3d2ac67c45479d053009142fd07ab8bf961398cf4417cac7433f259ec8befa72df&amp;scene=21#wechat_redirect">Chrome最新版支持将网络请求复制为 nodejs的fetch调用了</a></p>
+</section></li><li><section><p><a href="http://mp.weixin.qq.com/s?__biz=MzI0NTYxMDg5NA==&amp;mid=2247484225&amp;idx=1&amp;sn=7e96c1134ba8770518c9d7dbfb729d37&amp;chksm=e94aa3a0de3d2ab603ba761d73a2f95850a262c081fb7fcc9dfef518e509c7a15c9768692c5b&amp;scene=21#wechat_redirect">Chrome神器Tampermonkey之自动显示公众号音频下载链接</a></p>
+</section></li><li><section><p><a href="http://mp.weixin.qq.com/s?__biz=MzI0NTYxMDg5NA==&amp;mid=2247484233&amp;idx=1&amp;sn=b8c28e04234a103caa14179424d0bb84&amp;chksm=e94aa3a8de3d2abeb12c0c53c8d7e14528021e8ba36add28e030b232419c3d82d78d2c6744e9&amp;scene=21#wechat_redirect">Chrome神器Tampermonkey之快捷键小助手</a></p>
+</section></li></ul>
+</section>
+
+<div id="disqus_thread" style="max-width: 677px; margin: 20px auto;"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = location.href.replace('.html','');  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = location.pathname.replace('.html',''); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://beloved-family.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</body>
+</html>
