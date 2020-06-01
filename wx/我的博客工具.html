@@ -877,8 +877,18 @@ hue-6-2: #c18401
 <p><em>blog_template.js</em></p>
 <pre class="custom"><code class="hljs">(<span class="hljs-function">(<span class="hljs-params">doc</span>)&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;给mdnice设置一个默认的写作模板</span><br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;template&nbsp;=&nbsp;<span class="hljs-string">`<br>#&nbsp;title<br><br>&lt;div&nbsp;id="meta"&gt;<br><br>-&nbsp;filename:<br>-&nbsp;description:<br>-&nbsp;qr:&nbsp;/1984.png<br><br>&lt;/div&gt;<br><br>`</span>.trim();<br><br>&nbsp;&nbsp;localStorage.content&nbsp;=&nbsp;template;<br><br>&nbsp;&nbsp;location.reload();<br>})(<span class="hljs-built_in">document</span>);<br></code></pre>
 <p>这段脚本用来初始化博客模板。</p>
+<h2><span class="prefix"></span><span class="content">浏览统计</span><span class="suffix"></span></h2>
+<p>使用了流行的 <a href="https://analytics.google.com/">Google Analytics</a>。</p>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/54aef5b7-21dc-4708-ab72-d0554915a9be.png" alt=""></figure>
+<h2><span class="prefix"></span><span class="content">评论功能</span><span class="suffix"></span></h2>
+<p>应该没有比 <a href="https://disqus.com">Disqus</a> 更好用的了吧？不过国内好像加载不出来...</p>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/e38d8c6c-0065-4d81-87f0-cc047e470959.png" alt=""></figure>
+<h2><span class="prefix"></span><span class="content">引入广告</span><span class="suffix"></span></h2>
+<p>申请了几次 <a href="https://www.google.com/adsense">Google AdSense</a> 都因为内容不够被打回了，再等等。</p>
+<br>
 <hr>
-<p>我有部分文章是之前直接发布到微信公众号上的，并没有保留 markdown 原文。借助于 <a href="https://sitdown.mdnice.com/Demo.html">SitDown</a>工具，可以将上面脚本复制的公众号html结构反编译为markdown格式，再简单编辑后就可以发布到自有博客上去了。</p>
+<h2><span class="prefix"></span><span class="content">Bonus</span><span class="suffix"></span></h2>
+<p>我有部分文章之前是直接发布到微信公众号上的，并没有保留 markdown 原文。借助于 <a href="https://sitdown.mdnice.com/Demo.html">SitDown</a>工具，可以将上面脚本复制的公众号html结构反编译为markdown格式，再简单编辑后就可以发布到自有博客上去了。</p>
 <p>另外，在mdnice上发布的图片是在别人的cdn上的，为防止图片丢失，我还写了一个脚本用来备份文章上的图片到本地，见<a href="https://github.com/Youmoo/youmoo.github.io/blob/master/bin/backup-images.js">这里</a>。</p>
 <p>另另外，偶尔会有对图片进行二次编辑的需求，我不是设计出身，但发现 <a href="https://www.photopea.com/">photopea</a> 用来在线处理图片非常方便。</p>
 <hr>
