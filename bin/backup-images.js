@@ -44,7 +44,7 @@ const { posts_dir, posts_images_dir } = require("../config");
  */
 async function loadAndSave(remoteImage, dest) {
   const { hostname, pathname } = new URL(remoteImage);
-  const filename = hostname + "@" + pathname.slice(1);
+  const filename = hostname + "@" + pathname.slice(1).replace(/\//g, "_");
   const target = join(dest, filename);
   if (await exists(target)) {
     return console.log("文件已存在: ", { remoteImage, target });
