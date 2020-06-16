@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport"
+    content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+    <link rel="icon" type="image/png" href="/images/emoji-family.png">
+    <title>使用Node.js构建一个简单的加密货币区块链</title>
+    
+    <meta name="description" content="演示如何用Node.js开发一款简单的加密货币，以此来解释区块链的概念和原理"/>
+    
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta property="og:title" content="使用Node.js构建一个简单的加密货币区块链" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image" content="https://beloved.family/1984.png" />
+    <!-- theme: ️红绯HeyRain; code theme: ️atom-one-light -->
+<style id="basic-theme">/*默认样式，最佳实践*/
+
+/*全局属性*/
+#nice {
+  font-size: 16px;
+  color: black;
+  padding: 0 10px;
+  line-height: 1.6;
+  word-spacing: 0px;
+  letter-spacing: 0px;
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: left;
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  margin-top: -10px; /*解决开头空隙过大问题*/
+}
+
+/*段落*/
+#nice p {
+  font-size: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+}
+
+/*标题*/
+#nice h1,
+#nice h2,
+#nice h3,
+#nice h4,
+#nice h5,
+#nice h6 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding: 0px;
+  font-weight: bold;
+  color: black;
+}
+#nice h1 {
+  font-size: 24px;
+}
+#nice h2 {
+  font-size: 22px;
+}
+#nice h3 {
+  font-size: 20px;
+}
+#nice h4 {
+  font-size: 18px;
+}
+#nice h5 {
+  font-size: 16px;
+}
+#nice h6 {
+  font-size: 16px;
+}
+
+#nice h1 .prefix,
+#nice h2 .prefix,
+#nice h3 .prefix,
+#nice h4 .prefix,
+#nice h5 .prefix,
+#nice h6 .prefix {
+  display: none;
+}
+
+#nice h1 .suffix
+#nice h2 .suffix,
+#nice h3 .suffix,
+#nice h4 .suffix,
+#nice h5 .suffix,
+#nice h6 .suffix {
+  display: none;
+}
+
+/*列表*/
+#nice ul,
+#nice ol {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 25px;
+  color: black;
+}
+#nice ul {
+  list-style-type: disc;
+}
+#nice ul ul {
+  list-style-type: square;
+}
+
+#nice ol {
+  list-style-type: decimal;
+}
+
+#nice li section {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  line-height: 26px;
+  text-align: left;
+  color: rgb(1,1,1); /* 只要是纯黑色微信编辑器就会把color这个属性吞掉。。。*/
+  font-weight: 500;
+}
+
+/*引用*/
+#nice blockquote {
+  display: block;
+  font-size: 0.9em;
+  overflow: auto;
+  overflow-scrolling: touch;
+  border-left: 3px solid rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.05);
+  color: #6a737d;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+#nice blockquote p {
+  margin: 0px;
+  color: black;
+  line-height: 26px;
+}
+
+#nice .table-of-contents a {
+  border: none;
+  color: black;
+  font-weight: normal;
+}
+
+/*链接*/
+#nice a {
+  text-decoration: none;
+  color: #1e6bb8;
+  word-wrap: break-word;
+  font-weight: bold;
+  border-bottom: 1px solid #1e6bb8;
+}
+
+/*加粗*/
+#nice strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*斜体*/
+#nice em {
+  font-style: italic;
+  color: black;
+}
+
+/*加粗斜体*/
+#nice em strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*删除线*/
+#nice del {
+  font-style: italic;
+  color: black;
+}
+
+/*分隔线*/
+#nice hr {
+  height: 1px;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-top: 1px solid black;
+}
+
+/*代码块*/
+#nice pre {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+#nice pre code {
+  display: -webkit-box;
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  border-radius: 0px;
+  font-size: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+#nice pre code span {
+  line-height: 26px;
+}
+
+/*行内代码*/
+#nice p code,
+#nice li code {
+  font-size: 14px;
+  word-wrap: break-word;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+  color: #1e6bb8;
+  background-color: rgba(27,31,35,.05);
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  word-break: break-all;
+}
+
+/*图片*/
+#nice img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/*图片*/
+#nice figure {
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/*图片描述文字*/
+#nice figcaption {
+  margin-top: 5px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+/*表格*/
+#nice table {
+  display: table;
+  text-align: left;
+}
+#nice tbody {
+  border: 0;
+}
+
+#nice table tr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  background-color: white;
+}
+
+#nice table tr:nth-child(2n) {
+  background-color: #F8F8F8;
+}
+
+#nice table tr th,
+#nice table tr td {
+  font-size: 16px;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  text-align: left;
+}
+
+#nice table tr th {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+/* 微信代码块 */
+#nice .code-snippet__fix {
+  word-wrap: break-word !important;
+  font-size: 14px;
+  margin: 10px 0;
+  display: block;
+  color: #333;
+  position: relative;
+  background-color: rgba(0,0,0,0.03);
+  border: 1px solid #f0f0f0;
+  border-radius: 2px;
+  display: flex;
+  line-height: 20px;
+}
+#nice .code-snippet__fix pre {
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+#nice .code-snippet__fix .code-snippet__line-index {
+  counter-reset: line;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 1em;
+  list-style-type: none;
+  padding: 16px;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li {
+  list-style-type: none;
+  text-align: right;
+  line-height: 26px;
+  color: black;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li::before {
+  min-width: 1.5em;
+  text-align: right;
+  left: -2.5em;
+  counter-increment: line;
+  content: counter(line);
+  display: inline;
+  color: rgba(0,0,0,0.3);
+}
+#nice .code-snippet__fix pre {
+  overflow-x: auto;
+  padding: 16px;
+  padding-left: 0;
+  white-space: normal;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+#nice .code-snippet__fix code {
+  text-align: left;
+  font-size: 14px;
+  display: block;
+  white-space: pre;
+  display: flex;
+  position: relative;
+  font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace;
+  padding: 0px;
+}
+
+#nice .footnote-word {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-ref {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-item {
+  display: flex;
+}
+
+#nice .footnote-num {
+  display: inline;
+  width: 10%; /*神奇，50px就不可以*/
+  background: none;
+  font-size: 80%;
+  opacity: 0.6;
+  line-height: 26px;
+  font-family: ptima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+#nice .footnote-item p {
+  display: inline;
+  font-size: 14px;
+  width: 90%;
+  padding: 0px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+  word-break:break-all;
+  width: calc(100%-50)
+}
+
+#nice sub, sup {
+  line-height: 0;
+}
+
+#nice .footnotes-sep:before {
+  content: "参考资料";
+  display: block;
+}
+
+/* 解决公式问题 */
+#nice .block-equation {
+  display:block;
+  text-align: center;
+  overflow: auto;
+  display: block;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .block-equation svg {
+  max-width: 300% !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .inline-equation {
+}
+
+#nice .inline-equation svg {
+}
+
+#nice .imageflow-layer1 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  white-space: normal;
+  border: 0px none;
+  padding: 0px;
+  overflow: hidden;
+}
+
+#nice .imageflow-layer2 {
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+#nice .imageflow-layer3 {
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: middle;
+  width: 100%;
+}
+
+#nice .imageflow-img {
+  display: inline-block;
+}
+
+#nice .imageflow-caption {
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #888;
+}
+
+#nice .nice-suffix-juejin-container {
+  margin-top: 20px !important;
+}
+
+#nice figure a {
+  border: none;
+}
+</style>
+<style id="code-theme">/*
+
+Atom One Light by Daniel Gamage
+Original One Light Syntax theme from https://github.com/atom/one-light-syntax
+
+base:    #fafafa
+mono-1:  #383a42
+mono-2:  #686b77
+mono-3:  #a0a1a7
+hue-1:   #0184bb
+hue-2:   #4078f2
+hue-3:   #a626a4
+hue-4:   #50a14f
+hue-5:   #e45649
+hue-5-2: #c91243
+hue-6:   #986801
+hue-6-2: #c18401
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 16px;
+  color: #383a42;
+  background: #fafafa;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #a0a1a7;
+  font-style: italic;
+}
+
+.hljs-doctag,
+.hljs-keyword,
+.hljs-formula {
+  color: #a626a4;
+}
+
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst {
+  color: #e45649;
+}
+
+.hljs-literal {
+  color: #0184bb;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta-string {
+  color: #50a14f;
+}
+
+.hljs-built_in,
+.hljs-class .hljs-title {
+  color: #c18401;
+}
+
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-number {
+  color: #986801;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title {
+  color: #4078f2;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-link {
+  text-decoration: underline;
+}</style>
+<style id="markdown-theme">/* 全局属性
+ * 页边距 padding:30px;
+ * 全文字体 font-family:ptima-Regular;
+ * 英文换行 word-break:break-all;
+ */
+#nice {
+  font-family:PingFangSC-Light;
+}
+
+/* 段落，下方未标注标签参数均同此处
+ * 上边距 margin-top:5px;
+ * 下边距 margin-bottom:5px;
+ * 行高 line-height:26px;
+ * 词间距 word-spacing:3px;
+ * 字间距 letter-spacing:3px;
+ * 对齐 text-align:left;
+ * 颜色 color:#3e3e3e;
+ * 字体大小 font-size:16px;
+ * 首行缩进 text-indent:2em;
+ */
+#nice p {
+  margin:10px 10px;
+  line-height:1.75;
+  letter-spacing:0.2em;
+  font-size:14px;
+  word-spacing:0.1em;
+}
+
+/* 一级标题 */
+#nice h1 {
+  border-bottom:2px solid rgb(248,57,41);
+  font-size:1.3em;
+}
+
+/* 一级标题内容 */
+#nice h1 .content {
+  display:inline-block;
+  font-weight:normal;
+  background:rgb(248,57,41);
+  color:#ffffff;
+  padding:3px 10px 1px;
+  border-top-right-radius:3px;
+  border-top-left-radius:3px;
+  margin-right:3px;
+}
+
+/* 一级标题修饰 请参考有实例的主题 */
+#nice h1:after {
+}
+ 
+/* 二级标题 */
+#nice h2 {
+  text-align:left;
+  margin:20px 10px 0px 0px;
+}
+
+/* 二级标题内容 */
+#nice h2 .content {
+  font-family:STHeitiSC-Light;
+  font-size:18px;
+  font-weight:bolder;
+  display:inline-block;
+  padding-left:10px;
+  border-left:5px solid rgb(248,57,41);
+}
+
+/* 二级标题修饰 请参考有实例的主题 */
+#nice h2:after {
+}
+
+/* 三级标题 */
+#nice h3 {
+}
+
+/* 三级标题内容 */
+#nice h3 .content {
+  font-size:14px;
+  color:rgb(165,213,93);
+}
+
+/* 三级标题修饰 请参考有实例的主题 */
+#nice h3:after {
+}
+
+/* 无序列表整体样式
+ * list-style-type: square|circle|disc;
+ */
+#nice ul {
+  font-size: 14px;
+}
+
+/* 有序列表整体样式
+ * list-style-type: upper-roman|lower-greek|lower-alpha;
+ */
+#nice ol {
+  font-size: 14px;
+}
+
+/* 列表内容，不要设置li
+ */
+#nice li section {
+  font-size:13px;
+}
+
+/* 引用
+ * 左边缘颜色 border-left-color:black;
+ * 背景色 background:gray;
+ */
+#nice blockquote {
+  font-style:normal;
+  border-left:none;
+  padding:10px;
+  position:relative;
+  line-height:1.8;
+  border-radius:0px 0px 10px 10px;
+  color:#FEEEED;
+  background:#000;
+  box-shadow:#84A1A8 0px 10px 15px;
+}
+#nice blockquote:before {
+  content:" ";
+  display:inline;
+  color:#FFF;
+  font-size:4em;
+  font-family:Arial,serif;
+  line-height:1em;
+  font-weight:700;
+}
+
+/* 引用文字 */
+#nice blockquote p {
+  color:#FEEEED;
+  font-size:13px;
+  display:inline;
+}
+#nice blockquote:after {
+  content:"”";
+  float:right;
+  display:inline;
+  color:#FFF;
+  font-size:3em;
+  line-height:1em;
+  font-weight:500;
+}
+
+/* 链接 
+ * border-bottom: 1px solid #009688;
+ */
+#nice a {
+  color:rgb(248,57,41);
+  border-bottom: 1px solid #ff3502;
+  font-family:STHeitiSC-Light;
+}
+
+/* 加粗 */
+#nice strong {
+  font-weight:border;
+  color:rgb(248,57,41);
+}
+
+/* 斜体 */
+#nice em {
+  color:rgb(248,57,41);
+  letter-spacing:0.3em;
+}
+
+/* 加粗斜体 */
+#nice em strong {
+  color:rgb(248,57,41);
+  letter-spacing:0.3em;
+}
+
+/* 删除线 */
+#nice del {
+}
+ 
+/* 分隔线
+ * 粗细、样式和颜色
+ * border-top:1px solid #3e3e3e;
+ */
+#nice hr {
+  height:1px;
+  padding:0;
+  border:none;
+  border-top:medium solidid #333;
+  text-align:center;
+  background-image:linear-gradient(to right,rgba(248,57,41,0),rgba(248,57,41,0.75),rgba(248,57,41,0));
+}
+
+/* 图片
+ * 宽度 width:80%;
+ * 居中 margin:0 auto;
+ * 居左 margin:0 0;
+ */
+#nice img {
+  border-radius:0px 0px 5px 5px;
+  display:block;
+  margin:20px auto;
+  width:85%;
+  height:100%;
+  object-fit:contain;
+  box-shadow:#84A1A8 0px 10px 15px;
+}
+
+/* 图片描述文字 */
+#nice figcaption {
+  display:block;
+  font-size:12px;
+  font-family:PingFangSC-Light;
+}
+
+/* 行内代码 */
+#nice p code, #nice li code {
+  color:rgb(271,93,108);
+}
+
+/* 非微信代码块
+ * 代码块不换行 display:-webkit-box !important;
+ * 代码块换行 display:block;
+ */
+#nice pre code {
+}
+
+/*
+ * 表格内的单元格
+ * 字体大小 font-size: 16px;
+ * 边框 border: 1px solid #ccc;
+ * 内边距 padding: 5px 10px;
+ */
+#nice table tr th,
+#nice table tr td {
+  font-size: 14px;
+}
+
+/* 脚注文字 */
+#nice .footnote-word {
+  color:rgb(248,57,41);
+}
+
+/* 脚注上标 */
+#nice .footnote-ref {
+  color:rgb(248,57,41);
+}
+
+/*脚注链接样式*/
+#nice .footnote-item em {
+  color:#6E1E51;
+  font-size:12px;
+}
+
+/* "参考资料"四个字 
+ * 内容 content: "参考资料";
+ */
+#nice .footnotes-sep:before {
+}
+
+/* 参考资料编号 */
+#nice .footnote-num {
+}
+
+/* 参考资料文字 */
+#nice .footnote-item p { 
+}
+
+/* 参考资料解释 */
+#nice .footnote-item p em {
+}
+
+/* 行间公式
+ * 最大宽度 max-width: 300% !important;
+ */
+#nice .block-equation svg {
+}
+
+/* 行内公式
+ */
+#nice .inline-equation svg {  
+}
+
+/* 滑动图片
+ */
+#nice .imageflow-img {
+  display: inline-block;
+  width:100%;
+  margin-bottom: 0;
+}</style>
+<script data-ad-client="ca-pub-6205625102284861" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-63732284-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-63732284-5');
+</script>
+
+</head>
+
+<body style="margin-bottom: 20px;">
+  <header style="
+  height: 2em;
+  border-bottom: 1px solid rgba(0,0,0,.22);
+  padding-right: 2em;
+  text-align: right;
+">
+    <div style="max-width: 677px; margin: 5px auto;">一个叫木头，一个叫马尾</div>
+  </header>
+<section id="nice" style="max-width: 677px; margin: 5px auto;"><h1><span class="prefix"></span><span class="content">使用Node.js构建一个简单的加密货币区块链</span><span class="suffix"></span></h1>
+
+<p>文章译自: <span class="footnote-word">How To Build A Simple Cryptocurrency Blockchain In Node.js</span><sup class="footnote-ref">[1]</sup>，作者 Alfrick Opidi。</p>
+<p>摘要：本文演示了如何使用JavaScript中的类(class)和Node.js创建一个简单的加密货币，称为 <strong>smashingCoin</strong>。你不妨动手试试 —— 它比想象的要简单。</p>
+<hr>
+<p>加密货币的空前崛起，以及支撑它的区块链技术，已经风靡全球 —— 从十多年前作为学术概念的卑微起步，到目前在各个行业越来越多的应用。</p>
+<p>区块链技术之所以受到广泛关注，是因为它能够增强无信任环境下的安全性，实施去中心化，并使流程变得高效。</p>
+<p>传统上，<strong>Python</strong>一直是区块链开发事实上的编程语言。然而，随着这一神奇技术的扩散，开发选择也越来越多 —— <strong>Node.js</strong>也没有落下。</p>
+<p>本教程将讲述如何使用<strong>Node.js</strong>构建一个简单的加密货币区块链。它不会太过花哨，但足以帮助你了解区块链的工作原理。</p>
+<p>我把这种简单的加密货币称为 <strong>砸钱币(smashingCoin)</strong>。(原文发布的网站叫 <strong>smashingmagazine</strong>)</p>
+<p>如果你是一名 <strong>JavaScript</strong> 开发人员，想在加密货币这个新兴领域一跃而起，这篇文章将使你具备必要的入门技能。或者，如果你对加密货币世界中的事情是如何运作的感到好奇，那么本教程可能有助于回答你的一些问题。</p>
+<h2><span class="prefix"></span><span class="content">先决条件</span><span class="suffix"></span></h2>
+<p>要成功地按照本教程操作，你需要具备以下条件：</p>
+<ul>
+<li><section>电脑上已经安装 <strong>Node.js</strong>。你可以从<span class="footnote-word">这里</span><sup class="footnote-ref">[2]</sup>下载它；</section></li><li><section>一个代码编辑器，如 Visual Studio Code、Sublime Text 或 其他。</section></li></ul>
+<p>让我们开始吧。。</p>
+<h2><span class="prefix"></span><span class="content">区块链是什么</span><span class="suffix"></span></h2>
+<p>区块链是推动比特币和以太坊等数字货币的技术。它是一种创新的分布式公共记账技术，它保持着一个不断增长的记录列表，称为区块，这些记录使用加密技术安全连接。</p>
+<p><em>区块链</em> 这个词之所以得名，是因为它保存交易数据的方式，即以 <em>区块</em> 的方式保存，区块之间相互连接，形成一条<em>链</em>。区块链的规模会随着所进行的交易数量的增加而增长。</p>
+<p>任何有效的交易数据都会被记录到区块链网络中，而区块链网络受参与者规定的点对点规则的约束。例如，这种数据可以包含区块的 "价值"，如数字货币、交易记录(如各方交换商品和服务时)，或权利特权(如链所记录的是所有权信息时)。</p>
+<p>除了交易数据外，每个区块可能包含自己的加密哈希值（一个独特的标识符或数字足迹）、自己的nonce值（在加密计算中使用一次的任意随机数）、前一个区块的哈希值和最近认证交易的时间戳。</p>
+<p>由于每一个新区块都应该指向上一个区块，如果一个区块在没有包含上一个区块的正确哈希值的情况下被纳入链中，可能会导致整个区块链无效。这种不可变属性是区块链安全的关键。</p>
+<p>此外，各种类型的共识协议通常被应用于维护区块链的真实性上。共识协议用来确保所有参与者同意网络验证的交易。</p>
+<p>例如，常用的共识协议是<strong>工作量证明(proof of work)</strong>，其目的是确定一个数字，在完成一定的计算工作后，找到一个复杂数学问题的解决方案。</p>
+<p>工作量证明的主要思想是，区块链网络中的任何参与者都应该发现这个数字很难识别，但很容易验证。因此，它阻止了垃圾信息(spamming)和篡改区块链结构的行为。</p>
+<p>对大多数加密货币而言，在区块链上添加一个新的区块需要解决一个复杂的数学方程，随着时间的推移，这个方程的难度会随着区块链的发展而增加。因此，任何通过解决这个问题来证明自己做了工作的人都会得到数字货币的补偿，这个过程被称为 "<strong>挖矿</strong>"。</p>
+<h2><span class="prefix"></span><span class="content">怎么创建一个区块</span><span class="suffix"></span></h2>
+<p>现在，在介绍完区块链技术及其工作原理后，让我们看看如何在创建区块时应用这些概念。如前所述，区块是相互连接形成区块链的。</p>
+<p>为了创建<code>smashingCoin</code>货币，我将使用 <span class="footnote-word">JavaScript类</span><sup class="footnote-ref">[3]</sup>，类的概念在ES6中被引入。</p>
+<p>准备好了吗？</p>
+<p>开始动手吧。。</p>
+<p>下面是 <code>CryptoBlock</code> 类的代码:</p>
+<pre class="custom"><code class="hljs"><span class="hljs-keyword">const</span>&nbsp;SHA256&nbsp;=&nbsp;<span class="hljs-built_in">require</span>(<span class="hljs-string">"crypto-js/sha256"</span>);<br><span class="hljs-class"><span class="hljs-keyword">class</span>&nbsp;<span class="hljs-title">CryptoBlock</span>&nbsp;</span>{<br>&nbsp;&nbsp;<span class="hljs-keyword">constructor</span>(index,&nbsp;timestamp,&nbsp;data,&nbsp;precedingHash&nbsp;=&nbsp;"&nbsp;")&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.index&nbsp;=&nbsp;index;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.timestamp&nbsp;=&nbsp;timestamp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.data&nbsp;=&nbsp;data;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.precedingHash&nbsp;=&nbsp;precedingHash;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.hash&nbsp;=&nbsp;<span class="hljs-keyword">this</span>.computeHash();<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;computeHash()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;SHA256(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.index&nbsp;+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.precedingHash&nbsp;+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.timestamp&nbsp;+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-built_in">JSON</span>.stringify(<span class="hljs-keyword">this</span>.data)<br>&nbsp;&nbsp;&nbsp;&nbsp;).toString();<br>&nbsp;&nbsp;}<br>}<br></code></pre>
+<p>从上面的代码中可以看到，我创建了 <code>CryptoBlock</code> 类，并为它添加了 <code>constructor()</code> 方法 —— 就像在任何其他JavaScript类中所做的那样。然后，为了初始化它的属性，我为构造方法分配了以下参数。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">参数名</th>
+<th style="text-align:left">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>index</code></td>
+<td style="text-align:left">该数字具有惟一性，可以追踪整个区块链中每个区块的位置。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>timestamp</code></td>
+<td style="text-align:left">它记录了每笔完成的交易的发生时间。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>data</code></td>
+<td style="text-align:left">它提供了有关已完成交易的数据，如发件人的详细信息、收件人的详细信息和交易数量。</td>
+</tr>
+<tr>
+<td style="text-align:left"><code>precedingHash</code></td>
+<td style="text-align:left">它指向区块链中前一个区块的哈希值，这对维护区块链的完整性很重要。</td>
+</tr>
+</tbody>
+</table>
+<p>此外，我还使用了 <code>computeHash</code> 方法，根据块的属性计算出块的哈希值。</p>
+<p>如你所见，我导入了 <span class="footnote-word">crypto-js JavaScript库</span><sup class="footnote-ref">[4]</sup>，并使用它的 <code>crypto-js/sha256</code> 模块来计算每个块的哈希值。由于该模块返回的是一个数字对象，我使用了 <code>toString()</code>方法将其转换为字符串。</p>
+<p>要将crypto-js库添加到你的项目中，请进入终端并运行以下命令，使用<code>npm</code>安装：</p>
+<pre class="custom"><code class="hljs">npm&nbsp;install&nbsp;--save&nbsp;crypto-js<br></code></pre>
+<p>运行上面的命令后，包含库和其他必要文件的<code>node_modules</code>目录将被添加到你的项目文件夹中。</p>
+<h2><span class="prefix"></span><span class="content">怎么创建一个区块链</span><span class="suffix"></span></h2>
+<p>正如前面所解释的，区块链技术是基于所有区块之间相互链结的概念。因此，让我们创建一个 <code>CryptoBlockchain</code> 类，它将负责处理整个链的操作。丑媳妇要见公婆了。</p>
+<p><code>CryptoBlockchain</code>类将提供辅助方法来维护区块链的操作，完成不同的任务，例如创建新的区块并将其添加到链上。</p>
+<p>下面是 <code>CryptoBlockchain</code> 类的代码：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-class"><span class="hljs-keyword">class</span>&nbsp;<span class="hljs-title">CryptoBlockchain</span>&nbsp;</span>{<br>&nbsp;&nbsp;<span class="hljs-keyword">constructor</span>()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.blockchain&nbsp;=&nbsp;[<span class="hljs-keyword">this</span>.startGenesisBlock()];<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;startGenesisBlock()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-keyword">new</span>&nbsp;CryptoBlock(<span class="hljs-number">0</span>,&nbsp;<span class="hljs-string">"01/01/2020"</span>,&nbsp;<span class="hljs-string">"Initial&nbsp;Block&nbsp;in&nbsp;the&nbsp;Chain"</span>,&nbsp;<span class="hljs-string">"0"</span>);<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;obtainLatestBlock()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-keyword">this</span>.blockchain[<span class="hljs-keyword">this</span>.blockchain.length&nbsp;-&nbsp;<span class="hljs-number">1</span>];<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;addNewBlock(newBlock)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;newBlock.precedingHash&nbsp;=&nbsp;<span class="hljs-keyword">this</span>.obtainLatestBlock().hash;<br>&nbsp;&nbsp;&nbsp;&nbsp;newBlock.hash&nbsp;=&nbsp;newBlock.computeHash();<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.blockchain.push(newBlock);<br>&nbsp;&nbsp;}<br>}<br></code></pre>
+<p>我们谈谈构成 <code>CryptoBlockchain</code> 类的每个辅助方法的作用。</p>
+<h3><span class="prefix"></span><span class="content">1. 构造方法</span><span class="suffix"></span></h3>
+<p>这个方法用来实例化区块链。在构造函数里面，我创建了 <code>blockchain</code> 属性，它指向了一个区块数组。注意，我传递了 <code>startGenesisBlock()</code> 方法，该方法在链中创建了初始区块(<code>创世块</code>)。</p>
+<h3><span class="prefix"></span><span class="content">2. 构造创世块(Genesis Block)</span><span class="suffix"></span></h3>
+<p>在区块链中，创世区块指的是网络上创建的第一个区块。每当一个区块与链的其他部分整合时，都应该指向前一个区块。</p>
+<p>相反，对于初始区块而言，它没有任何前一个区块可以指向。因此，创世区块通常被硬编码到区块链中。这样一来，后续的区块就可以在其上创建。它的索引通常为0。</p>
+<p>我使用 <code>startGenesisBlock()</code> 方法创建了创世块。注意，我使用前面创建的<code>CryptoBlock</code>类创建了它，并传递了 <code>index</code>、<code>timestamp</code>、<code>data</code>和 <code>precedingHash</code>参数。</p>
+<h3><span class="prefix"></span><span class="content">3. 获取最近的区块</span><span class="suffix"></span></h3>
+<p>获取区块链中最新的区块，有助于确保当前区块的哈希值指向上一个区块的哈希值 —— 从而维护链的完整性。</p>
+<p>我使用 <code>obtainLatestBlock()</code> 方法来得到它。</p>
+<h3><span class="prefix"></span><span class="content">4. 添加新的区块</span><span class="suffix"></span></h3>
+<p>我使用<code>addNewBlock()</code>方法将一个新的区块添加到链中。为了达到这个目的，我将新区块的前一个哈希值(precedingHash)设置为等于链中最后一个区块的哈希值 —— 从而确保链是防篡改的。</p>
+<p>由于新区块的属性会随着每一次新的计算而改变，所以再次计算它的加密哈希值很重要。更新其哈希值后，新区块被推送到区块链数组中。</p>
+<p>实际上，在区块链上添加一个新的区块并不是那么容易，因为要经过好几道检查。尽管如此，对于这种简单的加密货币来说，它足以证明区块链的实际工作原理。</p>
+<h2><span class="prefix"></span><span class="content">测试该区块链</span><span class="suffix"></span></h2>
+<p>现在，让我们测试一下我们的简单区块链，看看它是否有效。</p>
+<p>下面是代码：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-keyword">let</span>&nbsp;smashingCoin&nbsp;=&nbsp;<span class="hljs-keyword">new</span>&nbsp;CryptoBlockchain();<br>smashingCoin.addNewBlock(<br>&nbsp;&nbsp;<span class="hljs-keyword">new</span>&nbsp;CryptoBlock(<span class="hljs-number">1</span>,&nbsp;<span class="hljs-string">"01/06/2020"</span>,&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">sender</span>:&nbsp;<span class="hljs-string">"Iris&nbsp;Ljesnjanin"</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">recipient</span>:&nbsp;<span class="hljs-string">"Cosima&nbsp;Mielke"</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">quantity</span>:&nbsp;<span class="hljs-number">50</span>,<br>&nbsp;&nbsp;})<br>);<br>smashingCoin.addNewBlock(<br>&nbsp;&nbsp;<span class="hljs-keyword">new</span>&nbsp;CryptoBlock(<span class="hljs-number">2</span>,&nbsp;<span class="hljs-string">"01/07/2020"</span>,&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">sender</span>:&nbsp;<span class="hljs-string">"Vitaly&nbsp;Friedman"</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">recipient</span>:&nbsp;<span class="hljs-string">"Ricardo&nbsp;Gimenes"</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">quantity</span>:&nbsp;<span class="hljs-number">100</span>,<br>&nbsp;&nbsp;})<br>);<br><span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(smashingCoin,&nbsp;<span class="hljs-literal">null</span>,&nbsp;<span class="hljs-number">4</span>));<br></code></pre>
+<p>从上面的代码中可以看到，我创建了一个新的<code>CryptoBlockchain</code>类的实例，并将其命名为<code>smashingCoin</code>。然后，我使用一些随意的值向区块链中添加了两个区块。对于<code>data</code>参数，我使用了一个对象，并添加了发送者的详细信息、接收者的详细信息和交易数量。</p>
+<p>在终端上运行这些代码，我得到的输出是这样的：</p>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/937da16a-9f75-4f9f-bd63-4b53e90ae480.png" alt="检查我们的区块链能否正常工作"><figcaption>检查我们的区块链能否正常工作</figcaption></figure>
+<p>这就是<code>smashingCoin</code>的样子！它是一个包含<code>blockchain</code>属性的对象，该属性又是一个包含链中所有区块的数组。正如你在上图中看到的，每个区块都会引用前一个区块的哈希值。例如，第二个区块引用了第一个区块的哈希值。在测试并看到我们的区块链工作后，让我们再添加一些功能来增强<code>smashingCoin</code>的特性。</p>
+<h2><span class="prefix"></span><span class="content">怎么验证区块链的完整性</span><span class="suffix"></span></h2>
+<p>如前所述，区块链的一个关键特征是，一旦一个区块被添加到链上，就不能改变，否则会使链上其他部分的完整性失效。</p>
+<p>因此，为了验证区块链的完整性，我将在<code>CryptoBlockchain</code>类中添加一个<code>checkChainValidity()</code>方法。</p>
+<p>哈希值对于确保区块链的有效性和安全性至关重要，因为区块内容的任何变化都将导致产生一个全新的哈希值，并使区块链失效。</p>
+<p>因此，<code>checkChainValidity()</code>方法将利用<code>if</code>语句来验证每个区块的哈希值是否被篡改。从第一个创建的区块开始，它会循环检查整个区块链并检查其有效性。需要注意的是，由于创世区块是硬编码的，所以它不会被检查。</p>
+<p>同时，该方法将验证每两个连续区块的哈希值是否相互指向。如果区块链的完整性没有被破坏，则返回true；否则，如果出现任何异常情况，则返回false。</p>
+<p>下面是代码：</p>
+<pre class="custom"><code class="hljs">checkChainValidity()&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">for</span>&nbsp;(<span class="hljs-keyword">let</span>&nbsp;i&nbsp;=&nbsp;<span class="hljs-number">1</span>;&nbsp;i&nbsp;&lt;&nbsp;<span class="hljs-keyword">this</span>.blockchain.length;&nbsp;i++)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;currentBlock&nbsp;=&nbsp;<span class="hljs-keyword">this</span>.blockchain[i];<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;precedingBlock&nbsp;=&nbsp;<span class="hljs-keyword">this</span>.blockchain[i&nbsp;-&nbsp;<span class="hljs-number">1</span>];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">if</span>&nbsp;(currentBlock.hash&nbsp;!==&nbsp;currentBlock.computeHash())&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-literal">false</span>;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">if</span>&nbsp;(currentBlock.precedingHash&nbsp;!==&nbsp;precedingBlock.hash)&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-literal">false</span>;<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-literal">true</span>;<br>}<br></code></pre>
+<h2><span class="prefix"></span><span class="content">怎么添加工作量证明</span><span class="suffix"></span></h2>
+<p>如前所述，工作量证明是为了增加挖矿或向区块链添加新区块所需难度而应用的一个概念。</p>
+<p>对于<code>smashingCoin</code>，我会采用一个简单的算法，阻止人们轻易生成新的区块，或者在区块链上制造大量垃圾。</p>
+<p>所以，在<code>CryptoBlock</code>类中，我会添加另一个方法，叫做<code>proofOfWork()</code>。本质上，这个简单的算法识别了一个数字，作为<code>difficulty</code>属性传递，这样每个区块的哈希值都包含与这个difficulty级别对应的前导零(leading zeros)。</p>
+<p>确保每个区块的哈希值都以难度等级(difficulty)中设定的零的数目开始，这需要大量的计算能力。难度越高，挖掘新区块所需的时间就越长。</p>
+<p>此外，我会在每一个哈希块中加入一个随机的nonce值，这样，当进行rehash时，仍然可以满足难度等级限制。</p>
+<p>下面是代码：</p>
+<pre class="custom"><code class="hljs">proofOfWork(difficulty)&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">while</span>&nbsp;(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.hash.substring(<span class="hljs-number">0</span>,&nbsp;difficulty)&nbsp;!==&nbsp;<span class="hljs-built_in">Array</span>(difficulty&nbsp;+&nbsp;<span class="hljs-number">1</span>).join(<span class="hljs-string">"0"</span>)<br>&nbsp;&nbsp;)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.nonce++;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.hash&nbsp;=&nbsp;<span class="hljs-keyword">this</span>.computeHash();<br>&nbsp;&nbsp;}<br>}<br></code></pre>
+<p>再来，这里是更新后的 <code>computeHash()</code> 方法，其中包含了 <code>nonce</code> 变量：</p>
+<pre class="custom"><code class="hljs">computeHash()&nbsp;{<br>&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;SHA256(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.index&nbsp;+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.precedingHash&nbsp;+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.timestamp&nbsp;+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-built_in">JSON</span>.stringify(<span class="hljs-keyword">this</span>.data)&nbsp;+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.nonce<br>&nbsp;&nbsp;).toString();<br>}<br></code></pre>
+<p>另外，为了实现新区块生成过程中的工作量证明机制，我将在<code>addNewBlock()</code>方法中加入<code>proofOfWork()</code>方法的调用：</p>
+<pre class="custom"><code class="hljs">addNewBlock(newBlock)&nbsp;{<br>&nbsp;&nbsp;newBlock.precedingHash&nbsp;=&nbsp;<span class="hljs-keyword">this</span>.obtainLatestBlock().hash;<br>&nbsp;&nbsp;<span class="hljs-comment">//newBlock.hash&nbsp;=&nbsp;newBlock.computeHash();</span><br>&nbsp;&nbsp;newBlock.proofOfWork(<span class="hljs-keyword">this</span>.difficulty);<br>&nbsp;&nbsp;<span class="hljs-keyword">this</span>.blockchain.push(newBlock);<br>}<br></code></pre>
+<h2><span class="prefix"></span><span class="content">汇总</span><span class="suffix"></span></h2>
+<p>以下是使用<code>Node.js</code>构建<code>smashingCoin</code>加密货币的全部代码：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-keyword">const</span>&nbsp;SHA256&nbsp;=&nbsp;<span class="hljs-built_in">require</span>(<span class="hljs-string">"crypto-js/sha256"</span>);<br><span class="hljs-class"><span class="hljs-keyword">class</span>&nbsp;<span class="hljs-title">CryptoBlock</span>&nbsp;</span>{<br>&nbsp;&nbsp;<span class="hljs-keyword">constructor</span>(index,&nbsp;timestamp,&nbsp;data,&nbsp;precedingHash&nbsp;=&nbsp;"&nbsp;")&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.index&nbsp;=&nbsp;index;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.timestamp&nbsp;=&nbsp;timestamp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.data&nbsp;=&nbsp;data;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.precedingHash&nbsp;=&nbsp;precedingHash;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.hash&nbsp;=&nbsp;<span class="hljs-keyword">this</span>.computeHash();<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.nonce&nbsp;=&nbsp;<span class="hljs-number">0</span>;<br>&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;computeHash()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;SHA256(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.index&nbsp;+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.precedingHash&nbsp;+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.timestamp&nbsp;+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-built_in">JSON</span>.stringify(<span class="hljs-keyword">this</span>.data)&nbsp;+<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.nonce<br>&nbsp;&nbsp;&nbsp;&nbsp;).toString();<br>&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;proofOfWork(difficulty)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">while</span>&nbsp;(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.hash.substring(<span class="hljs-number">0</span>,&nbsp;difficulty)&nbsp;!==&nbsp;<span class="hljs-built_in">Array</span>(difficulty&nbsp;+&nbsp;<span class="hljs-number">1</span>).join(<span class="hljs-string">"0"</span>)<br>&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.nonce++;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.hash&nbsp;=&nbsp;<span class="hljs-keyword">this</span>.computeHash();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;}<br>}<br><br><span class="hljs-class"><span class="hljs-keyword">class</span>&nbsp;<span class="hljs-title">CryptoBlockchain</span>&nbsp;</span>{<br>&nbsp;&nbsp;<span class="hljs-keyword">constructor</span>()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.blockchain&nbsp;=&nbsp;[<span class="hljs-keyword">this</span>.startGenesisBlock()];<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.difficulty&nbsp;=&nbsp;<span class="hljs-number">4</span>;<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;startGenesisBlock()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-keyword">new</span>&nbsp;CryptoBlock(<span class="hljs-number">0</span>,&nbsp;<span class="hljs-string">"01/01/2020"</span>,&nbsp;<span class="hljs-string">"Initial&nbsp;Block&nbsp;in&nbsp;the&nbsp;Chain"</span>,&nbsp;<span class="hljs-string">"0"</span>);<br>&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;obtainLatestBlock()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-keyword">this</span>.blockchain[<span class="hljs-keyword">this</span>.blockchain.length&nbsp;-&nbsp;<span class="hljs-number">1</span>];<br>&nbsp;&nbsp;}<br>&nbsp;&nbsp;addNewBlock(newBlock)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;newBlock.precedingHash&nbsp;=&nbsp;<span class="hljs-keyword">this</span>.obtainLatestBlock().hash;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment">//newBlock.hash&nbsp;=&nbsp;newBlock.computeHash();</span><br>&nbsp;&nbsp;&nbsp;&nbsp;newBlock.proofOfWork(<span class="hljs-keyword">this</span>.difficulty);<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">this</span>.blockchain.push(newBlock);<br>&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;checkChainValidity()&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">for</span>&nbsp;(<span class="hljs-keyword">let</span>&nbsp;i&nbsp;=&nbsp;<span class="hljs-number">1</span>;&nbsp;i&nbsp;&lt;&nbsp;<span class="hljs-keyword">this</span>.blockchain.length;&nbsp;i++)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;currentBlock&nbsp;=&nbsp;<span class="hljs-keyword">this</span>.blockchain[i];<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;precedingBlock&nbsp;=&nbsp;<span class="hljs-keyword">this</span>.blockchain[i&nbsp;-&nbsp;<span class="hljs-number">1</span>];<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">if</span>&nbsp;(currentBlock.hash&nbsp;!==&nbsp;currentBlock.computeHash())&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-literal">false</span>;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">if</span>&nbsp;(currentBlock.precedingHash&nbsp;!==&nbsp;precedingBlock.hash)&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-literal">false</span>;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-literal">true</span>;<br>&nbsp;&nbsp;}<br>}<br><br><span class="hljs-keyword">let</span>&nbsp;smashingCoin&nbsp;=&nbsp;<span class="hljs-keyword">new</span>&nbsp;CryptoBlockchain();<br><br><span class="hljs-built_in">console</span>.log(<span class="hljs-string">"smashingCoin&nbsp;mining&nbsp;in&nbsp;progress...."</span>);<br>smashingCoin.addNewBlock(<br>&nbsp;&nbsp;<span class="hljs-keyword">new</span>&nbsp;CryptoBlock(<span class="hljs-number">1</span>,&nbsp;<span class="hljs-string">"01/06/2020"</span>,&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">sender</span>:&nbsp;<span class="hljs-string">"Iris&nbsp;Ljesnjanin"</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">recipient</span>:&nbsp;<span class="hljs-string">"Cosima&nbsp;Mielke"</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">quantity</span>:&nbsp;<span class="hljs-number">50</span>,<br>&nbsp;&nbsp;})<br>);<br><br>smashingCoin.addNewBlock(<br>&nbsp;&nbsp;<span class="hljs-keyword">new</span>&nbsp;CryptoBlock(<span class="hljs-number">2</span>,&nbsp;<span class="hljs-string">"01/07/2020"</span>,&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">sender</span>:&nbsp;<span class="hljs-string">"Vitaly&nbsp;Friedman"</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">recipient</span>:&nbsp;<span class="hljs-string">"Ricardo&nbsp;Gimenes"</span>,<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-attr">quantity</span>:&nbsp;<span class="hljs-number">100</span>,<br>&nbsp;&nbsp;})<br>);<br><br><span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(smashingCoin,&nbsp;<span class="hljs-literal">null</span>,&nbsp;<span class="hljs-number">4</span>));<br><br></code></pre>
+<p>如果在终端上运行这些代码，得到的输出将类似这样：</p>
+<figure><img src="https://imgkr.cn-bj.ufileos.com/aefcecdb-9938-486e-9e37-a21c1f0f0357.png" alt="总于得到了我们  加密货币！"><figcaption>总于得到了我们 <code>smashingCoin</code> 加密货币！</figcaption></figure>
+<p>如上图所示，现在的哈希值从四个零开始，这与工作证明机制中设定的难度等级相对应。</p>
+<h2><span class="prefix"></span><span class="content">总结</span><span class="suffix"></span></h2>
+<p>就是这样! 这就是你如何使用Node.js构建一个简单的加密货币区块链方式。</p>
+<p>当然，<code>smashingCoin</code>加密货币远未完成。事实上，如果你对它不做更多的改进而直接发布，它是不可能满足当前市场对安全、可靠、直观的数字货币的要求的 —— 你会成为唯一一个使用它的人!</p>
+<p>尽管如此，我希望本教程能让你掌握一些基本技能，让你在惊心动魄的加密世界里得以一展身手。</p>
+<h3 class="footnotes-sep"></h3>
+<section class="footnotes">
+<span id="fn1" class="footnote-item"><span class="footnote-num">[1] </span><p>How To Build A Simple Cryptocurrency Blockchain In Node.js: <em>https://www.smashingmagazine.com/2020/02/cryptocurrency-blockchain-node-js/</em></p>
+</span>
+<span id="fn2" class="footnote-item"><span class="footnote-num">[2] </span><p>Node.js下载地址: <em>https://nodejs.org/en/</em></p>
+</span>
+<span id="fn3" class="footnote-item"><span class="footnote-num">[3] </span><p>JavaScript Classes: <em>https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes</em></p>
+</span>
+<span id="fn4" class="footnote-item"><span class="footnote-num">[4] </span><p>crypto-js JavaScript library: <em>https://www.npmjs.com/package/crypto-js</em></p>
+</span>
+</section>
+</section>
+
+<div id="disqus_thread" style="max-width: 677px; margin: 20px auto;"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = location.href.replace('.html','');  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = location.pathname.replace('.html',''); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://beloved-family.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</body>
+</html>
