@@ -18,3 +18,4 @@ https://beloved.family/wx/24行代码实现一个Redux
 https://beloved.family/wx/在IDEA中查找所有吃异常的代码
 https://beloved.family/wx/jq的两个特殊用法示例
 https://beloved.family/wx/使用Node.js构建一个简单的加密货币区块链
+https://beloved.family/wx/详解jq中强大的reduce操作
