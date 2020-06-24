@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport"
+    content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+    <link rel="icon" type="image/png" href="/images/emoji-family.png">
+    <title>在Spring Boot项目中实现MySQL的读写分离</title>
+    <link rel="canonical" href="https://beloved.family/wx/在Spring-Boot项目中实现MySQL的读写分离" />
+    <meta name="description" content="涉及到使用Docker运行MySQL master/slave; Spring Boot多数据源配置; Spring Boot MySQL读写分离"/>
+    
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta property="og:title" content="在Spring Boot项目中实现MySQL的读写分离" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image" content="https://beloved.family/1984.png" />
+    <!-- theme: ️红绯HeyRain; code theme: ️atom-one-light -->
+<style id="basic-theme">/*默认样式，最佳实践*/
+
+/*全局属性*/
+#nice {
+  font-size: 16px;
+  color: black;
+  padding: 0 10px;
+  line-height: 1.6;
+  word-spacing: 0px;
+  letter-spacing: 0px;
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: left;
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  margin-top: -10px; /*解决开头空隙过大问题*/
+}
+
+/*段落*/
+#nice p {
+  font-size: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+}
+
+/*标题*/
+#nice h1,
+#nice h2,
+#nice h3,
+#nice h4,
+#nice h5,
+#nice h6 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding: 0px;
+  font-weight: bold;
+  color: black;
+}
+#nice h1 {
+  font-size: 24px;
+}
+#nice h2 {
+  font-size: 22px;
+}
+#nice h3 {
+  font-size: 20px;
+}
+#nice h4 {
+  font-size: 18px;
+}
+#nice h5 {
+  font-size: 16px;
+}
+#nice h6 {
+  font-size: 16px;
+}
+
+#nice h1 .prefix,
+#nice h2 .prefix,
+#nice h3 .prefix,
+#nice h4 .prefix,
+#nice h5 .prefix,
+#nice h6 .prefix {
+  display: none;
+}
+
+#nice h1 .suffix
+#nice h2 .suffix,
+#nice h3 .suffix,
+#nice h4 .suffix,
+#nice h5 .suffix,
+#nice h6 .suffix {
+  display: none;
+}
+
+/*列表*/
+#nice ul,
+#nice ol {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 25px;
+  color: black;
+}
+#nice ul {
+  list-style-type: disc;
+}
+#nice ul ul {
+  list-style-type: square;
+}
+
+#nice ol {
+  list-style-type: decimal;
+}
+
+#nice li section {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  line-height: 26px;
+  text-align: left;
+  color: rgb(1,1,1); /* 只要是纯黑色微信编辑器就会把color这个属性吞掉。。。*/
+  font-weight: 500;
+}
+
+/*引用*/
+#nice blockquote {
+  display: block;
+  font-size: 0.9em;
+  overflow: auto;
+  overflow-scrolling: touch;
+  border-left: 3px solid rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.05);
+  color: #6a737d;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+#nice blockquote p {
+  margin: 0px;
+  color: black;
+  line-height: 26px;
+}
+
+#nice .table-of-contents a {
+  border: none;
+  color: black;
+  font-weight: normal;
+}
+
+/*链接*/
+#nice a {
+  text-decoration: none;
+  color: #1e6bb8;
+  word-wrap: break-word;
+  font-weight: bold;
+  border-bottom: 1px solid #1e6bb8;
+}
+
+/*加粗*/
+#nice strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*斜体*/
+#nice em {
+  font-style: italic;
+  color: black;
+}
+
+/*加粗斜体*/
+#nice em strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*删除线*/
+#nice del {
+  font-style: italic;
+  color: black;
+}
+
+/*分隔线*/
+#nice hr {
+  height: 1px;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-top: 1px solid black;
+}
+
+/*代码块*/
+#nice pre {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+#nice pre code {
+  display: -webkit-box;
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  border-radius: 0px;
+  font-size: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+#nice pre code span {
+  line-height: 26px;
+}
+
+/*行内代码*/
+#nice p code,
+#nice li code {
+  font-size: 14px;
+  word-wrap: break-word;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+  color: #1e6bb8;
+  background-color: rgba(27,31,35,.05);
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  word-break: break-all;
+}
+
+/*图片*/
+#nice img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/*图片*/
+#nice figure {
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/*图片描述文字*/
+#nice figcaption {
+  margin-top: 5px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+/*表格*/
+#nice table {
+  display: table;
+  text-align: left;
+}
+#nice tbody {
+  border: 0;
+}
+
+#nice table tr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  background-color: white;
+}
+
+#nice table tr:nth-child(2n) {
+  background-color: #F8F8F8;
+}
+
+#nice table tr th,
+#nice table tr td {
+  font-size: 16px;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  text-align: left;
+}
+
+#nice table tr th {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+/* 微信代码块 */
+#nice .code-snippet__fix {
+  word-wrap: break-word !important;
+  font-size: 14px;
+  margin: 10px 0;
+  display: block;
+  color: #333;
+  position: relative;
+  background-color: rgba(0,0,0,0.03);
+  border: 1px solid #f0f0f0;
+  border-radius: 2px;
+  display: flex;
+  line-height: 20px;
+}
+#nice .code-snippet__fix pre {
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+#nice .code-snippet__fix .code-snippet__line-index {
+  counter-reset: line;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 1em;
+  list-style-type: none;
+  padding: 16px;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li {
+  list-style-type: none;
+  text-align: right;
+  line-height: 26px;
+  color: black;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li::before {
+  min-width: 1.5em;
+  text-align: right;
+  left: -2.5em;
+  counter-increment: line;
+  content: counter(line);
+  display: inline;
+  color: rgba(0,0,0,0.3);
+}
+#nice .code-snippet__fix pre {
+  overflow-x: auto;
+  padding: 16px;
+  padding-left: 0;
+  white-space: normal;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+#nice .code-snippet__fix code {
+  text-align: left;
+  font-size: 14px;
+  display: block;
+  white-space: pre;
+  display: flex;
+  position: relative;
+  font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace;
+  padding: 0px;
+}
+
+#nice .footnote-word {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-ref {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-item {
+  display: flex;
+}
+
+#nice .footnote-num {
+  display: inline;
+  width: 10%; /*神奇，50px就不可以*/
+  background: none;
+  font-size: 80%;
+  opacity: 0.6;
+  line-height: 26px;
+  font-family: ptima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+#nice .footnote-item p {
+  display: inline;
+  font-size: 14px;
+  width: 90%;
+  padding: 0px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+  word-break:break-all;
+  width: calc(100%-50)
+}
+
+#nice sub, sup {
+  line-height: 0;
+}
+
+#nice .footnotes-sep:before {
+  content: "参考资料";
+  display: block;
+}
+
+/* 解决公式问题 */
+#nice .block-equation {
+  display:block;
+  text-align: center;
+  overflow: auto;
+  display: block;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .block-equation svg {
+  max-width: 300% !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .inline-equation {
+}
+
+#nice .inline-equation svg {
+}
+
+#nice .imageflow-layer1 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  white-space: normal;
+  border: 0px none;
+  padding: 0px;
+  overflow: hidden;
+}
+
+#nice .imageflow-layer2 {
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+#nice .imageflow-layer3 {
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: middle;
+  width: 100%;
+}
+
+#nice .imageflow-img {
+  display: inline-block;
+}
+
+#nice .imageflow-caption {
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #888;
+}
+
+#nice .nice-suffix-juejin-container {
+  margin-top: 20px !important;
+}
+
+#nice figure a {
+  border: none;
+}
+</style>
+<style id="code-theme">/*
+
+Atom One Light by Daniel Gamage
+Original One Light Syntax theme from https://github.com/atom/one-light-syntax
+
+base:    #fafafa
+mono-1:  #383a42
+mono-2:  #686b77
+mono-3:  #a0a1a7
+hue-1:   #0184bb
+hue-2:   #4078f2
+hue-3:   #a626a4
+hue-4:   #50a14f
+hue-5:   #e45649
+hue-5-2: #c91243
+hue-6:   #986801
+hue-6-2: #c18401
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 16px;
+  color: #383a42;
+  background: #fafafa;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #a0a1a7;
+  font-style: italic;
+}
+
+.hljs-doctag,
+.hljs-keyword,
+.hljs-formula {
+  color: #a626a4;
+}
+
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst {
+  color: #e45649;
+}
+
+.hljs-literal {
+  color: #0184bb;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta-string {
+  color: #50a14f;
+}
+
+.hljs-built_in,
+.hljs-class .hljs-title {
+  color: #c18401;
+}
+
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-number {
+  color: #986801;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title {
+  color: #4078f2;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-link {
+  text-decoration: underline;
+}</style>
+<style id="markdown-theme">/* 全局属性
+ * 页边距 padding:30px;
+ * 全文字体 font-family:ptima-Regular;
+ * 英文换行 word-break:break-all;
+ */
+#nice {
+  font-family:PingFangSC-Light;
+}
+
+/* 段落，下方未标注标签参数均同此处
+ * 上边距 margin-top:5px;
+ * 下边距 margin-bottom:5px;
+ * 行高 line-height:26px;
+ * 词间距 word-spacing:3px;
+ * 字间距 letter-spacing:3px;
+ * 对齐 text-align:left;
+ * 颜色 color:#3e3e3e;
+ * 字体大小 font-size:16px;
+ * 首行缩进 text-indent:2em;
+ */
+#nice p {
+  margin:10px 10px;
+  line-height:1.75;
+  letter-spacing:0.2em;
+  font-size:14px;
+  word-spacing:0.1em;
+}
+
+/* 一级标题 */
+#nice h1 {
+  border-bottom:2px solid rgb(248,57,41);
+  font-size:1.3em;
+}
+
+/* 一级标题内容 */
+#nice h1 .content {
+  display:inline-block;
+  font-weight:normal;
+  background:rgb(248,57,41);
+  color:#ffffff;
+  padding:3px 10px 1px;
+  border-top-right-radius:3px;
+  border-top-left-radius:3px;
+  margin-right:3px;
+}
+
+/* 一级标题修饰 请参考有实例的主题 */
+#nice h1:after {
+}
+ 
+/* 二级标题 */
+#nice h2 {
+  text-align:left;
+  margin:20px 10px 0px 0px;
+}
+
+/* 二级标题内容 */
+#nice h2 .content {
+  font-family:STHeitiSC-Light;
+  font-size:18px;
+  font-weight:bolder;
+  display:inline-block;
+  padding-left:10px;
+  border-left:5px solid rgb(248,57,41);
+}
+
+/* 二级标题修饰 请参考有实例的主题 */
+#nice h2:after {
+}
+
+/* 三级标题 */
+#nice h3 {
+}
+
+/* 三级标题内容 */
+#nice h3 .content {
+  font-size:14px;
+  color:rgb(165,213,93);
+}
+
+/* 三级标题修饰 请参考有实例的主题 */
+#nice h3:after {
+}
+
+/* 无序列表整体样式
+ * list-style-type: square|circle|disc;
+ */
+#nice ul {
+  font-size: 14px;
+}
+
+/* 有序列表整体样式
+ * list-style-type: upper-roman|lower-greek|lower-alpha;
+ */
+#nice ol {
+  font-size: 14px;
+}
+
+/* 列表内容，不要设置li
+ */
+#nice li section {
+  font-size:13px;
+}
+
+/* 引用
+ * 左边缘颜色 border-left-color:black;
+ * 背景色 background:gray;
+ */
+#nice blockquote {
+  font-style:normal;
+  border-left:none;
+  padding:10px;
+  position:relative;
+  line-height:1.8;
+  border-radius:0px 0px 10px 10px;
+  color:#FEEEED;
+  background:#000;
+  box-shadow:#84A1A8 0px 10px 15px;
+}
+#nice blockquote:before {
+  content:" ";
+  display:inline;
+  color:#FFF;
+  font-size:4em;
+  font-family:Arial,serif;
+  line-height:1em;
+  font-weight:700;
+}
+
+/* 引用文字 */
+#nice blockquote p {
+  color:#FEEEED;
+  font-size:13px;
+  display:inline;
+}
+#nice blockquote:after {
+  content:"”";
+  float:right;
+  display:inline;
+  color:#FFF;
+  font-size:3em;
+  line-height:1em;
+  font-weight:500;
+}
+
+/* 链接 
+ * border-bottom: 1px solid #009688;
+ */
+#nice a {
+  color:rgb(248,57,41);
+  border-bottom: 1px solid #ff3502;
+  font-family:STHeitiSC-Light;
+}
+
+/* 加粗 */
+#nice strong {
+  font-weight:border;
+  color:rgb(248,57,41);
+}
+
+/* 斜体 */
+#nice em {
+  color:rgb(248,57,41);
+  letter-spacing:0.3em;
+}
+
+/* 加粗斜体 */
+#nice em strong {
+  color:rgb(248,57,41);
+  letter-spacing:0.3em;
+}
+
+/* 删除线 */
+#nice del {
+}
+ 
+/* 分隔线
+ * 粗细、样式和颜色
+ * border-top:1px solid #3e3e3e;
+ */
+#nice hr {
+  height:1px;
+  padding:0;
+  border:none;
+  border-top:medium solidid #333;
+  text-align:center;
+  background-image:linear-gradient(to right,rgba(248,57,41,0),rgba(248,57,41,0.75),rgba(248,57,41,0));
+}
+
+/* 图片
+ * 宽度 width:80%;
+ * 居中 margin:0 auto;
+ * 居左 margin:0 0;
+ */
+#nice img {
+  border-radius:0px 0px 5px 5px;
+  display:block;
+  margin:20px auto;
+  width:85%;
+  height:100%;
+  object-fit:contain;
+  box-shadow:#84A1A8 0px 10px 15px;
+}
+
+/* 图片描述文字 */
+#nice figcaption {
+  display:block;
+  font-size:12px;
+  font-family:PingFangSC-Light;
+}
+
+/* 行内代码 */
+#nice p code, #nice li code {
+  color:rgb(271,93,108);
+}
+
+/* 非微信代码块
+ * 代码块不换行 display:-webkit-box !important;
+ * 代码块换行 display:block;
+ */
+#nice pre code {
+}
+
+/*
+ * 表格内的单元格
+ * 字体大小 font-size: 16px;
+ * 边框 border: 1px solid #ccc;
+ * 内边距 padding: 5px 10px;
+ */
+#nice table tr th,
+#nice table tr td {
+  font-size: 14px;
+}
+
+/* 脚注文字 */
+#nice .footnote-word {
+  color:rgb(248,57,41);
+}
+
+/* 脚注上标 */
+#nice .footnote-ref {
+  color:rgb(248,57,41);
+}
+
+/*脚注链接样式*/
+#nice .footnote-item em {
+  color:#6E1E51;
+  font-size:12px;
+}
+
+/* "参考资料"四个字 
+ * 内容 content: "参考资料";
+ */
+#nice .footnotes-sep:before {
+}
+
+/* 参考资料编号 */
+#nice .footnote-num {
+}
+
+/* 参考资料文字 */
+#nice .footnote-item p { 
+}
+
+/* 参考资料解释 */
+#nice .footnote-item p em {
+}
+
+/* 行间公式
+ * 最大宽度 max-width: 300% !important;
+ */
+#nice .block-equation svg {
+}
+
+/* 行内公式
+ */
+#nice .inline-equation svg {  
+}
+
+/* 滑动图片
+ */
+#nice .imageflow-img {
+  display: inline-block;
+  width:100%;
+  margin-bottom: 0;
+}</style>
+<script data-ad-client="ca-pub-6205625102284861" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-63732284-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-63732284-5');
+</script>
+
+</head>
+
+<body style="margin-bottom: 20px;">
+  <header style="
+  height: 2em;
+  border-bottom: 1px solid rgba(0,0,0,.22);
+  padding-right: 2em;
+  text-align: right;
+">
+    <div style="max-width: 677px; margin: 5px auto;">一个叫木头，一个叫马尾</div>
+  </header>
+<section id="nice" style="max-width: 677px; margin: 5px auto;"><h1><span class="prefix"></span><span class="content">在Spring Boot项目中实现MySQL的读写分离</span><span class="suffix"></span></h1>
+
+<p>一个涉及到数据库的应用，其性能瓶颈通常在于数据库本身，通常的解决路径有优化索引、引入缓存、分库分表、利用数据库对主从复制的支持实现读写分离等(实际上，我们会根据具体情况组合使用这些方式)。</p>
+<p>本文重点关注数据库的读写分离，介绍如何在Spring Boot项目中对MySQL数据库实现相关操作。</p>
+<p>为了搭建一个最小的可运行环境，我们还会利用Docker跑一个简单的MySQL主从实例。</p>
+<p>整篇文章针对三个问题而展开：</p>
+<ol>
+<li><section>怎么在 Docker 上部署一个简单的 MySQL 主从实例;</section></li><li><section>Spring Boot 项目中如何配置多数据源；</section></li><li><section>Spring Boot 项目中如何针对读、写情况在多数据源间自动切换。</section></li></ol>
+<h2><span class="prefix"></span><span class="content">怎么在 Docker 上部署一个简单的 MySQL 主从实例</span><span class="suffix"></span></h2>
+<p>从google上搜索 <code>docker hub mysql master slave</code>，我找到了这么一个仓库: <span class="footnote-word">actency/docker-mysql-replication</span><sup class="footnote-ref">[1]</sup>。试用之后感觉比较顺手，那就用它来演示吧！</p>
+<p>以下是部署命令(要求宿主机已安装docker环境)：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-comment">#&nbsp;运行&nbsp;master</span><br>docker&nbsp;run&nbsp;-d&nbsp;\<br>&nbsp;--name&nbsp;mysql_master&nbsp;\<br>&nbsp;-v&nbsp;<span class="hljs-variable">${PWD}</span>/data/mastermysql:/var/lib/mysql&nbsp;\<br>&nbsp;-e&nbsp;MYSQL_ROOT_PASSWORD=mysqlroot&nbsp;\<br>&nbsp;-e&nbsp;MYSQL_USER=example_user&nbsp;\<br>&nbsp;-e&nbsp;MYSQL_PASSWORD=mysqlpwd&nbsp;\<br>&nbsp;-e&nbsp;MYSQL_DATABASE=example&nbsp;\<br>&nbsp;-e&nbsp;REPLICATION_USER=replication_user&nbsp;\<br>&nbsp;-e&nbsp;REPLICATION_PASSWORD=myreplpassword&nbsp;\<br>&nbsp;-p&nbsp;3360:3306&nbsp;\<br>&nbsp;actency/docker-mysql-replication:5.7<br>&nbsp;<br>&nbsp;<span class="hljs-comment">#&nbsp;运行slave</span><br>&nbsp;&nbsp;docker&nbsp;run&nbsp;-d&nbsp;\<br>&nbsp;--name&nbsp;mysql_slave&nbsp;\<br>&nbsp;-v&nbsp;<span class="hljs-variable">${PWD}</span>/data/slavemysql:/var/lib/mysql&nbsp;\<br>&nbsp;-e&nbsp;MYSQL_ROOT_PASSWORD=mysqlroot&nbsp;\<br>&nbsp;-e&nbsp;MYSQL_USER=example_user&nbsp;\<br>&nbsp;-e&nbsp;MYSQL_PASSWORD=mysqlpwd&nbsp;\<br>&nbsp;-e&nbsp;MYSQL_DATABASE=example&nbsp;\<br>&nbsp;-e&nbsp;REPLICATION_USER=replication_user&nbsp;\<br>&nbsp;-e&nbsp;REPLICATION_PASSWORD=myreplpassword&nbsp;\<br>&nbsp;--link&nbsp;mysql_master:master&nbsp;\<br>&nbsp;-p&nbsp;3361:3306&nbsp;\<br>&nbsp;actency/docker-mysql-replication:5.7<br></code></pre>
+<p>要注意的几点：</p>
+<ul>
+<li><section><strong>master</strong> 的数据位于当前目录下的<code>data/mastermysql</code>子目录；</section></li><li><section><strong>slave</strong> 的数据位于当前目录下的<code>data/slavemysql</code>子目录；</section></li><li><section><strong>master、slave</strong> 数据库的 <strong>root</strong> 用户的密码都是 <code>mysqlroot</code></section></li><li><section><strong>master</strong> 映射到宿主机上的端口是 <code>3360</code>;</section></li><li><section><strong>slave</strong> 映射到宿主机上的端口是 <code>3361</code>;</section></li><li><section><strong>master、slave</strong>都创建了一个默认的 <code>example</code> 数据库。</section></li></ul>
+<h3><span class="prefix"></span><span class="content">验证主从数据库的有效性</span><span class="suffix"></span></h3>
+<p>在宿主机上执行：</p>
+<pre class="custom"><code class="hljs">docker&nbsp;<span class="hljs-built_in">exec</span>&nbsp;mysql_slave&nbsp;\<br>mysql&nbsp;-uroot&nbsp;-pmysqlroot&nbsp;-e&nbsp;<span class="hljs-string">"SHOW&nbsp;SLAVE&nbsp;STATUS\G;"</span><br></code></pre>
+<p>可以看到如下输出:</p>
+<pre class="custom"><code class="hljs">**********&nbsp;1.&nbsp;row&nbsp;***************************<br>Slave_IO_State:&nbsp;Waiting&nbsp;<span class="hljs-keyword">for</span>&nbsp;master&nbsp;to&nbsp;send&nbsp;event<br>Master_Host:&nbsp;172.17.0.2<br>Master_User:&nbsp;replication_user<br>Master_Port:&nbsp;3306<br>Connect_Retry:&nbsp;60<br>Master_Log_File:&nbsp;mysql-bin.000005<br>Read_Master_Log_Pos:&nbsp;154<br>Relay_Log_File:&nbsp;mysql-relay.000008<br>Relay_Log_Pos:&nbsp;367<br>Relay_Master_Log_File:&nbsp;mysql-bin.000005<br>Slave_IO_Running:&nbsp;Yes<br>Slave_SQL_Running:&nbsp;Yes<br>...<br></code></pre>
+<p>为了方便，我们打开两个终端窗口分别连接 <code>master</code> 和 <code>slave</code> 数据库:</p>
+<pre class="custom"><code class="hljs"><span class="hljs-comment">#&nbsp;在终端一连接&nbsp;master</span><br>docker&nbsp;<span class="hljs-built_in">exec</span>&nbsp;-it&nbsp;mysql_master&nbsp;\<br>mysql&nbsp;-uroot&nbsp;-pmysqlroot&nbsp;example<br><span class="hljs-comment">#&nbsp;在终端二连接&nbsp;slave</span><br>docker&nbsp;<span class="hljs-built_in">exec</span>&nbsp;-it&nbsp;mysql_slave&nbsp;\<br>mysql&nbsp;-uroot&nbsp;-pmysqlroot&nbsp;example<br></code></pre>
+<p>效果如下：</p>
+<figure><img src="https://static01.imgkr.com/temp/fc4a59368a8a45269a25aee84b71d40d.png" alt=""></figure>
+<p>默认情况下，两个库都是空的(没有table):</p>
+<figure><img src="https://static01.imgkr.com/temp/74bfee59ad4643ddb30bf59b3b735bae.png" alt="初始状态下，两个库是空的"><figcaption>初始状态下，两个库是空的</figcaption></figure>
+<p>我们尝试在 <strong>master</strong> 库中新建一张表，并查看 <strong>slave</strong> 库中是否会同步创建该表：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-comment">#&nbsp;创建表的语句</span><br><span class="hljs-keyword">CREATE</span>&nbsp;<span class="hljs-keyword">TABLE</span>&nbsp;<span class="hljs-string">`book`</span>&nbsp;(<br>&nbsp;&nbsp;<span class="hljs-string">`id`</span>&nbsp;<span class="hljs-built_in">bigint</span>(<span class="hljs-number">20</span>)&nbsp;<span class="hljs-keyword">NOT</span>&nbsp;<span class="hljs-literal">NULL</span>&nbsp;AUTO_INCREMENT&nbsp;<span class="hljs-keyword">COMMENT</span>&nbsp;<span class="hljs-string">'ID,自增'</span>,<br>&nbsp;&nbsp;<span class="hljs-string">`title`</span>&nbsp;<span class="hljs-built_in">varchar</span>(<span class="hljs-number">150</span>)&nbsp;<span class="hljs-keyword">DEFAULT</span>&nbsp;<span class="hljs-literal">NULL</span>&nbsp;<span class="hljs-keyword">COMMENT</span>&nbsp;<span class="hljs-string">'书名'</span>,<br>&nbsp;&nbsp;PRIMARY&nbsp;<span class="hljs-keyword">KEY</span>&nbsp;(<span class="hljs-string">`id`</span>)<br>)&nbsp;<span class="hljs-keyword">ENGINE</span>=<span class="hljs-keyword">InnoDB</span>&nbsp;<span class="hljs-keyword">DEFAULT</span>&nbsp;<span class="hljs-keyword">CHARSET</span>=utf8mb4;<br></code></pre>
+<figure><img src="https://static01.imgkr.com/temp/be9acde1bd9f49b29534302dd25ffc00.png" alt="检查表结构是否同步"><figcaption>检查表结构是否同步</figcaption></figure>
+<p>可以看到表结构同步过来了，让我们接着下一个问题吧。</p>
+<h2><span class="prefix"></span><span class="content">Spring Boot 项目中如何配置多数据源</span><span class="suffix"></span></h2>
+<p>大部分情况下，我们的项目只需要一个MySQL数据源配置，而且借助Spring Boot的<code>DataSourceAutoConfiguration</code>配置，能省我们不少功夫。</p>
+<p>引入读写分离后，我们至少需要配置两个数据源，一个用于<code>写</code>，一个用于<code>读</code>。注意这里用了 <em>至少</em>，因为某些情况下，会有一主多从或多主多从，这时就会需要配置更多的数据源了。</p>
+<p>为了最小化运行环境，我们以一主一从的双数据源配置作为示例(原理是相通的)。</p>
+<h3><span class="prefix"></span><span class="content">创建一个最小化的Spring Boot项目</span><span class="suffix"></span></h3>
+<p>打开 <span class="footnote-word">Spring Initializr</span><sup class="footnote-ref">[2]</sup> 网站，新建一个Spring Boot 项目，我们只需要引入 <code>MySQL</code> 和 <code>JDBC API</code> 依赖，其它使用默认的即可：</p>
+<figure><img src="https://static01.imgkr.com/temp/f30bf3b3bba7486b9434f0fe65e66d55.png" alt="引入项目的依赖"><figcaption>引入项目的依赖</figcaption></figure>
+<p>点击页面上的 <strong>Generate</strong> 按钮，会生成一个 <code>demo.zip</code> 文件，我们下载并解压它，再 <code>cd</code> 到项目文件夹下执行如下命令：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-comment">#&nbsp;编译项目</span><br>mvn&nbsp;compile<br></code></pre>
+<p>编译完成后，使用IDE打开它：</p>
+<figure><img src="https://static01.imgkr.com/temp/43d7bbf0d6e243ac85872f783ee69655.png" alt="一个普通的Sprint Boot Maven项目"><figcaption>一个普通的Sprint Boot Maven项目</figcaption></figure>
+<h3><span class="prefix"></span><span class="content">配置多数据源</span><span class="suffix"></span></h3>
+<p>为了方便，我们把资源路径下的<code>application.properties</code>改为<code>application.yaml</code>，<code>yaml</code>格式更简洁。要配置多数据源，只需要在<code>application.yaml</code>中加入以下内容：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-comment">#&nbsp;master</span><br><span class="hljs-string">spring.datasource:</span><br><span class="hljs-attr">&nbsp;&nbsp;jdbc-url:</span>&nbsp;<span class="hljs-attr">jdbc:mysql://0.0.0.0:3360/example?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;zeroDateTimeBehavior=CONVERT_TO_NULL</span><br><span class="hljs-attr">&nbsp;&nbsp;username:</span>&nbsp;<span class="hljs-string">root</span><br><span class="hljs-attr">&nbsp;&nbsp;password:</span>&nbsp;&nbsp;<span class="hljs-string">mysqlroot</span><br><span class="hljs-attr">&nbsp;&nbsp;driverClassName:</span>&nbsp;<span class="hljs-string">com.mysql.cj.jdbc.Driver</span><br><br><span class="hljs-comment">#&nbsp;slave</span><br><span class="hljs-string">spring.slave-datasource:</span><br><span class="hljs-attr">&nbsp;&nbsp;jdbc-url:</span>&nbsp;<span class="hljs-attr">jdbc:mysql://0.0.0.0:3361/example?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;zeroDateTimeBehavior=CONVERT_TO_NULL</span><br><span class="hljs-attr">&nbsp;&nbsp;username:</span>&nbsp;<span class="hljs-string">root</span><br><span class="hljs-attr">&nbsp;&nbsp;password:</span>&nbsp;&nbsp;<span class="hljs-string">mysqlroot</span><br><span class="hljs-attr">&nbsp;&nbsp;driverClassName:</span>&nbsp;<span class="hljs-string">com.mysql.cj.jdbc.Driver</span><br></code></pre>
+<p>然后新增一个配置类，根据上述配置来初始化两个<code>Datasource</code>:</p>
+<pre class="custom"><code class="hljs"><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span>&nbsp;<span class="hljs-class"><span class="hljs-keyword">class</span>&nbsp;<span class="hljs-title">DbConfig</span>&nbsp;</span>{<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-meta">@Bean</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-meta">@Primary</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-meta">@ConfigurationProperties</span>(prefix&nbsp;=&nbsp;<span class="hljs-string">"spring.datasource"</span>)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-function"><span class="hljs-keyword">public</span>&nbsp;DataSource&nbsp;<span class="hljs-title">masterDataSource</span><span class="hljs-params">()</span>&nbsp;</span>{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;DataSourceBuilder.create().build();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-meta">@Bean</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-meta">@ConfigurationProperties</span>(prefix&nbsp;=&nbsp;<span class="hljs-string">"spring.slave-datasource"</span>)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-function"><span class="hljs-keyword">public</span>&nbsp;DataSource&nbsp;<span class="hljs-title">slaveDataSource</span><span class="hljs-params">()</span>&nbsp;</span>{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;DataSourceBuilder.create().build();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+<p>有了以上，我们可以在<code>DemoApplicationTests.java</code>中编写一个测试方法，判断多数据源是否有效：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-meta">@SpringBootTest</span><br><span class="hljs-class"><span class="hljs-keyword">class</span>&nbsp;<span class="hljs-title">DemoApplicationTests</span>&nbsp;</span>{<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-meta">@Autowired</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">private</span>&nbsp;DataSource&nbsp;masterDataSource;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-meta">@Autowired</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-meta">@Qualifier</span>(<span class="hljs-string">"slaveDataSource"</span>)<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">private</span>&nbsp;DataSource&nbsp;slaveDataSource;<br><br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-meta">@Test</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-function"><span class="hljs-keyword">void</span>&nbsp;<span class="hljs-title">contextLoads</span><span class="hljs-params">()</span>&nbsp;</span>{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JdbcTemplate&nbsp;master&nbsp;=&nbsp;<span class="hljs-keyword">new</span>&nbsp;JdbcTemplate(masterDataSource);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JdbcTemplate&nbsp;slave&nbsp;=&nbsp;<span class="hljs-keyword">new</span>&nbsp;JdbcTemplate(slaveDataSource);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;master.update(<span class="hljs-string">"truncate&nbsp;table&nbsp;book"</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;主写</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;master.update(<span class="hljs-string">"insert&nbsp;into&nbsp;book(id,title)&nbsp;values(?,?)"</span>,&nbsp;<span class="hljs-number">1</span>,&nbsp;<span class="hljs-string">"hello&nbsp;world"</span>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;从读</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Map&lt;String,&nbsp;Object&gt;&nbsp;data&nbsp;=&nbsp;slave.queryForMap(<span class="hljs-string">"select&nbsp;*&nbsp;from&nbsp;book&nbsp;where&nbsp;id=1"</span>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Assertions.assertEquals(<span class="hljs-string">"hello&nbsp;world"</span>,&nbsp;data.get(<span class="hljs-string">"title"</span>));<br><br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+<p>运行该测试方法，可以看到我们得到了预期的结果：</p>
+<figure><img src="https://static01.imgkr.com/temp/4f7912c17f6a4d249fee713b643f9ee9.png" alt="测试多数据源配置是否有效"><figcaption>测试多数据源配置是否有效</figcaption></figure>
+<p>再来，就是最后一步了。</p>
+<h2><span class="prefix"></span><span class="content">Spring Boot 项目中如何针对读、写情况动态切换数据源</span><span class="suffix"></span></h2>
+<p>上面的测试类首先证明了多数据源配置是生效的，二来也演示了如何手动切换数据源。</p>
+<p>实际应用中，这种方式未免繁琐，那有没有办法根据事务上下文信息，智能切换数据源呢？</p>
+<p>我想，在计算机世界中，我们是可以这样大胆的说的：<em>Where there is a problem, there is a way.</em></p>
+<p>比如，Spring框架本身就提供了一个<code>AbstractRoutingDataSource</code>类，专门用来支持数据源动态切换。官方也有相关博文对此作了详细的介绍: <span class="footnote-word">Dynamic DataSource Routing</span><sup class="footnote-ref">[3]</sup>。</p>
+<p>按照上面博文的思路，并参考另一篇文章: <span class="footnote-word">Read-write and read-only transaction routing with Spring</span><sup class="footnote-ref">[4]</sup>，要实现动态切换，只需要：</p>
+<h3><span class="prefix"></span><span class="content">1. 先定义一个<code>AbstractRoutingDataSource</code>类的子类，用来整合多个数据源</span><span class="suffix"></span></h3>
+<pre class="custom"><code class="hljs"><span class="hljs-keyword">public</span>&nbsp;<span class="hljs-class"><span class="hljs-keyword">class</span>&nbsp;<span class="hljs-title">TransactionRoutingDataSource</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">extends</span>&nbsp;<span class="hljs-title">AbstractRoutingDataSource</span>&nbsp;</span>{<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-meta">@Nullable</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-meta">@Override</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-function"><span class="hljs-keyword">protected</span>&nbsp;Object&nbsp;<span class="hljs-title">determineCurrentLookupKey</span><span class="hljs-params">()</span>&nbsp;</span>{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;TransactionSynchronizationManager<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.isCurrentTransactionReadOnly()&nbsp;?<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DataSourceType.READ_ONLY&nbsp;:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DataSourceType.READ_WRITE;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment">/**<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;方便测试用，获取当前实际使用的DataSource<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-meta">@Override</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-function"><span class="hljs-keyword">public</span>&nbsp;DataSource&nbsp;<span class="hljs-title">determineTargetDataSource</span><span class="hljs-params">()</span>&nbsp;</span>{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-keyword">super</span>.determineTargetDataSource();<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">public</span>&nbsp;<span class="hljs-keyword">enum</span>&nbsp;DataSourceType&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READ_WRITE,&nbsp;<span class="hljs-comment">//&nbsp;读写型事务</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;READ_ONLY,&nbsp;<span class="hljs-comment">//&nbsp;只读事务</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;;<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br></code></pre>
+<p>注意<code>TransactionSynchronizationManager.isCurrentTransactionReadOnly()</code>的使用，它可以根据事务注解，判断当前事务方法是否是可读的；然后程序根据是否可读，返回相应类型的数据源。</p>
+<h3><span class="prefix"></span><span class="content">2. 修改<code>DbConfig.java</code>，加入两个新的 <code>Bean</code></span><span class="suffix"></span></h3>
+<pre class="custom"><code class="hljs"><span class="hljs-meta">@Bean</span><br><span class="hljs-function"><span class="hljs-keyword">public</span>&nbsp;TransactionRoutingDataSource&nbsp;<span class="hljs-title">routingDataSource</span><span class="hljs-params">()</span>&nbsp;</span>{<br>&nbsp;&nbsp;&nbsp;&nbsp;TransactionRoutingDataSource&nbsp;routingDataSource&nbsp;=<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">new</span>&nbsp;TransactionRoutingDataSource();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;DataSource&nbsp;master&nbsp;=&nbsp;masterDataSource();<br>&nbsp;&nbsp;&nbsp;&nbsp;DataSource&nbsp;slave&nbsp;=&nbsp;slaveDataSource();<br><br>&nbsp;&nbsp;&nbsp;&nbsp;Map&lt;Object,&nbsp;Object&gt;&nbsp;dataSourceMap&nbsp;=&nbsp;<span class="hljs-keyword">new</span>&nbsp;HashMap&lt;&gt;();<br>&nbsp;&nbsp;&nbsp;&nbsp;dataSourceMap.put(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TransactionRoutingDataSource.DataSourceType.READ_WRITE,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;master<br>&nbsp;&nbsp;&nbsp;&nbsp;);<br>&nbsp;&nbsp;&nbsp;&nbsp;dataSourceMap.put(<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TransactionRoutingDataSource.DataSourceType.READ_ONLY,<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;slave<br>&nbsp;&nbsp;&nbsp;&nbsp;);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;routingDataSource.setTargetDataSources(dataSourceMap);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;routingDataSource;<br>}<br><br><span class="hljs-meta">@Bean</span><br><span class="hljs-function"><span class="hljs-keyword">public</span>&nbsp;JdbcTemplate&nbsp;<span class="hljs-title">jdbcTemplate</span><span class="hljs-params">()</span>&nbsp;</span>{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-keyword">new</span>&nbsp;JdbcTemplate(routingDataSource());<br>}<br></code></pre>
+<p>其中：</p>
+<ul>
+<li><section><code>routingDataSource()</code>返回一个支持动态切换数据源的<code>DataSource</code> Bean</section></li><li><section><code>jdbcTemplate()</code>返回一个默认支持数据源动态切换的<code>JdbcTemplate</code> Bean</section></li></ul>
+<p>有了以上步骤，我们可以编写测试类来体验了。</p>
+<h3><span class="prefix"></span><span class="content">3. 测试数据源动态路由是否有效</span><span class="suffix"></span></h3>
+<p>修改 <code>DemoApplicationTests.java</code> ，加入以下字段和方法：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-meta">@Autowired</span><br><span class="hljs-keyword">private</span>&nbsp;JdbcTemplate&nbsp;jdbcTemplate;<br><br><span class="hljs-meta">@Transactional</span>(readOnly&nbsp;=&nbsp;<span class="hljs-keyword">false</span>)<br><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">void</span>&nbsp;<span class="hljs-title">testReadWrite</span><span class="hljs-params">()</span>&nbsp;</span>{<br>&nbsp;&nbsp;&nbsp;&nbsp;jdbcTemplate.update(<span class="hljs-string">"update&nbsp;book&nbsp;set&nbsp;title=?&nbsp;where&nbsp;id=1"</span>,&nbsp;<span class="hljs-string">"bingo"</span>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;Assertions.assertFalse(TransactionSynchronizationManager.isCurrentTransactionReadOnly());<br><br>&nbsp;&nbsp;&nbsp;&nbsp;TransactionRoutingDataSource&nbsp;dataSource&nbsp;=&nbsp;(TransactionRoutingDataSource)&nbsp;jdbcTemplate.getDataSource();<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;测试写状态下使用的是&nbsp;master&nbsp;数据源</span><br>&nbsp;&nbsp;&nbsp;&nbsp;Assertions.assertEquals(masterDataSource,&nbsp;dataSource.determineTargetDataSource());<br><br>}<br><br><span class="hljs-meta">@Transactional</span>(readOnly&nbsp;=&nbsp;<span class="hljs-keyword">true</span>)<br><span class="hljs-meta">@Test</span><br><span class="hljs-function"><span class="hljs-keyword">void</span>&nbsp;<span class="hljs-title">testReadOnly</span><span class="hljs-params">()</span>&nbsp;</span>{<br>&nbsp;&nbsp;&nbsp;&nbsp;Integer&nbsp;sum&nbsp;=&nbsp;jdbcTemplate.queryForObject(<span class="hljs-string">"select&nbsp;1+1"</span>,&nbsp;Integer.class);<br>&nbsp;&nbsp;&nbsp;&nbsp;Assertions.assertEquals(<span class="hljs-number">2</span>,&nbsp;sum);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;Assertions.assertTrue(TransactionSynchronizationManager.isCurrentTransactionReadOnly());<br><br>&nbsp;&nbsp;&nbsp;&nbsp;TransactionRoutingDataSource&nbsp;dataSource&nbsp;=&nbsp;(TransactionRoutingDataSource)&nbsp;jdbcTemplate.getDataSource();<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;测试只读状态下使用是&nbsp;slave&nbsp;数据源</span><br>&nbsp;&nbsp;&nbsp;&nbsp;Assertions.assertEquals(slaveDataSource,&nbsp;dataSource.determineTargetDataSource());<br>}<br></code></pre>
+<p>运行该测试类，可以看到全部测试通过：</p>
+<figure><img src="https://static01.imgkr.com/temp/57375f0d99cf4b84b1ad2350c147ce76.png" alt=""></figure>
+<h3><span class="prefix"></span><span class="content">4. <code>@Transactional</code>使用建议</span><span class="suffix"></span></h3>
+<p><code>@Transactional</code>注解的<code>readOnly</code>属性默认为<code>false</code>, 这会导致未设置该属性的所有事务方法默认在在 <strong>master</strong> 节点上运行。一个好的实践是，在class级别上加上<code>@Transactional(readOnly = true)</code>，确实需要<code>写</code>操作时，再在方法级别上调整。如此一来，所有Service方法默认为<code>只读</code>的，当忘了在<code>写</code>方法上调整<code>readOnly=false</code>时，我们会得到一个异常，因为<code>写</code>操作只能在 <strong>master</strong> 节点上执行。这在减少配置的同时，也给了代码很好的保护。</p>
+<hr>
+<p>另外，关于<code>TransactionRoutingDataSource</code>，下面这张图可以帮助更好的理解：</p>
+<figure><img src="https://static01.imgkr.com/temp/5c997decf50941f6aa7040276114d93e.png" alt="Credit:  @vlad_mihalcea "><figcaption>Credit:  @vlad_mihalcea </figcaption></figure>
+<hr>
+<p>有别的疑问？欢迎留言。</p>
+<h3 class="footnotes-sep"></h3>
+<section class="footnotes">
+<span id="fn1" class="footnote-item"><span class="footnote-num">[1] </span><p>actency/docker-mysql-replication: <em>https://hub.docker.com/r/actency/docker-mysql-replication</em></p>
+</span>
+<span id="fn2" class="footnote-item"><span class="footnote-num">[2] </span><p>Spring Initializr: <em>https://start.spring.io</em></p>
+</span>
+<span id="fn3" class="footnote-item"><span class="footnote-num">[3] </span><p>Dynamic DataSource Routing: <em>https://spring.io/blog/2007/01/23/dynamic-datasource-routing/</em></p>
+</span>
+<span id="fn4" class="footnote-item"><span class="footnote-num">[4] </span><p>Read-write and read-only transaction routing with Spring: <em>https://vladmihalcea.com/read-write-read-only-transaction-routing-spring/</em></p>
+</span>
+</section>
+</section>
+
+<div id="disqus_thread" style="max-width: 677px; margin: 20px auto;"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = location.href.replace('.html','');  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = location.pathname.replace('.html',''); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://beloved-family.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</body>
+</html>
