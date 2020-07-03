@@ -21,3 +21,4 @@ https://beloved.family/wx/使用Node.js构建一个简单的加密货币区块�
 https://beloved.family/wx/详解jq中强大的reduce操作
 https://beloved.family/wx/恶意Google插件检查
 https://beloved.family/wx/在Spring-Boot项目中实现MySQL的读写分离
+https://beloved.family/wx/深入探讨Node.js中的队列
