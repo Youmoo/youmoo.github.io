@@ -25,3 +25,4 @@ https://beloved.family/wx/深入探讨Node.js中的队列
 https://beloved.family/wx/使用React Hook加载图片
 https://beloved.family/wx/什么是好书
 https://beloved.family/wx/说说我偷人被抓的事
+https://beloved.family/wx/如何将外部服务纳入到k8s集群内
