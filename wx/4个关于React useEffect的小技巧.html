@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport"
+    content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+    <link rel="icon" type="image/png" href="/images/emoji-family.png">
+    <title>React useEffect：每个开发者都应该知道的4个小技巧</title>
+    <link rel="canonical" href="https://beloved.family/wx/4个关于React useEffect的小技巧" />
+    <meta name="description" content="关于React中的useEffect，一些好的实践分享/一些你可能不注意的坑"/>
+    
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta property="og:title" content="React useEffect：每个开发者都应该知道的4个小技巧" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image" content="https://beloved.family/1984.png" />
+    <!-- theme: ️极简黑小鱼; code theme: ️xcode -->
+<style id="basic-theme">/*默认样式，最佳实践*/
+
+/*全局属性*/
+#nice {
+  font-size: 16px;
+  color: black;
+  padding: 0 10px;
+  line-height: 1.6;
+  word-spacing: 0px;
+  letter-spacing: 0px;
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: left;
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  /* margin-top: -10px; 解决开头空隙过大问题*/
+}
+
+/*段落*/
+#nice p {
+  font-size: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+}
+
+/*标题*/
+#nice h1,
+#nice h2,
+#nice h3,
+#nice h4,
+#nice h5,
+#nice h6 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding: 0px;
+  font-weight: bold;
+  color: black;
+}
+#nice h1 {
+  font-size: 24px;
+}
+#nice h2 {
+  font-size: 22px;
+}
+#nice h3 {
+  font-size: 20px;
+}
+#nice h4 {
+  font-size: 18px;
+}
+#nice h5 {
+  font-size: 16px;
+}
+#nice h6 {
+  font-size: 16px;
+}
+
+#nice h1 .prefix,
+#nice h2 .prefix,
+#nice h3 .prefix,
+#nice h4 .prefix,
+#nice h5 .prefix,
+#nice h6 .prefix {
+  display: none;
+}
+
+#nice h1 .suffix
+#nice h2 .suffix,
+#nice h3 .suffix,
+#nice h4 .suffix,
+#nice h5 .suffix,
+#nice h6 .suffix {
+  display: none;
+}
+
+/*列表*/
+#nice ul,
+#nice ol {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 25px;
+  color: black;
+}
+#nice ul {
+  list-style-type: disc;
+}
+#nice ul ul {
+  list-style-type: square;
+}
+
+#nice ol {
+  list-style-type: decimal;
+}
+
+#nice li section {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  line-height: 26px;
+  text-align: left;
+  color: rgb(1,1,1); /* 只要是纯黑色微信编辑器就会把color这个属性吞掉。。。*/
+  font-weight: 500;
+}
+
+/*引用*/
+#nice blockquote {
+  display: block;
+  font-size: 0.9em;
+  overflow: auto;
+  overflow-scrolling: touch;
+  border-left: 3px solid rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.05);
+  color: #6a737d;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+#nice blockquote p {
+  margin: 0px;
+  color: black;
+  line-height: 26px;
+}
+
+#nice .table-of-contents a {
+  border: none;
+  color: black;
+  font-weight: normal;
+}
+
+/*链接*/
+#nice a {
+  text-decoration: none;
+  color: #1e6bb8;
+  word-wrap: break-word;
+  font-weight: bold;
+  border-bottom: 1px solid #1e6bb8;
+}
+
+/*加粗*/
+#nice strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*斜体*/
+#nice em {
+  font-style: italic;
+  color: black;
+}
+
+/*加粗斜体*/
+#nice em strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*删除线*/
+#nice del {
+  font-style: italic;
+  color: black;
+}
+
+/*分隔线*/
+#nice hr {
+  height: 1px;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-top: 1px solid black;
+}
+
+/*代码块*/
+#nice pre {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+#nice pre code {
+  display: -webkit-box;
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  border-radius: 0px;
+  font-size: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+#nice pre code span {
+  line-height: 26px;
+}
+
+/*行内代码*/
+#nice p code,
+#nice li code {
+  font-size: 14px;
+  word-wrap: break-word;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+  color: #1e6bb8;
+  background-color: rgba(27,31,35,.05);
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  word-break: break-all;
+}
+
+/*图片*/
+#nice img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/*图片*/
+#nice figure {
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/*图片描述文字*/
+#nice figcaption {
+  margin-top: 5px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+
+/*表格容器 */
+#nice .table-container{
+  overflow-x: auto;
+}
+
+/*表格*/
+#nice table {
+  display: table;
+  text-align: left;
+}
+#nice tbody {
+  border: 0;
+}
+
+#nice table tr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  background-color: white;
+}
+
+#nice table tr:nth-child(2n) {
+  background-color: #F8F8F8;
+}
+
+#nice table tr th,
+#nice table tr td {
+  font-size: 16px;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  text-align: left;
+}
+
+#nice table tr th {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+/* 表格最小列宽4个汉字 */
+#nice table tr th:nth-of-type(n),
+#nice table tr td:nth-of-type(n){
+  min-width:85px;
+}
+
+/* 微信代码块 */
+#nice .code-snippet__fix {
+  word-wrap: break-word !important;
+  font-size: 14px;
+  margin: 10px 0;
+  display: block;
+  color: #333;
+  position: relative;
+  background-color: rgba(0,0,0,0.03);
+  border: 1px solid #f0f0f0;
+  border-radius: 2px;
+  display: flex;
+  line-height: 20px;
+}
+#nice .code-snippet__fix pre {
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+#nice .code-snippet__fix .code-snippet__line-index {
+  counter-reset: line;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 1em;
+  list-style-type: none;
+  padding: 16px;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li {
+  list-style-type: none;
+  text-align: right;
+  line-height: 26px;
+  color: black;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li::before {
+  min-width: 1.5em;
+  text-align: right;
+  left: -2.5em;
+  counter-increment: line;
+  content: counter(line);
+  display: inline;
+  color: rgba(0,0,0,0.3);
+}
+#nice .code-snippet__fix pre {
+  overflow-x: auto;
+  padding: 16px;
+  padding-left: 0;
+  white-space: normal;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+#nice .code-snippet__fix code {
+  text-align: left;
+  font-size: 14px;
+  display: block;
+  white-space: pre;
+  display: flex;
+  position: relative;
+  font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace;
+  padding: 0px;
+}
+
+#nice .footnote-word {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-ref {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-item {
+  display: flex;
+}
+
+#nice .footnote-num {
+  display: inline;
+  width: 10%; /*神奇，50px就不可以*/
+  background: none;
+  font-size: 80%;
+  opacity: 0.6;
+  line-height: 26px;
+  font-family: ptima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+#nice .footnote-item p {
+  display: inline;
+  font-size: 14px;
+  width: 90%;
+  padding: 0px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+  word-break:break-all;
+  width: calc(100%-50)
+}
+
+#nice sub, sup {
+  line-height: 0;
+}
+
+#nice .footnotes-sep:before {
+  content: "参考资料";
+  display: block;
+}
+
+/* 解决公式问题 */
+#nice .block-equation {
+  display:block;
+  text-align: center;
+  overflow: auto;
+  display: block;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .block-equation svg {
+  max-width: 300% !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .inline-equation {
+}
+
+#nice .inline-equation svg {
+}
+
+#nice .imageflow-layer1 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  white-space: normal;
+  border: 0px none;
+  padding: 0px;
+  overflow: hidden;
+}
+
+#nice .imageflow-layer2 {
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+#nice .imageflow-layer3 {
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: middle;
+  width: 100%;
+}
+
+#nice .imageflow-img {
+  display: inline-block;
+}
+
+#nice .imageflow-caption {
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #888;
+}
+
+#nice .nice-suffix-juejin-container {
+  margin-top: 20px !important;
+}
+
+#nice figure a {
+  border: none;
+}
+
+#nice figure a img {
+  margin: 0px;
+}
+
+#nice figure {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 图片链接嵌套 */
+#nice figure a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 图片链接嵌套，图片解释 */
+#nice figure a + figcaption {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: -35px;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  line-height: 35px;
+  z-index: 20;
+}
+</style>
+<style id="code-theme">/*
+
+XCode style (c) Angel Garcia <angelgarcia.mail@gmail.com>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 16px;
+  background: #fff;
+  color: black;
+}
+
+/* Gray DOCTYPE selectors like WebKit */
+.xml .hljs-meta {
+  color: #c0c0c0;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #007400;
+}
+
+.hljs-tag,
+.hljs-attribute,
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-name {
+  color: #aa0d91;
+}
+
+.hljs-variable,
+.hljs-template-variable {
+  color: #3F6E74;
+}
+
+.hljs-code,
+.hljs-string,
+.hljs-meta-string {
+  color: #c41a16;
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: #0E0EFF;
+}
+
+.hljs-title,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-number {
+  color: #1c00cf;
+}
+
+.hljs-section,
+.hljs-meta {
+  color: #643820;
+}
+
+
+.hljs-class .hljs-title,
+.hljs-type,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-params {
+  color: #5c2699;
+}
+
+.hljs-attr {
+  color: #836C28;
+}
+
+.hljs-subst {
+  color: #000;
+}
+
+.hljs-formula {
+  background-color: #eee;
+  font-style: italic;
+}
+
+.hljs-addition {
+  background-color: #baeeba;
+}
+
+.hljs-deletion {
+  background-color: #ffc8bd;
+}
+
+.hljs-selector-id,
+.hljs-selector-class {
+  color: #9b703f;
+}
+
+.hljs-doctag,
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+#nice .custom code {
+  padding-top: 15px;
+  background: #fff;
+  border-radius: 5px;
+}
+
+#nice .custom:before {
+  content: '';
+  display:block;
+  background: url(https://my-wechat.mdnice.com/point.png);
+  height: 30px;
+  width: 100%;
+  background-size:40px;
+  background-repeat: no-repeat;
+  background-color: #fff;
+  margin-bottom: -7px;
+  border-radius: 5px;
+  background-position: 10px 10px;
+}
+
+#nice .custom {
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;
+}</style>
+<style id="markdown-theme">/* 自定义样式，实时生效，浏览器实时缓存 */
+
+/* 全局属性
+ * 页边距 padding: 30px;
+ * 全文字体 font-family: ptima-Regular;
+ * 英文换行 word-break: break-all;
+ */
+ #nice {
+  font-size:14px;
+  padding:10px;
+}
+
+/*图片下提示*/
+#nice figcaption{
+  font-size:12px;
+}
+#nice .imageflow-caption{
+  font-size:12px;
+}
+
+/* 段落，下方未标注标签参数均同此处
+ * 上边距 margin-top: 5px;
+ * 下边距 margin-bottom: 5px;
+ * 行高 line-height: 26px;
+ * 词间距 word-spacing: 3px;
+ * 字间距 letter-spacing: 3px;
+ * 对齐 text-align: left;
+ * 颜色 color: #3e3e3e;
+ * 字体大小 font-size: 16px;
+ * 首行缩进 text-indent: 2em;
+ */
+#nice p {
+  font-size:14px;
+}
+
+/* 一级标题 */
+#nice h1 {
+}
+
+/* 一级标题内容 */
+#nice h1 .content {
+}
+
+/* 一级标题前缀 */
+#nice h1 .prefix {
+}
+
+/* 一级标题后缀 */
+#nice h1 .suffix{
+}
+
+/* 二级标题 */
+#nice h2 {
+  	text-align:center;
+  	position:relative;
+    font-weight: bold;
+    color: black;
+    line-height: 1.1em;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin:70px 30px 30px;
+    border: 1px solid #000;
+}
+
+#nice h2:before{
+  content: ' ';
+  float: left;
+  display: block;
+  width: 90%;
+  border-top: 1px solid #000;
+  height: 1px;
+  line-height: 1px;
+  margin-left: -5px;
+  margin-top: -17px;
+}
+#nice h2:after{
+  content: ' ';
+  float: right;
+  display: block;
+  width: 90%;
+  border-bottom: 1px solid #000;
+  height: 1px;
+  line-height: 1px;
+  margin-right: -5px;
+  margin-top: 16px;
+}
+/* 二级标题内容 */
+#nice h2 .content {
+  display: block;
+  -webkit-box-reflect: below 0em -webkit-gradient(linear,left top,left bottom, from(rgba(0,0,0,0)),to(rgba(255,255,255,0.1)));
+}
+#nice h2 strong {
+}
+/* 二级标题前缀 */
+#nice h2 .prefix {
+  display: block;
+  width: 3px;
+  margin: 0 0 0 5%;
+  height: 3px;
+  line-height: 3px;
+  overflow: hidden;
+  background-color: #000;
+  box-shadow:3px 0 #000,
+    0 3px #000,
+    -3px 0 #000,
+    0 -3px #000;
+}
+
+/* 二级标题后缀 */
+#nice h2 .suffix {
+  display: block;
+  width: 3px;
+  margin: 0 0 0 95%;
+  height: 3px;
+  line-height: 3px;
+  overflow: hidden;
+  background-color: #000;
+  box-shadow:3px 0 #000,
+    0 3px #000,
+    -3px 0 #000,
+    0 -3px #000;
+}
+
+/* 三级标题 */
+#nice h3 {
+  background-color:#000;
+  color:#fff;
+  padding:2px 10px;
+  width:fit-content;
+  font-size:17px;
+  margin:60px auto 10px;
+}
+#nice h3 strong {
+  color:#fff;
+}
+
+/* 三级标题内容 */
+#nice h3 .content {
+}
+
+/* 三级标题前缀 */
+#nice h3 .prefix {
+}
+
+/* 三级标题后缀 */
+#nice h3 .suffix {
+}
+
+/* 无序列表整体样式
+ * list-style-type: square|circle|disc;
+ */
+#nice ul {
+  list-style-type: square;
+}
+/* 无序二级列表
+ */
+#nice ul li ul li{
+  list-style-type: circle;
+}
+
+/* 有序列表整体样式
+ * list-style-type: upper-roman|lower-greek|lower-alpha;
+ */
+#nice ol {
+}
+
+/* 列表内容，不要设置li
+ */
+#nice li section {
+}
+
+/* 引用
+ * 左边缘颜色 border-left-color: black;
+ * 背景色 background: gray;
+ */
+#nice blockquote {
+  border-left: 3px solid rgba(0, 0, 0, 0.65);
+  border-right: 1px solid rgba(0, 0, 0, 0.65);
+  background: rgb(249, 249, 249);
+}
+
+/* 引用文字 */
+#nice blockquote p {
+}
+
+/* 链接 
+ * border-bottom: 1px solid #009688;
+ */
+#nice a {
+}
+
+/* 加粗 */
+#nice strong {
+}
+
+/* 斜体 */
+#nice em {
+}
+
+/* 加粗斜体 */
+#nice em strong {
+}
+
+/* 删除线 */
+#nice del {
+}
+
+/* 分隔线
+ * 粗细、样式和颜色
+ * border-top: 1px solid #3e3e3e;
+ */
+#nice hr {
+}
+
+/* 图片
+ * 宽度 width: 80%;
+ * 居中 margin: 0 auto;
+ * 居左 margin: 0 0;
+ */
+#nice img {
+  box-shadow: rgba(170, 170, 170, 0.48) 0px 0px 6px 0px;
+  border-radius:4px;
+  margin-top:10px;
+}
+/* 行内代码 */
+#nice p code, #nice li code {
+  color:#ff6441;
+}
+
+/* 非微信代码块
+ * 代码块不换行 display: -webkit-box !important;
+ * 代码块换行 display: block;
+ */
+#nice pre.custom {
+  box-shadow: rgba(170, 170, 170, 0.48) 0px 0px 6px 0px;
+  max-width: 100%;
+  border-radius:4px;
+  margin: 10px auto 0 auto;
+}
+#nice pre code {
+}
+
+/*
+ * 表格内的单元格
+ * 字体大小 font-size: 16px;
+ * 边框 border: 1px solid #ccc;
+ * 内边距 padding: 5px 10px;
+ */
+#nice table tr th,
+#nice table tr td {
+  font-size:14px;
+}
+
+/* 脚注文字 */
+#nice .footnote-word {
+}
+
+/* 脚注上标 */
+#nice .footnote-ref {
+}
+
+/* "参考资料"四个字 
+ * 内容 content: "参考资料";
+ */
+#nice .footnotes-sep {
+  font-size: 14px;
+  color: #888;
+  border-top: 1px solid #eee;
+  padding: 30px 0 10px 0px;
+  background-color: transparent;
+  margin: 0;
+  width: 100%;
+}
+#nice .footnotes-sep:before {
+  content:'参考资料';
+}
+#nice .footnotes{
+  border-left:5px solid #eee;
+  padding-left:10px;
+}
+
+/* 参考资料编号 */
+#nice .footnote-num {
+  font-size:14px;
+  color:#999;
+}
+
+/* 参考资料文字 */
+#nice .footnote-item p { 
+  font-size:14px;
+  color:#999;
+}
+
+/* 参考资料解释 */
+#nice .footnote-item p em {
+  font-size:14px;
+  color:#999;
+}
+
+/* 行间公式
+ * 最大宽度 max-width: 300% !important;
+ */
+#nice .block-equation svg {
+}
+
+/* 行内公式
+ */
+#nice .inline-equation svg {  
+}
+/* 文章结尾 */
+#nice:after{
+  content:'- END -';
+  font-size:15px;
+  display:block;
+  text-align:center;
+  margin-top:50px;
+  color:#999;
+  border-bottom:1px solid #eee;
+}
+
+/*滑动幻灯片*/
+#nice .imageflow-layer1 img{
+  margin:0;
+  box-shadow: none;
+  border-radius: 0;
+}
+</style>
+<script data-ad-client="ca-pub-6205625102284861" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-63732284-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-63732284-5');
+</script>
+
+</head>
+
+<body style="margin-bottom: 20px;">
+  <header style="
+  height: 2em;
+  border-bottom: 1px solid rgba(0,0,0,.22);
+  padding-right: 2em;
+  text-align: right;
+">
+    <div style="max-width: 677px; margin: 5px auto;">一个叫木头，一个叫马尾</div>
+  </header>
+<section id="nice" style="max-width: 677px; margin: 5px auto;"><h1><span class="prefix"></span><span class="content">React useEffect：每个开发者都应该知道的4个小技巧</span><span class="suffix"></span></h1>
+
+<p>文章译自 <span class="footnote-word">React useEffect: 4 Tips Every Developer Should Know</span><sup class="footnote-ref">[1]</sup> ，作者为 <strong>Helder Esteves</strong>。</p>
+<p>说是小技巧，其实不小。</p>
+<hr>
+<p>我们谈谈 <strong>React Hooks</strong> 中的<code>useEffects</code>。 我将与你分享使用<code>useEffect</code>时应该注意的4个技巧。</p>
+<h2><span class="prefix"></span><span class="content">一个<code>useEffect</code>只应该用于一个目的</span><span class="suffix"></span></h2>
+<p>在 <strong>React Hooks</strong> 中，你可以使用多次<code>useEffect</code>函数。这是一个很好的特性，因为，要编写干净的代码，一个函数只服务于一个目的是必要的（就像一句话应该只传达一个想法一样）。</p>
+<blockquote>
+<p>译者注，这在软件开发中，也叫单一职责原则，The single responsibility principle (<strong>SRP</strong>)。</p>
+</blockquote>
+<p>将<code>useEffects</code>拆分成短小精炼的单用途函数，也可以防止一些意外的执行（在使用依赖数组时）。</p>
+<p>例如，我们假设你有一个与变量<code>varB</code>无关的<code>varA</code>，你想建立一个基于<code>useEffect</code>的递归计数器（借助<code>setTimeout</code>）。【<strong>坏代码</strong>】像下面这样：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-function"><span class="hljs-keyword">function</span>&nbsp;<span class="hljs-title">App</span>(<span class="hljs-params"></span>)&nbsp;</span>{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;[varA,&nbsp;setVarA]&nbsp;=&nbsp;useState(<span class="hljs-number">0</span>);<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;[varB,&nbsp;setVarB]&nbsp;=&nbsp;useState(<span class="hljs-number">0</span>);<br>&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;不要这么做！</span><br>&nbsp;&nbsp;useEffect(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;timeoutA&nbsp;=&nbsp;setTimeout(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;setVarA(varA&nbsp;+&nbsp;<span class="hljs-number">1</span>),&nbsp;<span class="hljs-number">1000</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;timeoutB&nbsp;=&nbsp;setTimeout(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;setVarB(varB&nbsp;+&nbsp;<span class="hljs-number">2</span>),&nbsp;<span class="hljs-number">2000</span>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clearTimeout(timeoutA);<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;clearTimeout(timeoutB);<br>&nbsp;&nbsp;&nbsp;&nbsp;};<br>&nbsp;&nbsp;},&nbsp;[varA,&nbsp;varB]);<br><br>&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Var&nbsp;A:&nbsp;{varA},&nbsp;Var&nbsp;B:&nbsp;{varB}<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br>&nbsp;&nbsp;);<br>}<br></code></pre>
+<p>可以看到，变量<code>varA</code>或<code>varB</code>任意一个发生变化都会触发两个变量的更新。这就是为什么这个钩子不能正常工作。</p>
+<p>由于这是一个很短的例子，你可能会觉得问题很好发现，然而，当函数更长时，伴随更多的代码和变量，再出现问题时就会让你头大了。所以，做正确的事情，按用途来拆分你的<code>useEffect</code>。</p>
+<p>对于上面的情况，应该这样处理：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-function"><span class="hljs-keyword">function</span>&nbsp;<span class="hljs-title">App</span>(<span class="hljs-params"></span>)&nbsp;</span>{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;[varA,&nbsp;setVarA]&nbsp;=&nbsp;useState(<span class="hljs-number">0</span>);<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;[varB,&nbsp;setVarB]&nbsp;=&nbsp;useState(<span class="hljs-number">0</span>);<br>&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;正确的方式</span><br>&nbsp;&nbsp;useEffect(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;timeout&nbsp;=&nbsp;setTimeout(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;setVarA(varA&nbsp;+&nbsp;<span class="hljs-number">1</span>),&nbsp;<span class="hljs-number">1000</span>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;clearTimeout(timeout);<br>&nbsp;&nbsp;},&nbsp;[varA]);<br><br>&nbsp;&nbsp;useEffect(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;timeout&nbsp;=&nbsp;setTimeout(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;setVarB(varB&nbsp;+&nbsp;<span class="hljs-number">2</span>),&nbsp;<span class="hljs-number">2000</span>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;clearTimeout(timeout);<br>&nbsp;&nbsp;},&nbsp;[varB]);<br><br>&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Var&nbsp;A:&nbsp;{varA},&nbsp;Var&nbsp;B:&nbsp;{varB}<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br>&nbsp;&nbsp;);<br>}<br></code></pre>
+<p><em>注意：这里的代码只是为了举例说明，目的是帮助你轻松理解<code>useEffect</code>的问题。通常情况下，当一个变量依赖于它之前的状态时，推荐的方法是用<code>setVarA(varA =&gt; varA + 1)</code>来代替。(感谢 @Michael Landis 的提醒)</em></p>
+<h2><span class="prefix"></span><span class="content">尽可能使用自定义钩子</span><span class="suffix"></span></h2>
+<p>我们再来看看上面的例子。如果变量<code>varA</code>和<code>varB</code>是完全独立的呢？</p>
+<p>在这种情况下，我们可以简单地创建一个自定义钩子来隔离每个变量。这样，你就可以准确地知道每个函数对哪个变量做了什么。</p>
+<p>自定义钩子的代码：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-function"><span class="hljs-keyword">function</span>&nbsp;<span class="hljs-title">App</span>(<span class="hljs-params"></span>)&nbsp;</span>{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;[varA,&nbsp;setVarA]&nbsp;=&nbsp;useVarA();<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;[varB,&nbsp;setVarB]&nbsp;=&nbsp;useVarB();<br><br>&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;(<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Var&nbsp;A:&nbsp;{varA},&nbsp;Var&nbsp;B:&nbsp;{varB}<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span><br>&nbsp;&nbsp;);<br>}<br><br><span class="hljs-function"><span class="hljs-keyword">function</span>&nbsp;<span class="hljs-title">useVarA</span>(<span class="hljs-params"></span>)&nbsp;</span>{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;[varA,&nbsp;setVarA]&nbsp;=&nbsp;useState(<span class="hljs-number">0</span>);<br><br>&nbsp;&nbsp;useEffect(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;timeout&nbsp;=&nbsp;setTimeout(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;setVarA(varA&nbsp;+&nbsp;<span class="hljs-number">1</span>),&nbsp;<span class="hljs-number">1000</span>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;clearTimeout(timeout);<br>&nbsp;&nbsp;},&nbsp;[varA]);<br><br>&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;[varA,&nbsp;setVarA];<br>}<br><br><span class="hljs-function"><span class="hljs-keyword">function</span>&nbsp;<span class="hljs-title">useVarB</span>(<span class="hljs-params"></span>)&nbsp;</span>{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;[varB,&nbsp;setVarB]&nbsp;=&nbsp;useState(<span class="hljs-number">0</span>);<br><br>&nbsp;&nbsp;useEffect(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;timeout&nbsp;=&nbsp;setTimeout(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;setVarB(varB&nbsp;+&nbsp;<span class="hljs-number">2</span>),&nbsp;<span class="hljs-number">2000</span>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;clearTimeout(timeout);<br>&nbsp;&nbsp;},&nbsp;[varB]);<br><br>&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;[varB,&nbsp;setVarB];<br>}<br></code></pre>
+<p>现在每个变量都有了自己的钩子。更易于维护和阅读了。</p>
+<h2><span class="prefix"></span><span class="content">正确地运行带有条件的<code>useEffect</code></span><span class="suffix"></span></h2>
+<p>继续以<code>setTimeout</code>为话题，我们给出下面的例子：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-function"><span class="hljs-keyword">function</span>&nbsp;<span class="hljs-title">App</span>(<span class="hljs-params"></span>)&nbsp;</span>{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;[varA,&nbsp;setVarA]&nbsp;=&nbsp;useState(<span class="hljs-number">0</span>);<br><br>&nbsp;&nbsp;useEffect(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;timeout&nbsp;=&nbsp;setTimeout(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;setVarA(varA&nbsp;+&nbsp;<span class="hljs-number">1</span>),&nbsp;<span class="hljs-number">1000</span>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;clearTimeout(timeout);<br>&nbsp;&nbsp;},&nbsp;[varA]);<br><br>&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Var&nbsp;A:&nbsp;{varA}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>;<br>}<br></code></pre>
+<p>出于某种原因，你想计数到5就停止。有正确的实现方法，也有不正确的方法。</p>
+<p>我们先来看看不正确的方法：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-function"><span class="hljs-keyword">function</span>&nbsp;<span class="hljs-title">App</span>(<span class="hljs-params"></span>)&nbsp;</span>{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;[varA,&nbsp;setVarA]&nbsp;=&nbsp;useState(<span class="hljs-number">0</span>);<br><br>&nbsp;&nbsp;<span class="hljs-comment">//&nbsp;不要这么做！</span><br>&nbsp;&nbsp;useEffect(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">let</span>&nbsp;timeout;<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">if</span>&nbsp;(varA&nbsp;&lt;&nbsp;<span class="hljs-number">5</span>)&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout&nbsp;=&nbsp;setTimeout(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;setVarA(varA&nbsp;+&nbsp;<span class="hljs-number">1</span>),&nbsp;<span class="hljs-number">1000</span>);<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;clearTimeout(timeout);<br>&nbsp;&nbsp;},&nbsp;[varA]);<br><br>&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Var&nbsp;A:&nbsp;{varA}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>;<br>}<br></code></pre>
+<p>虽然这样做是可行的，但请记住，<code>clearTimeout</code>将在<code>varA</code>发生任何变化时都会运行，而<code>setTimeout</code>则是有条件地运行(小于5时才会运行)。</p>
+<p>对于条件化运行<code>useEffect</code>，推荐的方式是在函数的开头做一个条件返回，像这样：</p>
+<pre class="custom"><code class="hljs">&nbsp;<span class="hljs-function"><span class="hljs-keyword">function</span>&nbsp;<span class="hljs-title">App</span>(<span class="hljs-params"></span>)&nbsp;</span>{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;[varA,&nbsp;setVarA]&nbsp;=&nbsp;useState(<span class="hljs-number">0</span>);<br><br>&nbsp;&nbsp;useEffect(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">if</span>&nbsp;(varA&nbsp;&gt;=&nbsp;<span class="hljs-number">5</span>)&nbsp;<span class="hljs-keyword">return</span>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;timeout&nbsp;=&nbsp;setTimeout(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;setVarA(varA&nbsp;+&nbsp;<span class="hljs-number">1</span>),&nbsp;<span class="hljs-number">1000</span>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;clearTimeout(timeout);<br>&nbsp;&nbsp;},&nbsp;[varA]);<br><br>&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Var&nbsp;A:&nbsp;{varA}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>;<br>}<br></code></pre>
+<p>在<span class="footnote-word">Material UI</span><sup class="footnote-ref">[2]</sup>中我们可以看到这种用法（以及许多其他的框架中），它确保你没有错误地运行<code>useEffect</code>。</p>
+<blockquote>
+<p>译者注：仔细比较上面2段代码，我们要达到的目的其实就是，要让<code>setTimeout</code>和<code>clearTimeout</code>成对的出现。而上面不对的代码中，可能会出现<code>if</code>语句把<code>setTimeout</code>拦截了但<code>clearTimeout</code>仍然出现的情况。所以第二种代码风格(提前return)，是更好的条件化运行<code>useEffect</code>的方式。</p>
+</blockquote>
+<h2><span class="prefix"></span><span class="content"><code>useEffect</code>中用到的属性都要在依赖数组中声明</span><span class="suffix"></span></h2>
+<p>如果你正在使用<strong>ESLint</strong>，那么你可能已经看到过一个来自<strong>ESLint</strong> <span class="footnote-word">exhaustive-deps</span><sup class="footnote-ref">[3]</sup>规则的警告。</p>
+<p>这一点至关重要。当你的应用程序越来越大时，更多的依赖关系(属性)会被添加到相关的<code>useEffect</code>中。为了跟踪所有这些依赖，并避免过期的状态(stale closures)，你应该将每一个依赖添加到依赖数组中。(<span class="footnote-word">这里有官方对这个问题的看法</span><sup class="footnote-ref">[4]</sup>)</p>
+<p>同样关于<code>setTimeout</code>的话题，假设你想只运行一次<code>setTimeout</code>，并给<code>varA</code>加1，就像前面的例子一样。</p>
+<p>可能你尝试的是下面这样的代码：</p>
+<pre class="custom"><code class="hljs">&nbsp;<span class="hljs-function"><span class="hljs-keyword">function</span>&nbsp;<span class="hljs-title">App</span>(<span class="hljs-params"></span>)&nbsp;</span>{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;[varA,&nbsp;setVarA]&nbsp;=&nbsp;useState(<span class="hljs-number">0</span>);<br><br>&nbsp;&nbsp;useEffect(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;timeout&nbsp;=&nbsp;setTimeout(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;setVarA(varA&nbsp;+&nbsp;<span class="hljs-number">1</span>),&nbsp;<span class="hljs-number">1000</span>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;clearTimeout(timeout);<br>&nbsp;&nbsp;},&nbsp;[]);&nbsp;<span class="hljs-comment">//&nbsp;小心了:&nbsp;varA&nbsp;没放在依赖数组中!</span><br><br>&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Var&nbsp;A:&nbsp;{varA}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>;<br>}<br></code></pre>
+<p>虽然这样做也能达到你的目的，但我们还是要花点时间想一想，"如果代码量变大了怎么办？"，或者，"如果我想把上面的代码改成其他的东西怎么办？"</p>
+<p>在这种情况下，你会希望把所有的依赖变量都加入进来，因为这将更容易测试和检测可能出现的问题（像过期的属性，stale props and closures）。</p>
+<p>所以正确的方式是：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-function"><span class="hljs-keyword">function</span>&nbsp;<span class="hljs-title">App</span>(<span class="hljs-params"></span>)&nbsp;</span>{<br>&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;[varA,&nbsp;setVarA]&nbsp;=&nbsp;useState(<span class="hljs-number">0</span>);<br><br>&nbsp;&nbsp;useEffect(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;{<br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">if</span>&nbsp;(varA&nbsp;&gt;&nbsp;<span class="hljs-number">0</span>)&nbsp;<span class="hljs-keyword">return</span>;<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">const</span>&nbsp;timeout&nbsp;=&nbsp;setTimeout(<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;setVarA(varA&nbsp;+&nbsp;<span class="hljs-number">1</span>),&nbsp;<span class="hljs-number">1000</span>);<br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="hljs-function"><span class="hljs-params">()</span>&nbsp;=&gt;</span>&nbsp;clearTimeout(timeout);<br>&nbsp;&nbsp;},&nbsp;[varA]);&nbsp;<span class="hljs-comment">//&nbsp;非常棒，依赖数组得到了正确设置</span><br><br>&nbsp;&nbsp;<span class="hljs-keyword">return</span>&nbsp;<span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">span</span>&gt;</span>Var&nbsp;A:&nbsp;{varA}<span class="hljs-tag">&lt;/<span class="hljs-name">span</span>&gt;</span></span>;<br>}<br></code></pre>
+<hr>
+<p>就这样了，各位。如果你有什么问题或建议，我会认真听。 在下面回复或评论吧！</p>
+<hr>
+<blockquote>
+<p>译者注：</p>
+<p>之前在某博客上看到过一个有关<code>useEffect</code>用法的示例图，非常简洁明了，这里分享给大家：</p>
+<figure><img src="https://imgkr2.cn-bj.ufileos.com/78ec80ab-3c53-49e3-862a-ddce48380dd5.png?UCloudPublicKey=TOKEN_8d8b72be-579a-4e83-bfd0-5f6ce1546f13&amp;Signature=%252FXiScdvTxsHaQBP%252BDZCFYFtoePg%253D&amp;Expires=1598661853" alt="来源: https://daveceddia.com"><figcaption>来源: https://daveceddia.com</figcaption></figure>
+</blockquote>
+<h3 class="footnotes-sep"></h3>
+<section class="footnotes">
+<span id="fn1" class="footnote-item"><span class="footnote-num">[1] </span><p>React useEffect: 4 Tips Every Developer Should Know: <em>https://medium.com/swlh/useeffect-4-tips-every-developer-should-know-54b188b14d9c</em></p>
+</span>
+<span id="fn2" class="footnote-item"><span class="footnote-num">[2] </span><p>Material UI: <em>https://material-ui.com/</em></p>
+</span>
+<span id="fn3" class="footnote-item"><span class="footnote-num">[3] </span><p>exhaustive-deps rule: <em>https://www.npmjs.com/package/eslint-plugin-react-hooks</em></p>
+</span>
+<span id="fn4" class="footnote-item"><span class="footnote-num">[4] </span><p>Can I skip an effect on updates?: <em>https://reactjs.org/docs/hooks-faq.html#can-i-skip-an-effect-on-updates</em></p>
+</span>
+</section>
+</section>
+
+<div id="disqus_thread" style="max-width: 677px; margin: 20px auto;"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = location.href.replace('.html','');  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = location.pathname.replace('.html',''); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://beloved-family.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</body>
+</html>
