@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport"
+    content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+    <link rel="icon" type="image/png" href="/images/emoji-family.png">
+    <title>应用程序是如何在Kubernetes上运行的？</title>
+    <link rel="canonical" href="https://beloved.family/wx/应用程序是如何在Kubernetes上运行的" />
+    
+    
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta property="og:title" content="应用程序是如何在Kubernetes上运行的？" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image" content="https://beloved.family/1984.png" />
+    <!-- theme: ️极简黑小鱼; code theme: ️xcode -->
+<style id="basic-theme">/*默认样式，最佳实践*/
+
+/*全局属性*/
+#nice {
+  font-size: 16px;
+  color: black;
+  padding: 0 10px;
+  line-height: 1.6;
+  word-spacing: 0px;
+  letter-spacing: 0px;
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: left;
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  /* margin-top: -10px; 解决开头空隙过大问题*/
+}
+
+/*段落*/
+#nice p {
+  font-size: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+}
+
+/*标题*/
+#nice h1,
+#nice h2,
+#nice h3,
+#nice h4,
+#nice h5,
+#nice h6 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding: 0px;
+  font-weight: bold;
+  color: black;
+}
+#nice h1 {
+  font-size: 24px;
+}
+#nice h2 {
+  font-size: 22px;
+}
+#nice h3 {
+  font-size: 20px;
+}
+#nice h4 {
+  font-size: 18px;
+}
+#nice h5 {
+  font-size: 16px;
+}
+#nice h6 {
+  font-size: 16px;
+}
+
+#nice h1 .prefix,
+#nice h2 .prefix,
+#nice h3 .prefix,
+#nice h4 .prefix,
+#nice h5 .prefix,
+#nice h6 .prefix {
+  display: none;
+}
+
+#nice h1 .suffix
+#nice h2 .suffix,
+#nice h3 .suffix,
+#nice h4 .suffix,
+#nice h5 .suffix,
+#nice h6 .suffix {
+  display: none;
+}
+
+/*列表*/
+#nice ul,
+#nice ol {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 25px;
+  color: black;
+}
+#nice ul {
+  list-style-type: disc;
+}
+#nice ul ul {
+  list-style-type: square;
+}
+
+#nice ol {
+  list-style-type: decimal;
+}
+
+#nice li section {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  line-height: 26px;
+  text-align: left;
+  color: rgb(1,1,1); /* 只要是纯黑色微信编辑器就会把color这个属性吞掉。。。*/
+  font-weight: 500;
+}
+
+/*引用*/
+#nice blockquote {
+  display: block;
+  font-size: 0.9em;
+  overflow: auto;
+  overflow-scrolling: touch;
+  border-left: 3px solid rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.05);
+  color: #6a737d;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+#nice blockquote p {
+  margin: 0px;
+  color: black;
+  line-height: 26px;
+}
+
+#nice .table-of-contents a {
+  border: none;
+  color: black;
+  font-weight: normal;
+}
+
+/*链接*/
+#nice a {
+  text-decoration: none;
+  color: #1e6bb8;
+  word-wrap: break-word;
+  font-weight: bold;
+  border-bottom: 1px solid #1e6bb8;
+}
+
+/*加粗*/
+#nice strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*斜体*/
+#nice em {
+  font-style: italic;
+  color: black;
+}
+
+/*加粗斜体*/
+#nice em strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*删除线*/
+#nice del {
+  font-style: italic;
+  color: black;
+}
+
+/*分隔线*/
+#nice hr {
+  height: 1px;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-top: 1px solid black;
+}
+
+/*代码块*/
+#nice pre {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+#nice pre code {
+  display: -webkit-box;
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  border-radius: 0px;
+  font-size: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+#nice pre code span {
+  line-height: 26px;
+}
+
+/*行内代码*/
+#nice p code,
+#nice li code {
+  font-size: 14px;
+  word-wrap: break-word;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+  color: #1e6bb8;
+  background-color: rgba(27,31,35,.05);
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  word-break: break-all;
+}
+
+/*图片*/
+#nice img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/*图片*/
+#nice figure {
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/*图片描述文字*/
+#nice figcaption {
+  margin-top: 5px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+
+/*表格容器 */
+#nice .table-container{
+  overflow-x: auto;
+}
+
+/*表格*/
+#nice table {
+  display: table;
+  text-align: left;
+}
+#nice tbody {
+  border: 0;
+}
+
+#nice table tr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  background-color: white;
+}
+
+#nice table tr:nth-child(2n) {
+  background-color: #F8F8F8;
+}
+
+#nice table tr th,
+#nice table tr td {
+  font-size: 16px;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  text-align: left;
+}
+
+#nice table tr th {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+/* 表格最小列宽4个汉字 */
+#nice table tr th:nth-of-type(n),
+#nice table tr td:nth-of-type(n){
+  min-width:85px;
+}
+
+/* 微信代码块 */
+#nice .code-snippet__fix {
+  word-wrap: break-word !important;
+  font-size: 14px;
+  margin: 10px 0;
+  display: block;
+  color: #333;
+  position: relative;
+  background-color: rgba(0,0,0,0.03);
+  border: 1px solid #f0f0f0;
+  border-radius: 2px;
+  display: flex;
+  line-height: 20px;
+}
+#nice .code-snippet__fix pre {
+  margin-bottom: 10px;
+  margin-top: 0px;
+}
+#nice .code-snippet__fix .code-snippet__line-index {
+  counter-reset: line;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 1em;
+  list-style-type: none;
+  padding: 16px;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li {
+  list-style-type: none;
+  text-align: right;
+  line-height: 26px;
+  color: black;
+  margin: 0;
+}
+#nice .code-snippet__fix .code-snippet__line-index li::before {
+  min-width: 1.5em;
+  text-align: right;
+  left: -2.5em;
+  counter-increment: line;
+  content: counter(line);
+  display: inline;
+  color: rgba(0,0,0,0.3);
+}
+#nice .code-snippet__fix pre {
+  overflow-x: auto;
+  padding: 16px;
+  padding-left: 0;
+  white-space: normal;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+#nice .code-snippet__fix code {
+  text-align: left;
+  font-size: 14px;
+  display: block;
+  white-space: pre;
+  display: flex;
+  position: relative;
+  font-family: Consolas,"Liberation Mono",Menlo,Courier,monospace;
+  padding: 0px;
+}
+
+#nice .footnote-word {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-ref {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-item {
+  display: flex;
+}
+
+#nice .footnote-num {
+  display: inline;
+  width: 10%; /*神奇，50px就不可以*/
+  background: none;
+  font-size: 80%;
+  opacity: 0.6;
+  line-height: 26px;
+  font-family: ptima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+#nice .footnote-item p {
+  display: inline;
+  font-size: 14px;
+  width: 90%;
+  padding: 0px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+  word-break:break-all;
+  width: calc(100%-50)
+}
+
+#nice sub, sup {
+  line-height: 0;
+}
+
+#nice .footnotes-sep:before {
+  content: "参考资料";
+  display: block;
+}
+
+/* 解决公式问题 */
+#nice .block-equation {
+  display:block;
+  text-align: center;
+  overflow: auto;
+  display: block;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .block-equation svg {
+  max-width: 300% !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .inline-equation {
+}
+
+#nice .inline-equation svg {
+}
+
+#nice .imageflow-layer1 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  white-space: normal;
+  border: 0px none;
+  padding: 0px;
+  overflow: hidden;
+}
+
+#nice .imageflow-layer2 {
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+#nice .imageflow-layer3 {
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: middle;
+  width: 100%;
+}
+
+#nice .imageflow-img {
+  display: inline-block;
+}
+
+#nice .imageflow-caption {
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #888;
+}
+
+#nice .nice-suffix-juejin-container {
+  margin-top: 20px !important;
+}
+
+#nice figure a {
+  border: none;
+}
+
+#nice figure a img {
+  margin: 0px;
+}
+
+#nice figure {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 图片链接嵌套 */
+#nice figure a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 图片链接嵌套，图片解释 */
+#nice figure a + figcaption {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: -35px;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  line-height: 35px;
+  z-index: 20;
+}
+</style>
+<style id="code-theme">/*
+
+XCode style (c) Angel Garcia <angelgarcia.mail@gmail.com>
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 16px;
+  background: #fff;
+  color: black;
+}
+
+/* Gray DOCTYPE selectors like WebKit */
+.xml .hljs-meta {
+  color: #c0c0c0;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #007400;
+}
+
+.hljs-tag,
+.hljs-attribute,
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-name {
+  color: #aa0d91;
+}
+
+.hljs-variable,
+.hljs-template-variable {
+  color: #3F6E74;
+}
+
+.hljs-code,
+.hljs-string,
+.hljs-meta-string {
+  color: #c41a16;
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: #0E0EFF;
+}
+
+.hljs-title,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-number {
+  color: #1c00cf;
+}
+
+.hljs-section,
+.hljs-meta {
+  color: #643820;
+}
+
+
+.hljs-class .hljs-title,
+.hljs-type,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-params {
+  color: #5c2699;
+}
+
+.hljs-attr {
+  color: #836C28;
+}
+
+.hljs-subst {
+  color: #000;
+}
+
+.hljs-formula {
+  background-color: #eee;
+  font-style: italic;
+}
+
+.hljs-addition {
+  background-color: #baeeba;
+}
+
+.hljs-deletion {
+  background-color: #ffc8bd;
+}
+
+.hljs-selector-id,
+.hljs-selector-class {
+  color: #9b703f;
+}
+
+.hljs-doctag,
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+#nice .custom code {
+  padding-top: 15px;
+  background: #fff;
+  border-radius: 5px;
+}
+
+#nice .custom:before {
+  content: '';
+  display:block;
+  background: url(https://my-wechat.mdnice.com/point.png);
+  height: 30px;
+  width: 100%;
+  background-size:40px;
+  background-repeat: no-repeat;
+  background-color: #fff;
+  margin-bottom: -7px;
+  border-radius: 5px;
+  background-position: 10px 10px;
+}
+
+#nice .custom {
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;
+}</style>
+<style id="markdown-theme">/* 自定义样式，实时生效，浏览器实时缓存 */
+
+/* 全局属性
+ * 页边距 padding: 30px;
+ * 全文字体 font-family: ptima-Regular;
+ * 英文换行 word-break: break-all;
+ */
+ #nice {
+  font-size:14px;
+  padding:10px;
+}
+
+/*图片下提示*/
+#nice figcaption{
+  font-size:12px;
+}
+#nice .imageflow-caption{
+  font-size:12px;
+}
+
+/* 段落，下方未标注标签参数均同此处
+ * 上边距 margin-top: 5px;
+ * 下边距 margin-bottom: 5px;
+ * 行高 line-height: 26px;
+ * 词间距 word-spacing: 3px;
+ * 字间距 letter-spacing: 3px;
+ * 对齐 text-align: left;
+ * 颜色 color: #3e3e3e;
+ * 字体大小 font-size: 16px;
+ * 首行缩进 text-indent: 2em;
+ */
+#nice p {
+  font-size:14px;
+}
+
+/* 一级标题 */
+#nice h1 {
+}
+
+/* 一级标题内容 */
+#nice h1 .content {
+}
+
+/* 一级标题前缀 */
+#nice h1 .prefix {
+}
+
+/* 一级标题后缀 */
+#nice h1 .suffix{
+}
+
+/* 二级标题 */
+#nice h2 {
+  	text-align:center;
+  	position:relative;
+    font-weight: bold;
+    color: black;
+    line-height: 1.1em;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin:70px 30px 30px;
+    border: 1px solid #000;
+}
+
+#nice h2:before{
+  content: ' ';
+  float: left;
+  display: block;
+  width: 90%;
+  border-top: 1px solid #000;
+  height: 1px;
+  line-height: 1px;
+  margin-left: -5px;
+  margin-top: -17px;
+}
+#nice h2:after{
+  content: ' ';
+  float: right;
+  display: block;
+  width: 90%;
+  border-bottom: 1px solid #000;
+  height: 1px;
+  line-height: 1px;
+  margin-right: -5px;
+  margin-top: 16px;
+}
+/* 二级标题内容 */
+#nice h2 .content {
+  display: block;
+  -webkit-box-reflect: below 0em -webkit-gradient(linear,left top,left bottom, from(rgba(0,0,0,0)),to(rgba(255,255,255,0.1)));
+}
+#nice h2 strong {
+}
+/* 二级标题前缀 */
+#nice h2 .prefix {
+  display: block;
+  width: 3px;
+  margin: 0 0 0 5%;
+  height: 3px;
+  line-height: 3px;
+  overflow: hidden;
+  background-color: #000;
+  box-shadow:3px 0 #000,
+    0 3px #000,
+    -3px 0 #000,
+    0 -3px #000;
+}
+
+/* 二级标题后缀 */
+#nice h2 .suffix {
+  display: block;
+  width: 3px;
+  margin: 0 0 0 95%;
+  height: 3px;
+  line-height: 3px;
+  overflow: hidden;
+  background-color: #000;
+  box-shadow:3px 0 #000,
+    0 3px #000,
+    -3px 0 #000,
+    0 -3px #000;
+}
+
+/* 三级标题 */
+#nice h3 {
+  background-color:#000;
+  color:#fff;
+  padding:2px 10px;
+  width:fit-content;
+  font-size:17px;
+  margin:60px auto 10px;
+}
+#nice h3 strong {
+  color:#fff;
+}
+
+/* 三级标题内容 */
+#nice h3 .content {
+}
+
+/* 三级标题前缀 */
+#nice h3 .prefix {
+}
+
+/* 三级标题后缀 */
+#nice h3 .suffix {
+}
+
+/* 无序列表整体样式
+ * list-style-type: square|circle|disc;
+ */
+#nice ul {
+  list-style-type: square;
+}
+/* 无序二级列表
+ */
+#nice ul li ul li{
+  list-style-type: circle;
+}
+
+/* 有序列表整体样式
+ * list-style-type: upper-roman|lower-greek|lower-alpha;
+ */
+#nice ol {
+}
+
+/* 列表内容，不要设置li
+ */
+#nice li section {
+}
+
+/* 引用
+ * 左边缘颜色 border-left-color: black;
+ * 背景色 background: gray;
+ */
+#nice blockquote {
+  border-left: 3px solid rgba(0, 0, 0, 0.65);
+  border-right: 1px solid rgba(0, 0, 0, 0.65);
+  background: rgb(249, 249, 249);
+}
+
+/* 引用文字 */
+#nice blockquote p {
+}
+
+/* 链接 
+ * border-bottom: 1px solid #009688;
+ */
+#nice a {
+}
+
+/* 加粗 */
+#nice strong {
+}
+
+/* 斜体 */
+#nice em {
+}
+
+/* 加粗斜体 */
+#nice em strong {
+}
+
+/* 删除线 */
+#nice del {
+}
+
+/* 分隔线
+ * 粗细、样式和颜色
+ * border-top: 1px solid #3e3e3e;
+ */
+#nice hr {
+}
+
+/* 图片
+ * 宽度 width: 80%;
+ * 居中 margin: 0 auto;
+ * 居左 margin: 0 0;
+ */
+#nice img {
+  box-shadow: rgba(170, 170, 170, 0.48) 0px 0px 6px 0px;
+  border-radius:4px;
+  margin-top:10px;
+}
+/* 行内代码 */
+#nice p code, #nice li code {
+  color:#ff6441;
+}
+
+/* 非微信代码块
+ * 代码块不换行 display: -webkit-box !important;
+ * 代码块换行 display: block;
+ */
+#nice pre.custom {
+  box-shadow: rgba(170, 170, 170, 0.48) 0px 0px 6px 0px;
+  max-width: 100%;
+  border-radius:4px;
+  margin: 10px auto 0 auto;
+}
+#nice pre code {
+}
+
+/*
+ * 表格内的单元格
+ * 字体大小 font-size: 16px;
+ * 边框 border: 1px solid #ccc;
+ * 内边距 padding: 5px 10px;
+ */
+#nice table tr th,
+#nice table tr td {
+  font-size:14px;
+}
+
+/* 脚注文字 */
+#nice .footnote-word {
+}
+
+/* 脚注上标 */
+#nice .footnote-ref {
+}
+
+/* "参考资料"四个字 
+ * 内容 content: "参考资料";
+ */
+#nice .footnotes-sep {
+  font-size: 14px;
+  color: #888;
+  border-top: 1px solid #eee;
+  padding: 30px 0 10px 0px;
+  background-color: transparent;
+  margin: 0;
+  width: 100%;
+}
+#nice .footnotes-sep:before {
+  content:'参考资料';
+}
+#nice .footnotes{
+  border-left:5px solid #eee;
+  padding-left:10px;
+}
+
+/* 参考资料编号 */
+#nice .footnote-num {
+  font-size:14px;
+  color:#999;
+}
+
+/* 参考资料文字 */
+#nice .footnote-item p { 
+  font-size:14px;
+  color:#999;
+}
+
+/* 参考资料解释 */
+#nice .footnote-item p em {
+  font-size:14px;
+  color:#999;
+}
+
+/* 行间公式
+ * 最大宽度 max-width: 300% !important;
+ */
+#nice .block-equation svg {
+}
+
+/* 行内公式
+ */
+#nice .inline-equation svg {  
+}
+/* 文章结尾 */
+#nice:after{
+  content:'- END -';
+  font-size:15px;
+  display:block;
+  text-align:center;
+  margin-top:50px;
+  color:#999;
+  border-bottom:1px solid #eee;
+}
+
+/*滑动幻灯片*/
+#nice .imageflow-layer1 img{
+  margin:0;
+  box-shadow: none;
+  border-radius: 0;
+}
+</style>
+<script data-ad-client="ca-pub-6205625102284861" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-63732284-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-63732284-5');
+</script>
+
+</head>
+
+<body style="margin-bottom: 20px;">
+  <header style="
+  height: 2em;
+  border-bottom: 1px solid rgba(0,0,0,.22);
+  padding-right: 2em;
+  text-align: right;
+">
+    <div style="max-width: 677px; margin: 5px auto;">一个叫木头，一个叫马尾</div>
+  </header>
+<section id="nice" style="max-width: 677px; margin: 5px auto;"><h1><span class="prefix"></span><span class="content">应用程序是如何在Kubernetes上运行的？</span><span class="suffix"></span></h1>
+
+<p>文章译自 <span class="footnote-word">HOW DO APPLICATIONS RUN ON KUBERNETES?</span><sup class="footnote-ref">[1]</sup>，作者 <em>Janakiram MSV</em>。</p>
+<hr>
+<p><em>以下内容节选自 The New Stack 新书《<span class="footnote-word">The State of the Kubernetes Ecosystem</span><sup class="footnote-ref">[2]</sup>》。</em></p>
+<blockquote>
+<p>需要该书的朋友可以访问原网站下载，或加译者微信 <strong>youmoolee</strong> 索取。</p>
+</blockquote>
+<p>节点(<strong>node</strong>)是 Kubernetes 集群的主力军，负责运行容器化的工作负载(<strong>workloads</strong>)、日志、监控和服务发现等附加组件以及可选的插件(<strong>add-ons</strong>)。其目的是将计算、网络和存储资源暴露给应用程序。</p>
+<p>正如我们之前在<a href="https://mp.weixin.qq.com/s/ekCjc_ojShe2lh1BrW84WA">关于Kubernetes架构的文章</a>中所解释的那样，头节点(<strong>head nodes</strong>)通常运行控制平面(<strong>control plane</strong>)，负责调度和管理工作负载的生命周期。工作节点(<strong>worker nodes</strong>)则运行应用程序。头节点和工作节点的集合构成一个集群(<strong>cluster</strong>)。</p>
+<p>每个 Kubernetes 节点都会包括一个容器运行时(<strong>container runtime</strong>)，如 Docker，以及一个与头节点通信的代理(<strong>kubelet</strong>)。一个节点可以是运行在云环境中的虚拟机(<strong>VM</strong>)，也可以是数据中心(<strong>data center</strong>)内的裸机服务器(<strong>bare metal server</strong>)。</p>
+<figure><img src="https://imgkr2.cn-bj.ufileos.com/3ffed86a-54ac-463c-932d-eac1951208a6.png?UCloudPublicKey=TOKEN_8d8b72be-579a-4e83-bfd0-5f6ce1546f13&amp;Signature=J%252B4JnjLZKwl47opl%252FkYJtQdqVGo%253D&amp;Expires=1599089892" alt="Components of the worker nodes. Source: Janakiram MSV."><figcaption>Components of the worker nodes. Source: Janakiram MSV.</figcaption></figure>
+<h3><span class="prefix"></span><span class="content">Container Runtime (容器运行时)</span><span class="suffix"></span></h3>
+<p>容器运行时负责管理节点中运行的每个容器的生命周期。在一个 pod 被调度到某节点后，运行时从注册表(<strong>registry</strong>)中拉取 pod 中所指定的镜像。当一个 pod 终止时，运行时会杀死属于该 pod 的容器。Kubernetes 可以与任何符合<span class="footnote-word">开放容器倡议（Open Container Initiative, OCI）</span><sup class="footnote-ref">[3]</sup>的容器运行时进行通信，包括 Docker 和 CRI-O。</p>
+<p>OCI 是一个定义运行时规范和镜像规范的标准，目标是推动容器运行时和镜像格式的标准化。</p>
+<h3><span class="prefix"></span><span class="content">Kubelet</span><span class="suffix"></span></h3>
+<p>Kubelet 是 Kubernetes 的代理人(<strong>agent</strong>)，它的职责是与容器运行时交互，以执行启动、停止和维护容器等操作。</p>
+<p>每个 kubelet 也会监控 pod 的状态。当一个 pod 没有达到部署(<strong>deployment</strong>)所定义的期望状态时，它可能会在当前所在节点上被重启。节点的状态每隔几秒就会通过心跳消息传送到头节点。如果头节点检测到节点故障，复制控制器(<strong>replication controller</strong>)会观察到这种状态变化，并将 pod 调度到其他健康节点上。</p>
+<h3><span class="prefix"></span><span class="content">Kube-Proxy</span><span class="suffix"></span></h3>
+<p>kube-proxy 组件是作为网络代理和负载平衡器(<strong>load balancer</strong>)来实现的，它协调网络并将请求路由到合适的 pod 上。它根据传入请求的服务名称和端口号将流量路由到适当的pod。它还能通过操纵 iptables 定义的策略和规则，使用上操作系统特定的网络功能。kube-proxy 组件可以与<span class="footnote-word">Calico</span><sup class="footnote-ref">[4]</sup>和<span class="footnote-word">Flannel</span><sup class="footnote-ref">[5]</sup>等网络层(<strong>network layers</strong>)集成。</p>
+<h3><span class="prefix"></span><span class="content">Logging Layer (日志层)</span><span class="suffix"></span></h3>
+<p>编排器(<strong><span class="footnote-word">orchestrator</span><sup class="footnote-ref">[6]</sup></strong>)经常会用到日志，作为收集每个节点上容器的资源使用情况和性能指标的手段，例如CPU、内存、文件和网络使用情况。云原生计算基金会(<strong>Cloud Native Computing Foundation</strong>)托管了一个提供了统一日志记录的软件，供 Kubernetes 或其他编排器使用，称为 Fluentd。该组件会生成 Kubernetes 头控制器(<strong>head controller</strong>)所需的指标(<strong>metrics</strong>)，以便跟踪可用的集群资源，以及整个基础设施的健康状况。</p>
+<h3><span class="prefix"></span><span class="content">Add-Ons (插件)</span><span class="suffix"></span></h3>
+<p>Kubernetes 支持以插件(<strong>add-ons</strong>)的形式添加额外服务。这些可选的服务，如仪表盘(<strong>dashboard</strong>)，可以像其他应用一样部署，但会与节点上的其他核心组件（如日志层和 kube-proxy ）集成。例如，dashboard 插件会从 kubelet 中提取指标，以对资源利用率进行丰富的可视化。基于 kube-dns 或 CoreDNS 的 DNS 插件，通过名称解析(<strong>name resolution</strong>)来增强 kube-proxy 的功能。</p>
+<h2><span class="prefix"></span><span class="content">Workloads are Containerized Applications</span><span class="suffix"></span></h2>
+<p>工作负载就是容器化的应用。</p>
+<p>控制平面和工作节点构成了集群基础设施的核心，而工作负载(<strong>workloads</strong>)则是部署在 Kubernetes 中的容器化应用。</p>
+<p>开发人员在开发和测试完一个微服务后，将其打包成容器，再以 pod 的形式打包为最小部署单元。一组属于同一应用的容器在 Kubernetes 内进行分组、打包、部署和管理。</p>
+<p>Kubernetes 暴露了用于部署的原语(<strong>primitives</strong>)，同时不断扩展(<strong>scaling</strong>)、发现和监控这些微服务的健康状况。命名空间(<strong>namespaces</strong>)通常用于在逻辑上将一个应用程序与另一个应用程序分开。它们通过为属于应用程序的所有资源和服务提供一个定义良好的边界和范围，充当着逻辑集群的作用。</p>
+<p>在一个命名空间内，部署了以下 Kubernetes 原语：</p>
+<h3><span class="prefix"></span><span class="content">Pods</span><span class="suffix"></span></h3>
+<p>pod 是一个 Kubernetes 应用的基本执行单元。它是 Kubernetes 对象模型中最小、最简单的单元。pod 也是 Kubernetes 应用中最小的可调度条目。如果 Kubernetes 是一个操作系统，那么一个 pod 代表了一组运行在集群上的进程——其中每个进程可被映射到一个容器上。</p>
+<p>pod 作为 Kubernetes 工作负载管理的核心单元，为共享上下文和资源的容器提供逻辑边界。将相关的容器分组到 pod 中，弥补了容器化取代第一代虚拟化时带来的配置上的挑战，使多个依赖的进程一起运行成为可能。(译者注: 这段比较绕，简单理解就是，pod使相互依赖的多个容器运行在一个分组中成为可能，相关配置也大大简化了。)</p>
+<p>每个 pod 是一个或多个容器的集合，这些容器使用进程间通信(IPC)进行联络，并且可以共享存储和网络栈。在需要将容器耦合和并置(<strong>co-locate</strong>)的场景中——例如，一个Web服务容器和一个缓存容器——它们可以很容易地被打包进一个单一的 pod 中。可以对一个 pod 进行手动或自动扩充，后者依赖于一个叫作 Horizontal Pod Autoscaling (<strong>HPA</strong>,水平自动扩展) 特性。通过这种方法，pod 的数量会根据可用资源按比例增加。</p>
+<p>Pod 实现了开发和部署之间的功能分离。当开发人员专注于他们的代码时，运维人员可以专注于更广阔的画面，决定哪些相关的容器可以拼接成一个功能单元。得到的是最佳的可移植性，因为一个 pod 只是一个或多个容器镜像的可一起管理的清单(<strong>manifest</strong>)。</p>
+<h3><span class="prefix"></span><span class="content">Controllers (控制器)</span><span class="suffix"></span></h3>
+<p>在 Kubernetes 中，控制器通过添加额外的功能，如所需的配置状态和运行时特征来增强 pod。</p>
+<p>Deployment(部署) 给 pod 带来声明式的更新。它通过跟踪参与部署的 pod 的健康状况，确保其始终保持期望状态。每个 deployment 都会管理一个 ReplicaSet，该 ReplicaSet 会按照定义的期望状态，在任何给定时间内维护一组稳定运行的 pod 副本。</p>
+<p>通过扩展(<strong>scaling</strong>)、历史记录和回滚功能，deployment 为 pod 带来类似 PaaS 的功能。当一个 deployemnt 配置的最小副本数为两个时，Kubernetes
+会确保至少有两个 pod 始终在运行，从而带来容错性(<strong>fault tolerance</strong>)。即使在部署只有一个副本的 pod 时，我们也强烈建议使用部署控制器(<strong>deployment controller</strong>)而不是直接使用 pod 来定义。</p>
+<p>statefulset(有状态集) 类似于部署(<strong>deployment</strong>)，但它是为需要持久化和明确定义的标识符以及保证创建顺序的 pod 而服务的。对于数据库集群等工作负载，statefulset 控制器将按照给定的顺序创建一组高可用的 pod，这些 pod 有一个可预测的命名约定。需要高可用的 stateful 工作负载，如Cassandra、Kafka、ZooKeeper 和 SQL Server，在 Kubernetes 中都被部署为有 statefulset。</p>
+<p>当需要要强制一个 pod 运行在集群的每个节点上时，可以使用 DaemonSet 控制器。由于 Kubernetes 会在新配置的工作节点中自动调度 DaemonSet，因此它成为配置和准备工作负载节点的理想选择。例如，如果在部署工作负载之前，必须在节点上挂载现有的网络文件系统（NFS）或 Gluster 文件共享，建议将 pod 打包并部署为 DaemonSet。DaemonSet 也是监控代理的良好选择，可确保每个节点都有运行监控代理。</p>
+<p>对于批处理和作业调度，可以将 pod 打包为运行到完成的作业(<strong>run-to-completion job</strong>) 或 定时作业(<strong>cron job</strong>)。一个作业会创建一个或多个 pod，并确保指定数量的 pod 成功结束。配置为 "运行到完成 "的 pods 会在执行完成后退出，而定时作业则会根据 crontab 格式中定义的时间表来运行作业。</p>
+<p>控制器(<strong>controller</strong>)会根据工作负载特征及其执行上下文来定义 pod 的生命周期。</p>
+<p>现在我们已经了解了 Kubernetes 控制平面的基础知识以及应用程序如何在 Kubernetes 上运行，是时候谈谈服务发现以便更好地了解生产中的工作负载是如何在 Kubernetes 中运行的。</p>
+<hr>
+<blockquote>
+<p>歇一歇，下一篇文章将很快译出。欢迎转发点赞、支持译者。</p>
+</blockquote>
+<h3 class="footnotes-sep"></h3>
+<section class="footnotes">
+<span id="fn1" class="footnote-item"><span class="footnote-num">[1] </span><p>HOW DO APPLICATIONS RUN ON KUBERNETES?: <em>https://thenewstack.io/how-do-applications-run-on-kubernetes/</em></p>
+</span>
+<span id="fn2" class="footnote-item"><span class="footnote-num">[2] </span><p>The State of the Kubernetes Ecosystem: <em>https://thenewstack.io/ebooks/kubernetes/state-of-kubernetes-ecosystem-second-edition-2020/</em></p>
+</span>
+<span id="fn3" class="footnote-item"><span class="footnote-num">[3] </span><p>Open Container Initiative (OCI): <em>https://opencontainers.org</em></p>
+</span>
+<span id="fn4" class="footnote-item"><span class="footnote-num">[4] </span><p>Calico: <em>https://github.com/projectcalico/calico</em></p>
+</span>
+<span id="fn5" class="footnote-item"><span class="footnote-num">[5] </span><p>Flannel: <em>https://github.com/coreos/flannel</em></p>
+</span>
+<span id="fn6" class="footnote-item"><span class="footnote-num">[6] </span><p>WHAT IS CONTAINER ORCHESTRATION?: <em>https://thenewstack.io/what-is-container-orchestration/</em></p>
+</span>
+</section>
+</section>
+
+<div id="disqus_thread" style="max-width: 677px; margin: 20px auto;"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = location.href.replace('.html','');  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = location.pathname.replace('.html',''); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://beloved-family.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</body>
+</html>
