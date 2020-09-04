@@ -33,3 +33,4 @@ https://beloved.family/wx/不要相信默认的超时设定
 https://beloved.family/wx/Why are you on a bus or train but in a car
 https://beloved.family/wx/KUBERNETES是如何工作的
 https://beloved.family/wx/应用程序是如何在Kubernetes上运行的
+https://beloved.family/wx/聊聊杭州的生活成本
