@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport"
+    content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+    <link rel="icon" type="image/png" href="/images/emoji-family.png">
+    <title>JavaScript一行代码生成九九乘法表</title>
+    
+    
+    
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta property="og:title" content="JavaScript一行代码生成九九乘法表" />
+    <meta property="og:type" content="article" />
+    <meta property="og:image" content="https://beloved.family/1984.png" />
+    <!-- theme: ️极简黑小鱼; code theme: ️atom-one-dark -->
+<style id="basic-theme">/*默认样式，最佳实践*/
+
+/*全局属性*/
+#nice {
+  font-size: 16px;
+  color: black;
+  padding: 0 10px;
+  line-height: 1.6;
+  word-spacing: 0px;
+  letter-spacing: 0px;
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: left;
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  /* margin-top: -10px; 解决开头空隙过大问题*/
+}
+
+/*段落*/
+#nice p {
+  font-size: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+}
+
+/*标题*/
+#nice h1,
+#nice h2,
+#nice h3,
+#nice h4,
+#nice h5,
+#nice h6 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding: 0px;
+  font-weight: bold;
+  color: black;
+}
+#nice h1 {
+  font-size: 24px;
+}
+#nice h2 {
+  font-size: 22px;
+}
+#nice h3 {
+  font-size: 20px;
+}
+#nice h4 {
+  font-size: 18px;
+}
+#nice h5 {
+  font-size: 16px;
+}
+#nice h6 {
+  font-size: 16px;
+}
+
+#nice h1 .prefix,
+#nice h2 .prefix,
+#nice h3 .prefix,
+#nice h4 .prefix,
+#nice h5 .prefix,
+#nice h6 .prefix {
+  display: none;
+}
+
+#nice h1 .suffix
+#nice h2 .suffix,
+#nice h3 .suffix,
+#nice h4 .suffix,
+#nice h5 .suffix,
+#nice h6 .suffix {
+  display: none;
+}
+
+/*列表*/
+#nice ul,
+#nice ol {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 25px;
+  color: black;
+}
+#nice ul {
+  list-style-type: disc;
+}
+#nice ul ul {
+  list-style-type: square;
+}
+
+#nice ol {
+  list-style-type: decimal;
+}
+
+#nice li section {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  line-height: 26px;
+  text-align: left;
+  color: rgb(1,1,1); /* 只要是纯黑色微信编辑器就会把color这个属性吞掉。。。*/
+  font-weight: 500;
+}
+
+/*引用*/
+#nice blockquote {
+  border: none;
+}
+
+#nice .multiquote-1 {
+  display: block;
+  font-size: 0.9em;
+  overflow: auto;
+  overflow-scrolling: touch;
+  border-left: 3px solid rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.05);
+  color: #6a737d;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+#nice .multiquote-1 p {
+  margin: 0px;
+  color: black;
+  line-height: 26px;
+}
+
+#nice .multiquote-2 {
+  box-shadow: 1px 1px 10px rgba(0,0,0,0.2);
+  padding: 20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+#nice .multiquote-3 {
+  box-shadow: 1px 1px 10px rgba(0,0,0,0.2);
+  padding: 20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+#nice .multiquote-3 p {
+  text-align: center;
+}
+
+#nice .multiquote-3 h3 {
+  text-align: center;
+}
+
+#nice .table-of-contents a {
+  border: none;
+  color: black;
+  font-weight: normal;
+}
+
+/*链接*/
+#nice a {
+  text-decoration: none;
+  color: #1e6bb8;
+  word-wrap: break-word;
+  font-weight: bold;
+  border-bottom: 1px solid #1e6bb8;
+}
+
+/*加粗*/
+#nice strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*斜体*/
+#nice em {
+  font-style: italic;
+  color: black;
+}
+
+/*加粗斜体*/
+#nice em strong {
+  font-weight: bold;
+  color: black;
+}
+
+/*删除线*/
+#nice del {
+  font-style: italic;
+  color: black;
+}
+
+/*分隔线*/
+#nice hr {
+  height: 1px;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-top: 1px solid black;
+}
+
+/*代码块*/
+#nice pre {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+#nice pre code {
+  display: -webkit-box;
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  border-radius: 0px;
+  font-size: 12px;
+  -webkit-overflow-scrolling: touch;
+}
+#nice pre code span {
+  line-height: 26px;
+}
+
+/*行内代码*/
+#nice p code,
+#nice li code {
+  font-size: 14px;
+  word-wrap: break-word;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+  color: #1e6bb8;
+  background-color: rgba(27,31,35,.05);
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  word-break: break-all;
+}
+
+/*图片*/
+#nice img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/*图片*/
+#nice figure {
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/*图片描述文字*/
+#nice figcaption {
+  margin-top: 5px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+
+/*表格容器 */
+#nice .table-container{
+  overflow-x: auto;
+}
+
+/*表格*/
+#nice table {
+  display: table;
+  text-align: left;
+}
+#nice tbody {
+  border: 0;
+}
+
+#nice table tr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  background-color: white;
+}
+
+#nice table tr:nth-child(2n) {
+  background-color: #F8F8F8;
+}
+
+#nice table tr th,
+#nice table tr td {
+  font-size: 16px;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  text-align: left;
+}
+
+#nice table tr th {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+/* 表格最小列宽4个汉字 */
+#nice table tr th:nth-of-type(n),
+#nice table tr td:nth-of-type(n){
+  min-width:85px;
+}
+
+#nice .footnote-word {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-ref {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+#nice .footnote-item {
+  display: flex;
+}
+
+#nice .footnote-num {
+  display: inline;
+  width: 10%; /*神奇，50px就不可以*/
+  background: none;
+  font-size: 80%;
+  opacity: 0.6;
+  line-height: 26px;
+  font-family: ptima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+#nice .footnote-item p {
+  display: inline;
+  font-size: 14px;
+  width: 90%;
+  padding: 0px;
+  margin: 0;
+  line-height: 26px;
+  color: black;
+  word-break:break-all;
+  width: calc(100%-50)
+}
+
+#nice sub, sup {
+  line-height: 0;
+}
+
+#nice .footnotes-sep:before {
+  content: "参考资料";
+  display: block;
+}
+
+/* 解决公式问题 */
+#nice .block-equation {
+  display:block;
+  text-align: center;
+  overflow: auto;
+  display: block;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .block-equation svg {
+  max-width: 300% !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nice .inline-equation {
+}
+
+#nice .inline-equation svg {
+}
+
+#nice .imageflow-layer1 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  white-space: normal;
+  border: 0px none;
+  padding: 0px;
+  overflow: hidden;
+}
+
+#nice .imageflow-layer2 {
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+#nice .imageflow-layer3 {
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: middle;
+  width: 100%;
+}
+
+#nice .imageflow-img {
+  display: inline-block;
+}
+
+#nice .imageflow-caption {
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #888;
+}
+
+#nice .nice-suffix-juejin-container {
+  margin-top: 20px !important;
+}
+
+#nice figure a {
+  border: none;
+}
+
+#nice figure a img {
+  margin: 0px;
+}
+
+#nice figure {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 图片链接嵌套 */
+#nice figure a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 图片链接嵌套，图片解释 */
+#nice figure a + figcaption {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: -35px;
+  background: rgba(0,0,0,0.7);
+  color: white;
+  line-height: 35px;
+  z-index: 20;
+}
+</style>
+<style id="code-theme">/*
+
+Atom One Dark by Daniel Gamage
+Original One Dark Syntax theme from https://github.com/atom/one-dark-syntax
+
+base:    #282c34
+mono-1:  #abb2bf
+mono-2:  #818896
+mono-3:  #5c6370
+hue-1:   #56b6c2
+hue-2:   #61aeee
+hue-3:   #c678dd
+hue-4:   #98c379
+hue-5:   #e06c75
+hue-5-2: #be5046
+hue-6:   #d19a66
+hue-6-2: #e6c07b
+
+*/
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 16px;
+  color: #abb2bf;
+  background: #282c34;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #5c6370;
+  font-style: italic;
+}
+
+.hljs-doctag,
+.hljs-keyword,
+.hljs-formula {
+  color: #c678dd;
+}
+
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst {
+  color: #e06c75;
+}
+
+.hljs-literal {
+  color: #56b6c2;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta-string {
+  color: #98c379;
+}
+
+.hljs-built_in,
+.hljs-class .hljs-title {
+  color: #e6c07b;
+}
+
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-number {
+  color: #d19a66;
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title {
+  color: #61aeee;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+.hljs-link {
+  text-decoration: underline;
+}
+
+#nice .custom code {
+  padding-top: 15px;
+  background: #282c34;
+  border-radius: 5px;
+}
+
+#nice .custom:before {
+  content: '';
+  display:block;
+  background: url(https://my-wechat.mdnice.com/point.png);
+  height: 30px;
+  width: 100%;
+  background-size:40px;
+  background-repeat: no-repeat;
+  background-color: #282c34;
+  margin-bottom: -7px;
+  border-radius: 5px;
+  background-position: 10px 10px;
+}
+
+#nice .custom {
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.55) 0px 2px 10px;
+}</style>
+<style id="markdown-theme">/* 自定义样式，实时生效，浏览器实时缓存 */
+
+/* 全局属性
+ * 页边距 padding: 30px;
+ * 全文字体 font-family: ptima-Regular;
+ * 英文换行 word-break: break-all;
+ */
+ #nice {
+  font-size:14px;
+  padding:10px;
+}
+
+/*图片下提示*/
+#nice figcaption{
+  font-size:12px;
+}
+#nice .imageflow-caption{
+  font-size:12px;
+}
+
+/* 段落，下方未标注标签参数均同此处
+ * 上边距 margin-top: 5px;
+ * 下边距 margin-bottom: 5px;
+ * 行高 line-height: 26px;
+ * 词间距 word-spacing: 3px;
+ * 字间距 letter-spacing: 3px;
+ * 对齐 text-align: left;
+ * 颜色 color: #3e3e3e;
+ * 字体大小 font-size: 16px;
+ * 首行缩进 text-indent: 2em;
+ */
+#nice p {
+  font-size:14px;
+}
+
+/* 一级标题 */
+#nice h1 {
+}
+
+/* 一级标题内容 */
+#nice h1 .content {
+}
+
+/* 一级标题前缀 */
+#nice h1 .prefix {
+}
+
+/* 一级标题后缀 */
+#nice h1 .suffix{
+}
+
+/* 二级标题 */
+#nice h2 {
+  	text-align:center;
+  	position:relative;
+    font-weight: bold;
+    color: black;
+    line-height: 1.1em;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    margin:70px 30px 30px;
+    border: 1px solid #000;
+}
+
+#nice h2:before{
+  content: ' ';
+  float: left;
+  display: block;
+  width: 90%;
+  border-top: 1px solid #000;
+  height: 1px;
+  line-height: 1px;
+  margin-left: -5px;
+  margin-top: -17px;
+}
+#nice h2:after{
+  content: ' ';
+  float: right;
+  display: block;
+  width: 90%;
+  border-bottom: 1px solid #000;
+  height: 1px;
+  line-height: 1px;
+  margin-right: -5px;
+  margin-top: 16px;
+}
+/* 二级标题内容 */
+#nice h2 .content {
+  display: block;
+  -webkit-box-reflect: below 0em -webkit-gradient(linear,left top,left bottom, from(rgba(0,0,0,0)),to(rgba(255,255,255,0.1)));
+}
+#nice h2 strong {
+}
+/* 二级标题前缀 */
+#nice h2 .prefix {
+  display: block;
+  width: 3px;
+  margin: 0 0 0 5%;
+  height: 3px;
+  line-height: 3px;
+  overflow: hidden;
+  background-color: #000;
+  box-shadow:3px 0 #000,
+    0 3px #000,
+    -3px 0 #000,
+    0 -3px #000;
+}
+
+/* 二级标题后缀 */
+#nice h2 .suffix {
+  display: block;
+  width: 3px;
+  margin: 0 0 0 95%;
+  height: 3px;
+  line-height: 3px;
+  overflow: hidden;
+  background-color: #000;
+  box-shadow:3px 0 #000,
+    0 3px #000,
+    -3px 0 #000,
+    0 -3px #000;
+}
+
+/* 三级标题 */
+#nice h3 {
+  background-color:#000;
+  color:#fff;
+  padding:2px 10px;
+  width:fit-content;
+  font-size:17px;
+  margin:60px auto 10px;
+}
+#nice h3 strong {
+  color:#fff;
+}
+
+/* 三级标题内容 */
+#nice h3 .content {
+}
+
+/* 三级标题前缀 */
+#nice h3 .prefix {
+}
+
+/* 三级标题后缀 */
+#nice h3 .suffix {
+}
+
+/* 无序列表整体样式
+ * list-style-type: square|circle|disc;
+ */
+#nice ul {
+  list-style-type: square;
+}
+/* 无序二级列表
+ */
+#nice ul li ul li{
+  list-style-type: circle;
+}
+
+/* 有序列表整体样式
+ * list-style-type: upper-roman|lower-greek|lower-alpha;
+ */
+#nice ol {
+}
+
+/* 列表内容，不要设置li
+ */
+#nice li section {
+}
+
+/* 引用
+ * 左边缘颜色 border-left-color: black;
+ * 背景色 background: gray;
+ */
+#nice .multiquote-1 {
+  border-left: 3px solid rgba(0, 0, 0, 0.65);
+  border-right: 1px solid rgba(0, 0, 0, 0.65);
+  background: rgb(249, 249, 249);
+}
+
+/* 引用文字 */
+#nice .multiquote-1 p {
+}
+
+/* 链接 
+ * border-bottom: 1px solid #009688;
+ */
+#nice a {
+}
+
+/* 加粗 */
+#nice strong {
+}
+
+/* 斜体 */
+#nice em {
+}
+
+/* 加粗斜体 */
+#nice em strong {
+}
+
+/* 删除线 */
+#nice del {
+}
+
+/* 分隔线
+ * 粗细、样式和颜色
+ * border-top: 1px solid #3e3e3e;
+ */
+#nice hr {
+}
+
+/* 图片
+ * 宽度 width: 80%;
+ * 居中 margin: 0 auto;
+ * 居左 margin: 0 0;
+ */
+#nice img {
+  box-shadow: rgba(170, 170, 170, 0.48) 0px 0px 6px 0px;
+  border-radius:4px;
+  margin-top:10px;
+}
+/* 行内代码 */
+#nice p code, #nice li code {
+  color:#ff6441;
+}
+
+/* 非微信代码块
+ * 代码块不换行 display: -webkit-box !important;
+ * 代码块换行 display: block;
+ */
+#nice pre.custom {
+  box-shadow: rgba(170, 170, 170, 0.48) 0px 0px 6px 0px;
+  max-width: 100%;
+  border-radius:4px;
+  margin: 10px auto 0 auto;
+}
+#nice pre code {
+}
+
+/*
+ * 表格内的单元格
+ * 字体大小 font-size: 16px;
+ * 边框 border: 1px solid #ccc;
+ * 内边距 padding: 5px 10px;
+ */
+#nice table tr th,
+#nice table tr td {
+  font-size:14px;
+}
+
+/* 脚注文字 */
+#nice .footnote-word {
+}
+
+/* 脚注上标 */
+#nice .footnote-ref {
+}
+
+/* "参考资料"四个字 
+ * 内容 content: "参考资料";
+ */
+#nice .footnotes-sep {
+  font-size: 14px;
+  color: #888;
+  border-top: 1px solid #eee;
+  padding: 30px 0 10px 0px;
+  background-color: transparent;
+  margin: 0;
+  width: 100%;
+}
+#nice .footnotes-sep:before {
+  content:'参考资料';
+}
+#nice .footnotes{
+  border-left:5px solid #eee;
+  padding-left:10px;
+}
+
+/* 参考资料编号 */
+#nice .footnote-num {
+  font-size:14px;
+  color:#999;
+}
+
+/* 参考资料文字 */
+#nice .footnote-item p { 
+  font-size:14px;
+  color:#999;
+}
+
+/* 参考资料解释 */
+#nice .footnote-item p em {
+  font-size:14px;
+  color:#999;
+}
+
+/* 行间公式
+ * 最大宽度 max-width: 300% !important;
+ */
+#nice .block-equation svg {
+}
+
+/* 行内公式
+ */
+#nice .inline-equation svg {  
+}
+/* 文章结尾 */
+#nice:after{
+  content:'- END -';
+  font-size:15px;
+  display:block;
+  text-align:center;
+  margin-top:50px;
+  color:#999;
+  border-bottom:1px solid #eee;
+}
+
+/*滑动幻灯片*/
+#nice .imageflow-layer1 img{
+  margin:0;
+  box-shadow: none;
+  border-radius: 0;
+}
+</style>
+<script data-ad-client="ca-pub-6205625102284861" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-63732284-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-63732284-5');
+</script>
+
+</head>
+
+<body style="margin-bottom: 20px;">
+  <header style="
+  height: 2em;
+  border-bottom: 1px solid rgba(0,0,0,.22);
+  padding-right: 2em;
+  text-align: right;
+">
+    <div style="max-width: 677px; margin: 5px auto;">一个叫木头，一个叫马尾</div>
+  </header>
+<section id="nice" style="max-width: 677px; margin: 5px auto;"><h1><span class="prefix"></span><span class="content">JavaScript一行代码生成九九乘法表</span><span class="suffix"></span></h1>
+
+<p>当你代码写的多了，会发现，其实开发中用的最多的数据类型是 <strong>字符串</strong> 和 <strong>数组</strong>，而字符串其实也是数组的一个变种。</p>
+<p>所以不要害怕，本文不谈算法😋 ，仅借此文介绍一些 <strong>JavaScript</strong> 中 <code>Array</code> 的几个高级用法。</p>
+<p>如果你是急性子，生成九九乘法表的代码是：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-built_in">Array</span>.from({&nbsp;<span class="hljs-attr">length</span>:&nbsp;<span class="hljs-number">9</span>&nbsp;},&nbsp;(_,&nbsp;i)&nbsp;=&gt;&nbsp;i&nbsp;+&nbsp;<span class="hljs-number">1</span>).map(<span class="hljs-function">(<span class="hljs-params">row,&nbsp;i,&nbsp;arr</span>)&nbsp;=&gt;</span><br>&nbsp;&nbsp;arr.slice(<span class="hljs-number">0</span>,&nbsp;row).map(<span class="hljs-function">(<span class="hljs-params">col</span>)&nbsp;=&gt;</span>&nbsp;<span class="hljs-string">`<span class="hljs-subst">${col}</span>x<span class="hljs-subst">${row}</span>=<span class="hljs-subst">${col&nbsp;*&nbsp;row}</span>`</span>)<br>);<br></code></pre>
+<p>为易于阅读，一行代码被格式化成了多行。如果你想了解该代码的原理，继续往下看吧。</p>
+<hr>
+<p>逛百度知道时，看到有网友问：<strong><em><span class="footnote-word">JavaScript 如何做九九乘法表？</span><sup class="footnote-ref">[1]</sup></em></strong></p>
+<p>我思考一下后给出了自己的答案，并且出于私心在答案的末尾推广了自己公众号。</p>
+<p>结果。。。答案被百度毙了，说是违反规范。我申诉，也以申诉失败告终。</p>
+<figure><img src="https://cdn.jsdelivr.net/gh/Youmoo/blog-pictures/2020-9-30/1601427863670-image.png" alt=""></figure>
+<h3><span class="prefix"></span><span class="content">吐嘈</span><span class="suffix"></span></h3>
+<p>现在几个大互联网平台基本上都是互相屏蔽、各自画牢，罔顾用户需求。其实如果在百度知道上回答问题时可以推广公众号，在推广效果好时，用户也会更加积极地在知道上回答问题，这对双方平台和用户来说都是共赢的。可惜各自私心互不通融。</p>
+<hr>
+<h3><span class="prefix"></span><span class="content">回到正题</span><span class="suffix"></span></h3>
+<p>小学时学的 <strong>九九乘法表</strong> 大致是这样的：</p>
+<table log-set-param="table_view" data-sort="sortDisabled"><tbody><tr><td valign="top" align="left">1×1=1</td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td></tr><tr><td valign="top" align="left">1×2=2</td><td valign="top" align="left">2×2=4</td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td></tr><tr><td valign="top" align="left">1×3=3</td><td valign="top" align="left">2×3=6</td><td valign="top" align="left">3×3=9</td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td></tr><tr><td valign="top" align="left">1×4=4</td><td valign="top" align="left">2×4=8</td><td valign="top" align="left">3×4=12</td><td valign="top" align="left">4×4=16</td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td></tr><tr><td valign="top" align="left">1×5=5</td><td valign="top" align="left">2×5=10</td><td valign="top" align="left">3×5=15</td><td valign="top" align="left">4×5=20</td><td valign="top" align="left">5×5=25</td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td></tr><tr><td valign="top" align="left">1×6=6</td><td valign="top" align="left">2×6=12</td><td valign="top" align="left">3×6=18</td><td valign="top" align="left">4×6=24</td><td valign="top" align="left">5×6=30</td><td valign="top" align="left">6×6=36</td><td valign="top" align="left"></td><td valign="top" align="left"></td><td valign="top" align="left"></td></tr><tr><td valign="top" align="left">1×7=7</td><td valign="top" align="left">2×7=14</td><td valign="top" align="left">3×7=21</td><td valign="top" align="left">4×7=28</td><td valign="top" align="left">5×7=35</td><td valign="top" align="left">6×7=42</td><td valign="top" align="left">7×7=49</td><td valign="top" align="left"></td><td valign="top" align="left"></td></tr><tr><td valign="top" align="left">1×8=8</td><td valign="top" align="left">2×8=16</td><td valign="top" align="left">3×8=24</td><td valign="top" align="left">4×8=32</td><td valign="top" align="left">5×8=40</td><td valign="top" align="left">6×8=48</td><td valign="top" align="left">7×8=56</td><td valign="top" align="left">8×8=64</td><td valign="top" align="left"></td></tr><tr><td valign="top" align="left">1×9=9</td><td valign="top" align="left">2×9=18</td><td valign="top" align="left">3×9=27</td><td valign="top" align="left">4×9=36</td><td valign="top" align="left">5×9=45</td><td valign="top" align="left">6×9=54</td><td valign="top" align="left">7×9=63</td><td valign="top" align="left">8×9=72</td><td valign="top" align="left">9×9=81</td></tr></tbody></table>
+<p>通过观察可提取以下规律：</p>
+<blockquote class="multiquote-1">
+<p><strong><em>每一行的实际有效单元格数量和所在的行数一致</em></strong>。比如 <strong>第1行</strong> 是1列，<strong>第2行</strong> 是2列...<strong>第9行</strong> 是9列。而每一个单元格内的内容等式则是 <code>所在列x所在行=积</code>。</p>
+</blockquote>
+<p>由此，我们可以先定义一个从1到9的数组：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-keyword">const</span>&nbsp;nums&nbsp;=&nbsp;[<span class="hljs-number">1</span>,&nbsp;<span class="hljs-number">2</span>,&nbsp;<span class="hljs-number">3</span>,&nbsp;<span class="hljs-number">4</span>,&nbsp;<span class="hljs-number">5</span>,&nbsp;<span class="hljs-number">6</span>,&nbsp;<span class="hljs-number">7</span>,&nbsp;<span class="hljs-number">8</span>,&nbsp;<span class="hljs-number">9</span>];<br></code></pre>
+<p>数组中的值代表第几行。</p>
+<p>从上面规律可行，第1行有1列，第2行有2列...第9行有9列。</p>
+<p>当我们遍历 <code>nums</code> 数组时，我们得到了行标，怎么得到列标呢。</p>
+<p>再注意观察， 第1行，我们的列标是 <code>[1]</code>，第2行列标是 <code>[1,2]</code>，第3行列标是 <code>[1,2,3]</code>...。由此可行，每一行的列表由 <code>[1...行标]</code> 组成。可以取个巧，复用<code>nums</code>数组，对于行数<code>n</code>，其列标是<code>nums.slice(0,n);</code>：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-comment">//&nbsp;对于第3行</span><br><span class="hljs-comment">//&nbsp;列标是&nbsp;[1,&nbsp;2,&nbsp;3]</span><br>nums.slice(<span class="hljs-number">0</span>,<span class="hljs-number">3</span>);<br></code></pre>
+<blockquote class="multiquote-1">
+<p>知识点一: <code>Array.prototype.slice</code> 可用于截取数组的一部分，生成新的数组。</p>
+</blockquote>
+<p>有了以上分解，一个生成 <strong>九九乘法表</strong> 的语句就呼之欲出了：</p>
+<pre class="custom"><code class="hljs">[<span class="hljs-number">1</span>,&nbsp;<span class="hljs-number">2</span>,&nbsp;<span class="hljs-number">3</span>,&nbsp;<span class="hljs-number">4</span>,&nbsp;<span class="hljs-number">5</span>,&nbsp;<span class="hljs-number">6</span>,&nbsp;<span class="hljs-number">7</span>,&nbsp;<span class="hljs-number">8</span>,&nbsp;<span class="hljs-number">9</span>].map(<span class="hljs-function">(<span class="hljs-params">row,&nbsp;i,&nbsp;arr</span>)&nbsp;=&gt;</span><br>&nbsp;&nbsp;arr.slice(<span class="hljs-number">0</span>,&nbsp;row).map(<span class="hljs-function">(<span class="hljs-params">col</span>)&nbsp;=&gt;</span>&nbsp;<span class="hljs-string">`<span class="hljs-subst">${col}</span>x<span class="hljs-subst">${row}</span>=<span class="hljs-subst">${col&nbsp;*&nbsp;row}</span>`</span>)<br>);<br></code></pre>
+<p>在 <strong>Chrome Console</strong> 中运行上述代码，得到结果如下：</p>
+<figure><img src="https://cdn.jsdelivr.net/gh/Youmoo/blog-pictures/2020-9-30/1601430222070-image.png" alt=""></figure>
+<p>如果你想要更好看的输出，可借助 <code>console.table</code>：</p>
+<figure><img src="https://cdn.jsdelivr.net/gh/Youmoo/blog-pictures/2020-9-30/1601430338925-image.png" alt=""></figure>
+<h3><span class="prefix"></span><span class="content">重构</span><span class="suffix"></span></h3>
+<p>目的是达到了，但还可以更好。</p>
+<p>一般生成有规律的数组时，我们不建议一个一个敲打出来，比如上面的 <code>[1, 2, 3, 4, 5, 6, 7, 8, 9]</code>。</p>
+<p>我通常这样写：</p>
+<pre class="custom"><code class="hljs">[...Array(<span class="hljs-number">9</span>)].map(<span class="hljs-function">(<span class="hljs-params">v,&nbsp;i</span>)&nbsp;=&gt;</span>&nbsp;i&nbsp;+&nbsp;<span class="hljs-number">1</span>);<br></code></pre>
+<blockquote class="multiquote-1">
+<p>知识点二: <code>Array</code>构造器传入一个整数时，会生成一个给定长度的 <strong><em>sparse数组</em></strong>。对这个数组调用<code>map</code>是无效的，可以用 <code>...</code> 操作符将其转换为一个正常的数组。</p>
+</blockquote>
+<p>或者这样写：</p>
+<pre class="custom"><code class="hljs"><span class="hljs-built_in">Array</span>.from({&nbsp;<span class="hljs-attr">length</span>:&nbsp;<span class="hljs-number">9</span>&nbsp;},&nbsp;(v,&nbsp;i)&nbsp;=&gt;&nbsp;i&nbsp;+&nbsp;<span class="hljs-number">1</span>);<br></code></pre>
+<blockquote class="multiquote-1">
+<p>知识点三：<code>Array.from</code> 可以将一个 <strong>类数组(array-like)</strong> 或 <strong>可迭代(iterable)</strong> 对象，转换为真实的数组。</p>
+</blockquote>
+<p>关于 <strong>类数组</strong> 和 <strong>可迭代</strong> 对象，请自行了解学习。</p>
+<hr>
+<h2><span class="prefix"></span><span class="content">总结</span><span class="suffix"></span></h2>
+<p>我们通过从 <strong>九九乘法表</strong> 里找规律，以代码的形式完成了乘法表的生成，借以分享了几个高级的数组用法。希望读者朋友们以后面对数组时，不仅是熟悉传统的<code>for</code>语句，数组自带的函数式方法或工具方法也能熟练使用。</p>
+<p>同时我们也吐嘈了当下各自为营的互联网大厂们，希望这股坏风气早日散去，让国内有限的互联网更加「互联」。</p>
+<h3 class="footnotes-sep"></h3>
+<section class="footnotes">
+<span id="fn1" class="footnote-item"><span class="footnote-num">[1] </span><p>JavaScript如何做九九乘法表？: <em>https://zhidao.baidu.com/question/752349821342237212.html</em></p>
+</span>
+</section>
+</section>
+
+<div id="disqus_thread" style="max-width: 677px; margin: 20px auto;"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+
+var disqus_config = function () {
+this.page.url = location.href.replace('.html','');  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = location.pathname.replace('.html',''); // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://beloved-family.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</body>
+</html>
